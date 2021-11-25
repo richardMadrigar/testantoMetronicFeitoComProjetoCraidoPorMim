@@ -1,17 +1,31 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from 'react'
+import ReactDOM from 'react-dom'
+
+import { Provider } from 'react-redux'
+
+//ContextUsers
+import { AuthContextProvider } from './context/authContext'
+
+import store, { persistor } from './setup/redux/Store'
+import { PersistGate } from 'redux-persist/integration/react'
+
+import { App } from './app/App'
+
+import './_metronic/assets/sass/style.react.scss'
+import './_metronic/assets/sass/style.scss'
+
+
+const { PUBLIC_URL } = process.env
+
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <AuthContextProvider> {/*contexto de dados de todos usuarios*/}
+      <Provider store={store}>
+        <PersistGate persistor={persistor} loading={<div>Loading...</div>}>
+          <App basename={PUBLIC_URL} />
+        </PersistGate>
+      </Provider>
+  </AuthContextProvider>
+  ,
   document.getElementById('root')
-);
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+)
