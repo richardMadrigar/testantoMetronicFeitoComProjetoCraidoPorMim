@@ -131,7 +131,7 @@ const Usuarios: React.FC<Props> = ({ className }) => {
           data-bs-placement='top' data-bs-trigger='hover'
           title='Click to add a user'
         >
-          <button className='btn btn-sm btn-light-primary' onClick={() => setModal(true)}>
+          <button className='btn btn-sm btn-light-dark' onClick={() => setModal(true)}>
             <span className="svg-icon svg-icon-3">
               {/* <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                 xmlns="http://www.w3.org/2000/svg" className="mh-50px"><rect opacity="0.5"
@@ -159,7 +159,7 @@ const Usuarios: React.FC<Props> = ({ className }) => {
             {/* begin::Table head */}
             <thead>
               <tr className='fw-bolder text-muted'>
-                <th className='w-25px'></th>
+                <th className='w-25px'>ID</th>
                 <th className='min-w-250px'>Nome</th>
                 <th className='min-w-140px'>Email</th>
                 <th className='min-w-100px'>Telefone</th>
@@ -180,9 +180,12 @@ const Usuarios: React.FC<Props> = ({ className }) => {
                 return (
                   <tr key={users.id}>
                     <td>
-                      <div className='form-check form-check-sm form-check-custom form-check-solid'>
-                        <input className='form-check-input widget-9-check' type='checkbox' />
-                      </div>
+
+                    <span className="badge p-3 badge-light">  {users.id}</span>
+                      {/* <span className=' m-1 btn-active-color-primary btn-sm'>
+                      
+                      </span> */}
+
                     </td>
                     <td> {/* user */}
                       <div className='d-flex align-items-center'>

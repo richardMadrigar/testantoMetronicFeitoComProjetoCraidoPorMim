@@ -19,9 +19,9 @@ const Header = () => {
   console.log(crypted);
 
   // Metodo para decifrar a criptografia
-  const descrypt = crypto.createDecipher(alg, userPerfil?.cpf)
-  const plain = descrypt.update('5fec156d359fdfd25cfe58', 'hex', 'utf8')
-  console.log(plain);
+  // const descrypt = crypto.createDecipher(alg, userPerfil?.cpf)
+  // const plain = descrypt.update('5fec156d359fdfd25cfe58', 'hex', 'utf8')
+  // console.log(plain);
 
 
   const valueQRCode = crypted
@@ -31,22 +31,20 @@ const Header = () => {
   return (
     <>
 
-      <div className="card mb-10  alert-primary  ">  {/*container alert */}
-        <div className="card-body ">
-          <p className="d-flex align-items-center text-dark fw-bolder my-1 fs-3">
-            Existe pendências em seus documentos!
-          </p>
+      <div className="alert bg-danger d-flex-flex-column flex-sm-row p-5 mb-5 " >
+        <div className=" d-flex flex-column text-light pe-0 pe-sm-10 " >
 
-          <p className="list-unstyled text-gray-600 fw-bold fs-6 p-0 m-0">
-            Constatamos pendências em seus documentos. Gentileza realizar upload deles
-            <a href="https://google.com.br"> aqui</a>
-          </p>
+          <h4 className="text-white "> Existe pendências em seus documentos! </h4>
+
+          <span > Constatamos pendências em seus documentos. Gentileza realizar upload deles
+            {" "}<a href="https://google.com.br" className="btn btn-perigo p-0 text-hover-primary ">aqui</a>.
+          </span>
 
         </div>
       </div>
 
 
-      <div className="post  flex-column-fluid" > {/*container conteudo */}
+      <div className="post alert-dismissible flex-column-fluid" > {/*container conteudo */}
         <div className=" d-flex flex-column flex-xl-row">
 
           <div className="bg-white  w-100 w-xl-350px w-xxl-450px me-9 "> {/*container conteudo 1 */}
