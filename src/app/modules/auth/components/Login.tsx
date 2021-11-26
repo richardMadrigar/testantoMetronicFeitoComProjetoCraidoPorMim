@@ -5,14 +5,12 @@ import clsx from 'clsx'
 // // import { useDispatch } from 'react-redux'
 
 // import * as auth from '../redux/AuthRedux'
-import { login } from '../redux/AuthCRUD'
 
 
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 
 import { AuthContext } from '../../../../context/authContext'
-
 
 
 const loginSchema = Yup.object().shape({
@@ -38,28 +36,23 @@ export function Login() {
 
   // const dispatch = useDispatch()
 
+
   const formik = useFormik({
     initialValues,
     validationSchema: loginSchema,
 
-    onSubmit: (values, { setStatus, setSubmitting }) => {
+    onSubmit: (values) => {
       setLoading(true)
-
       console.log(values);
 
-      handleLogin(values)
+      try {
+        handleLogin(values)
+      } catch (error) {
+        alert("ocorreu um erro no seu login: " + error)
+      }
 
       setTimeout(() => {
-        login(values.cpf, values.senha)
-        // .then(({ data: { accessToken } }) => {
-        //   setLoading(false)
-        //   dispatch(auth.actions.login(accessToken))
-        // })
-        // .catch(() => {
-        //   setLoading(false)
-        //   setSubmitting(false)
-        //   setStatus('The login detail is incorrect')
-        // })
+        setLoading(false)
       }, 1000)
     },
   })
@@ -152,9 +145,9 @@ export function Login() {
 
       {/* begin::Buttons */}
       <button
-        className='btn btn-lg  btn-light-dark w-100 mb-5'
         type="submit"
-        disabled={formik.isSubmitting || !formik.isValid}
+        className='btn btn-lg  btn-light-dark w-100 mb-5'
+        disabled={!formik.isValid}
       >
 
         {!loading && <span className='indicator-label'>Login</span>}

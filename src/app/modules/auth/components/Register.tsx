@@ -112,13 +112,13 @@ export function Register() {
 
   const { setAutorization, setUserPerfil } = useContext(AuthContext)
 
+  
   const formik = useFormik({
     initialValues,
     validationSchema: registrationSchema,
 
-    onSubmit: (values, { setStatus, setSubmitting }) => {
+    onSubmit: (values) => {
       setLoading(true)
-
       console.log(values);
 
       handleRegister(values)
@@ -710,7 +710,6 @@ export function Register() {
       <div className='text-center'>
         <button
           type='submit'
-          // id='kt_sign_up_submit'
           className='btn btn-lg btn-light-dark w-100 mb-5'
           disabled={formik.isSubmitting || !formik.isValid}
         >

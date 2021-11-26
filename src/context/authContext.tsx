@@ -1,6 +1,9 @@
-import React, { createContext, ReactNode, useState } from "react";
+import React, { createContext, ReactNode, useEffect, useState } from "react";
 import { IUsers } from "../types/TypeModels";
 import api from "../setup/api";
+import { verify } from 'jsonwebtoken'
+
+const SECRET = '6573827865335'
 
 
 type AuthContextType = {
@@ -10,6 +13,7 @@ type AuthContextType = {
   setAutorization: React.Dispatch<React.SetStateAction<boolean>>
   handleLogin: (data: {}) => Promise<void>
   token: TokenState;
+  loading: boolean
 };
 
 type AuthContextProviderProps = {
@@ -31,6 +35,8 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
   const [userPerfil, setUserPerfil] = useState() //dados do usuario logado
   const [autorization, setAutorization] = useState(false)
 
+  const [loading, setLoading] = useState(false)
+
 
   const [token, setToken] = useState<TokenState>(() => {
     const token = localStorage.getItem("token")
@@ -45,6 +51,68 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
   })
 
 
+  useEffect(() => {
+    const resetUser = async () => {
+      const token = localStorage.getItem('token')
+
+      if (!token) {
+        return console.log('voce não tem um token')
+      }
+      api.defaults.headers.authorization = `Bearer ${token}`
+
+      try {
+        setLoading(true)
+
+        await api.post('/sessions')
+          .then(response => {
+            console.log(response.data);
+            setUserPerfil(response.data)
+
+            setLoading(false)
+          })
+
+        console.log('requisicao para a sessao OK');
+
+      } catch (error) {
+        setLoading(false)
+        console.log('Token invalido ')
+      }
+    }
+    resetUser()
+  }, [token]);
+
+
+  useEffect(() => {
+    const testTokenValid = async () => {
+      const token = localStorage.getItem('token')
+      api.defaults.headers.authorization = `Bearer ${token}`
+
+      if (!token) {
+        setAutorization(false)
+        return console.log('voce não tem um token')
+      }
+
+      try {
+        const resultToken = verify(token, SECRET)
+        console.log(resultToken);
+
+        if (!resultToken) {
+          console.log('Token invalido')
+          return setAutorization(false)
+        }
+
+        return setAutorization(true)
+      } catch (error) {
+        console.log('Token invalido ')
+      }
+
+    }
+    testTokenValid()
+  }, [token]);
+
+
+
+
   const handleLogin = async (data: {}) => {
     await api.post('/login', data)
 
@@ -53,7 +121,13 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
         setToken(token)
 
         localStorage.setItem('token', token);
-        localStorage.setItem('users', JSON.stringify(response.data));
+        // localStorage.setItem('users', JSON.stringify(response.data));
+
+        const resultToken = verify(token, SECRET)
+
+        if (!resultToken) {
+          return alert('Token invalido')
+        }
 
         api.defaults.headers.authorization = `Bearer ${token}`
 
@@ -67,8 +141,9 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
 
 
 
+
   return (
-    <AuthContext.Provider value={{ token, userPerfil, setUserPerfil, autorization, setAutorization, handleLogin }}>
+    <AuthContext.Provider value={{ loading, token, userPerfil, setUserPerfil, autorization, setAutorization, handleLogin }}>
       {props.children}
     </AuthContext.Provider>
   );

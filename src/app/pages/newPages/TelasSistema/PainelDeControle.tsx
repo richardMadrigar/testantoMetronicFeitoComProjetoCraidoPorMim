@@ -5,13 +5,28 @@ import { AuthContext } from '../../../../context/authContext';
 var QRCode = require('qrcode.react');
 
 
+var crypto = require('crypto');
+const alg = 'aes-256-ctr'
+
 
 const Header = () => {
   const { userPerfil } = useContext(AuthContext)
   // console.log(userPerfil);
 
-  const valueQRCode = userPerfil?.cpf
+  // Metodo para criptografia cpf
+  const teste = crypto.createCipher(alg, userPerfil?.cpf)
+  const crypted = teste.update(userPerfil?.cpf, 'utf8', 'hex')
+  console.log(crypted);
+
+  // Metodo para decifrar a criptografia
+  const descrypt = crypto.createDecipher(alg, userPerfil?.cpf)
+  const plain = descrypt.update('5fec156d359fdfd25cfe58', 'hex', 'utf8')
+  console.log(plain);
+
+
+  const valueQRCode = crypted
   const myDivStyle = { width: '17rem', height: '16rem' };
+
 
   return (
     <>

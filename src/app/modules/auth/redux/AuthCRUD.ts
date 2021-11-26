@@ -1,9 +1,5 @@
-export function login(email: string, password: string) {
-}
+export function login() {}
 
-export function requestPassword(email: string) {
-}
+export function requestPassword(email: string) {}
 
-export function getUserByToken() {
-
-}
+export function getUserByToken() {}

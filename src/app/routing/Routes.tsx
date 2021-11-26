@@ -1,4 +1,4 @@
-import React, { FC, useContext, useEffect, useState } from 'react'
+import React, { FC, useContext } from 'react'
 import { Redirect, Switch, Route } from 'react-router-dom'
 import { AuthContext } from '../../context/authContext'
 
@@ -11,25 +11,8 @@ import { ErrorsPage } from '../modules/errors/ErrorsPage'
 import { PrivateRoutes } from './PrivateRoutes'
 
 const Routes: FC = () => {
-  const { autorization, setAutorization, setUserPerfil } = useContext(AuthContext)
+  const { loading, autorization } = useContext(AuthContext)
 
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    // const resultToken = localStorage.getItem('token')
-    const resultUsers = localStorage.getItem('users')
-
-    if (resultUsers) {
-      const resUsers = JSON.parse(resultUsers)
-      console.log(' usuario ', resUsers);
-
-      setUserPerfil(resUsers)
-      setAutorization(true)
-    }
-    setLoading(false)
-  }, [setAutorization, setUserPerfil])
-
-  
 
   if (loading) {
     return <h1>loading...</h1>
@@ -51,7 +34,6 @@ const Routes: FC = () => {
         <Route path='/error' component={ErrorsPage} />
 
         {!autorization ? (
-          /*Redirect to `/auth` when user is not authorized*/
           <Redirect to='/auth/login' />
         ) : (
           <>
