@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 
 import { AuthContext } from '../../../../context/authContext';
+import { AlertDoc } from '../components/AlertDoc';
 
 var QRCode = require('qrcode.react');
 
@@ -31,23 +32,13 @@ const Header = () => {
   return (
     <>
 
-      <div className="alert bg-danger d-flex-flex-column flex-sm-row p-5 mb-5 " >
-        <div className=" d-flex flex-column text-light pe-0 pe-sm-10 " >
-
-          <h4 className="text-white "> Existe pendências em seus documentos! </h4>
-
-          <span > Constatamos pendências em seus documentos. Gentileza realizar upload deles
-            {" "}<a href="https://google.com.br" className="btn btn-perigo p-0 text-hover-primary ">aqui</a>.
-          </span>
-
-        </div>
-      </div>
-
-
       <div className="post alert-dismissible flex-column-fluid" > {/*container conteudo */}
+      
+        <AlertDoc />
+
         <div className=" d-flex flex-column flex-xl-row">
 
-          <div className="bg-white  w-100 w-xl-350px w-xxl-450px me-9 "> {/*container conteudo 1 */}
+          <div className="bg-white w-100 w-xl-350px w-xxl-450px me-9 "> {/*container conteudo 1 */}
             <div className="px-6 px-lg-10 px-xxl-10 py-10 ">
 
               <div className="d-flex flex-wrap flex-sm-nowrap mb-3">
@@ -58,7 +49,7 @@ const Header = () => {
 
                 <div className="d-flex flex-column">
                   <h2 className="d-flex text-dark fs-5 p-0 m-0 pb-3 "> {userPerfil?.name} </h2>
-                  <h3 className=" text-gray-600 fw-bold fs-6 p-0 m-0"> Gerente Operacional</h3>
+                  <h3 className=" text-gray-600 fw-bold fs-6 p-0 m-0"> Gerente Operacional</h3> {/*será dinamico*/}
                 </div>
               </div>
 
