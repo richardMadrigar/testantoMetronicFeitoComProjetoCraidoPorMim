@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 
 import { AuthContext } from '../../../../context/authContext';
+
 import { AlertDoc } from '../components/AlertDoc';
 
 var QRCode = require('qrcode.react');
@@ -17,7 +18,7 @@ const Header = () => {
   // Metodo para criptografia cpf
   const teste = crypto.createCipher(alg, userPerfil?.cpf)
   const crypted = teste.update(userPerfil?.cpf, 'utf8', 'hex')
-  console.log(crypted);
+  // console.log(crypted);
 
   // Metodo para decifrar a criptografia
   // const descrypt = crypto.createDecipher(alg, userPerfil?.cpf)
@@ -26,30 +27,31 @@ const Header = () => {
 
 
   const valueQRCode = crypted
-  const myDivStyle = { width: '17rem', height: '16rem' };
+  const myDivStyle = { width: '18rem', height: '17rem' };
 
 
   return (
     <>
 
-      <div className="post alert-dismissible flex-column-fluid" > {/*container conteudo */}
-      
-        <AlertDoc />
+      <AlertDoc />
 
-        <div className=" d-flex flex-column flex-xl-row">
+      <div className="post alert-dismissible flex-column-fluid pe-0" > {/*container conteudo */}
 
-          <div className="bg-white w-100 w-xl-350px w-xxl-450px me-9 "> {/*container conteudo 1 */}
+
+        <div className=" d-flex flex-column flex-xl-row ">
+
+          <div className="  bg-white w-100 w-xl-350px w-xxl-450px me-9  "> {/*container conteudo 1 */}
             <div className="px-6 px-lg-10 px-xxl-10 py-10 ">
 
               <div className="d-flex flex-wrap flex-sm-nowrap mb-3">
-                <div className="symbol symbol-150px me-5 pb-10">
+                <div className="symbol symbol-150px me-5 pb-10  	">
                   <img src="https://github.com/richardMadrigar.png" alt="Imagem do usuário" />
                 </div>
 
 
                 <div className="d-flex flex-column">
                   <h2 className="d-flex text-dark fs-5 p-0 m-0 pb-3 "> {userPerfil?.name} </h2>
-                  <h3 className=" text-gray-600 fw-bold fs-6 p-0 m-0"> Gerente Operacional</h3> {/*será dinamico*/}
+                  <h3 className=" text-gray-600 fw-bold fs-6 p-0 m-0"> Gerente Operacional </h3> {/*será dinamico*/}
                 </div>
               </div>
 
@@ -70,13 +72,12 @@ const Header = () => {
               <div className="mt-16"  >
                 <QRCode value={valueQRCode} style={myDivStyle} title={valueQRCode} />
               </div>
-              {/*QRCode conteudo */}
+              {/*QRCode */}
 
             </div>
           </div>   {/*container conteudo 1 */}
 
-          <div className="mb-7 bg-red"></div>
-
+          <div className="mb-7 "></div>
 
 
           <div className="flex-row-fluid  bg-white"> {/*container conteudo 2 */}
@@ -109,7 +110,6 @@ const Header = () => {
 
         </div>   {/*container conteudo */}
       </div> {/*container conteudo */}
-
 
     </>
   );

@@ -12,7 +12,7 @@ const Toolbar1: FC = () => {
 
       <div
         id='kt_toolbar_container'
-        className={clsx(classes.toolbarContainer.join(' '), 'd-flex flex-stack  f')}
+        className={clsx(classes.toolbarContainer.join(' '), 'd-flex flex-stack ')}
       >
         Painel de controle  {/* colocar este nome dinamico conforme a tela  */}
       </div>

@@ -10,7 +10,6 @@ const HeaderUserMenu: FC = () => {
 
   const logout = () => {
     localStorage.removeItem('token')
-    localStorage.removeItem('users')
 
     setAutorization(false)
   }

@@ -37,17 +37,19 @@ const AsideMenuItem: React.FC<Props> = ({
             <span className='bullet bullet-dot'></span>
           </span>
         )}
+
         {icon && aside.menuIcon === 'svg' && (
           <span className='menu-icon'>
             <KTSVG path={icon} className='svg-icon-2' />
           </span>
         )}
-        {fontIcon && aside.menuIcon === 'font' && <i className={clsx('bi fs-3', fontIcon)}></i>}
-        <span className='menu-title'>{title } </span> 
-        
-      </Link>
-      {/* {children} */}
 
+        {fontIcon && aside.menuIcon === 'font' && <i className={clsx('bi fs-3', fontIcon)}></i>}
+        <span className='menu-title'>
+          {title}   {/* titulo da lista do aside esquerdo */}
+        </span>
+
+      </Link>
 
     </div>
   )

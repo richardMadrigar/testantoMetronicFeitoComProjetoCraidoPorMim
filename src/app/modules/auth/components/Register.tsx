@@ -133,9 +133,9 @@ export function Register() {
     await api.post('/users', data)
       .then((response) => {
         alert("Usuário criado com sucesso!")
+        const { token } = response.data;
 
-        localStorage.setItem('token', JSON.stringify(response.data?.token));
-        localStorage.setItem('users', JSON.stringify(response.data));
+        localStorage.setItem('token', token);
 
         setUserPerfil(response.data)
         setAutorization(true)

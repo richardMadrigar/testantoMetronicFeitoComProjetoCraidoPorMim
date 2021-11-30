@@ -23,7 +23,9 @@ const MasterLayout: React.FC = ({ children }) => {
 
             <div className='post d-flex flex-column-fluid' id='kt_post'>
 
-              <Content>{children}</Content> {/*conteudo de principal de dentro da pagina*/}
+              <Content>
+                {children}
+              </Content> 
             </div>
           </div>
 

@@ -12,10 +12,7 @@ const middleware = [...getDefaultMiddleware({
   sagaMiddleware,
 ]
 
-const store = configureStore({
-  reducer: rootReducer,
-  middleware,
-})
+const store = configureStore({ reducer: rootReducer, middleware,})
 
 export type AppDispatch = typeof store.dispatch
 

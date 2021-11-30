@@ -1,9 +1,7 @@
 import * as React from 'react';
 
 export const AlertDoc = () => {
-
-
-  const modalDelete = true //será dinamico conforme a vericação dos documentos 
+  const modalDelete = true 
 
   return (
 
@@ -13,7 +11,7 @@ export const AlertDoc = () => {
         <h4 className="text-white "> Existe pendências em seus documentos! </h4>
 
         <span > Constatamos pendências em seus documentos. Gentileza realizar upload deles
-          {" "}<a href="https://google.com.br" className="btn btn-perigo p-0 text-hover-primary"> aqui</a>.
+         <a href="https://google.com.br" className="btn btn-perigo p-0 text-hover-primary ms-2"> aqui </a>.
         </span>
 
       </div>

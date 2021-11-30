@@ -1,39 +1,24 @@
+
+
+
+
+
 import React, { useState } from 'react';
+// import api from '../../../setup/api';
+import clsx from 'clsx';
 
 
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 
 
-import clsx from 'clsx';
-import api from '../../../setup/api';
-
-
 interface IProps {
-  modal: boolean
-  setModal: any
+  modalEdit: boolean
+  setModalEdit: any
+  dataEdit: any
+  teste: any
 }
 
-const initialValues = {
-  name: '',
-  email: '',
-  celular: '',
-  whats: '',
-  cpf: '',
-  rg: '',
-  pix: '',
-  nascimento: '',
-  nitpis: '',
-  nomedamae: '',
-  banco: '',
-  agencia: '',
-  conta: '',
-  cep: '',
-  numero: '',
-  senha: '',
-  confsenha: '',
-  check: true,
-}
 
 const registrationSchema = Yup.object().shape({
   name: Yup.string()
@@ -96,25 +81,65 @@ const registrationSchema = Yup.object().shape({
     .min(3, 'Minimum 8 symbols')
     .max(10, "Limite máximo de 6 caracteres")
     .required('Esse campo é obrigatório'),
-  senha: Yup.string()
-    .min(8, "Senha minima de 8 caracteres")
-    .max(20, "Limite máximo de 20 caracteres")
-    .required('Esse campo é obrigatório'),
-  confsenha: Yup.string()
-    .required('É necessário confimar a senha ')
-    .when('senha', {
-      is: (val: string) => (val && val.length > 0 ? true : false),
-      then: Yup.string().oneOf([Yup.ref('senha')], "Senha não corresponde"),
-    }),
   check: Yup.bool().required('Você deve aceitar os Termos e Condições'),
 })
 
 
 
-const ModalAddUser = ({ modal, setModal }: IProps) => {
-  const [permisssao, setPermisssao] = useState('')
 
+const ModalEditUser = ({ modalEdit, setModalEdit, dataEdit, teste }: IProps) => {
+  const [permisssao, setPermisssao] = useState('')
   const [loading, setLoading] = useState(false)
+
+
+  const { name, agencia, cpf, banco, celular, conta, email, cep, numero, nascimento, nitpis, nomedamae, pix, rg, whats } = dataEdit
+
+
+  // console.log(teste);
+  // console.log(teste.name);
+
+
+  const [a, setA] = useState(teste.name)
+
+
+  const initialValues = {
+    name: a,
+    email: '',
+    celular: '',
+    whats: '',
+    cpf: '',
+    rg: '',
+    pix: '',
+    nascimento: '',
+    nitpis: '',
+    nomedamae: '',
+    banco: '',
+    agencia: '',
+    conta: '',
+    cep: '',
+    numero: '',
+    senha: '',
+    confsenha: '',
+    check: true,
+  }
+
+
+
+
+  // function onBlurCep(ev, setFieldValue) {
+  //   const { value } = ev.target;
+
+
+  //   fetch(`https://viacep.com.br/ws/${cep}/json/`)
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setFieldValue('logradouro', data.logradouro);
+  //       setFieldValue('bairro', data.bairro);
+  //       setFieldValue('cidade', data.localidade);
+  //       setFieldValue('uf', data.uf);
+  //     });
+  // }
+
 
 
   const formik = useFormik({
@@ -125,7 +150,7 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
       setLoading(true)
       console.log(values);
 
-      handleRegister(values)
+      // handleRegister(values)
 
       setTimeout(() => {
         setLoading(false)
@@ -133,35 +158,35 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
     },
   })
 
-  const handleRegister = async (data: {}) => {
-    await api.post('/users', data)
-      .then((response) => {
-        alert("Usuario criado com sucesso!")
-
-        setModal(false)
-
-      }).catch((error) => {
-        alert("Usuario já existe! ");
-      });
-  }
 
 
+  // const handleRegister = async (data: {}) => {
+  //   await api.post('/users', data)
+  //     .then((response) => {
+  //       alert("Usuario criado com sucesso!")
+
+  //       setModalEdit(false)
+
+  //     }).catch((error) => {
+  //       alert("Usuario já existe!: " + error);
+  //     });
+  // }
 
 
   return (
     <>
-      {modal && <div className="drawer-overlay" />}
+      {modalEdit && <div className="drawer-overlay" />}
 
-      <div className="modal fade show" style={{ display: modal ? 'block' : 'none' }}  >
+      <div className="modal fade show" style={{ display: modalEdit ? 'block' : 'none' }}  >
         <div className="modal-dialog modal-dialog-centered mw-850px">
           <div className="modal-content">
 
             <form onSubmit={formik.handleSubmit} className="form fv-plugins-bootstrap5 fv-plugins-framework" >
 
               <div className="modal-header" >
-                <h2>Cadastro de usuários</h2>
+                <h2>Editar usuário</h2>
 
-                <button type="button" onClick={() => setModal(false)} style={{ border: 'none' }} className="btn btn-icon btn-bg-light">
+                <button type="button" onClick={() => setModalEdit(false)} style={{ border: 'none' }} className="btn btn-icon btn-bg-light">
                   <div className="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
                     <span className="svg-icon svg-icon-1">
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -180,11 +205,13 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
                   {/* begin::Form group Nome completo */}
                   <div className='fv-row '>
                     <label className='form-label fw-bolder text-dark fs-6'>Nome completo</label>
+
                     <input
-                      placeholder='Nome completo'
+                      placeholder={name}
                       type=''
                       // autoComplete='off'
                       {...formik.getFieldProps('name')}
+                      // value={name}
                       className={clsx(
                         'form-control form-control-lg form-control-solid',
                         { 'is-invalid': formik.touched.name && formik.errors.name },
@@ -204,14 +231,16 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
                   {/* end::Form group */}
 
 
+
                   {/* begin::Form group Email */}
                   <div className='fv-row mt-5'>
                     <label className='form-label fw-bolder text-dark fs-6'>Email</label>
                     <input
-                      placeholder='Email'
+                      placeholder={email}
                       type='email'
                       // autoComplete='off'
                       {...formik.getFieldProps('email')}
+                      // value={email}
                       className={clsx(
                         'form-control form-control-lg form-control-solid',
                         { 'is-invalid': formik.touched.email && formik.errors.email },
@@ -230,6 +259,7 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
                   </div>
                   {/* end::Form group */}
 
+
                   {/* begin::Form group Celular */}
                   <div className='row fv-row mt-5'>
 
@@ -240,6 +270,7 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
                         type='tel'
                         // autoComplete='off'
                         {...formik.getFieldProps('celular')}
+                        value={celular}
                         className={clsx(
                           'form-control form-control-lg form-control-solid',
                           {
@@ -267,6 +298,7 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
                         type='tel'
                         // autoComplete='off'
                         {...formik.getFieldProps('whats')}
+                        value={whats}
                         className={clsx(
                           'form-control form-control-lg form-control-solid',
                           {
@@ -298,6 +330,7 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
                       type=''
                       // autoComplete='off'
                       {...formik.getFieldProps('cpf')}
+                      value={cpf}
                       className={clsx(
                         'form-control form-control-lg form-control-solid',
                         { 'is-invalid': formik.touched.cpf && formik.errors.cpf },
@@ -325,6 +358,7 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
                       type=''
                       // autoComplete='off'
                       {...formik.getFieldProps('rg')}
+                      value={rg}
                       className={clsx(
                         'form-control form-control-lg form-control-solid',
                         { 'is-invalid': formik.touched.rg && formik.errors.rg },
@@ -352,6 +386,7 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
                       type=''
                       // autoComplete='off'
                       {...formik.getFieldProps('nascimento')}
+                      value={nascimento}
                       className={clsx(
                         'form-control form-control-lg form-control-solid',
                         { 'is-invalid': formik.touched.nascimento && formik.errors.nascimento },
@@ -379,6 +414,7 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
                       type=''
                       // autoComplete='off'
                       {...formik.getFieldProps('pix')}
+                      value={pix}
                       className={clsx(
                         'form-control form-control-lg form-control-solid',
                         { 'is-invalid': formik.touched.pix && formik.errors.pix },
@@ -405,6 +441,7 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
                       type=''
                       // autoComplete='off'
                       {...formik.getFieldProps('nitpis')}
+                      value={nitpis}
                       className={clsx(
                         'form-control form-control-lg form-control-solid',
                         { 'is-invalid': formik.touched.nitpis && formik.errors.nitpis },
@@ -431,6 +468,7 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
                       type=''
                       // autoComplete='off'
                       {...formik.getFieldProps('nomedamae')}
+                      value={nomedamae}
                       className={clsx(
                         'form-control form-control-lg form-control-solid',
                         { 'is-invalid': formik.touched.nomedamae && formik.errors.nomedamae },
@@ -462,6 +500,7 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
                         type=''
                         // autoComplete='off'
                         {...formik.getFieldProps('banco')}
+                        value={banco}
                         className={clsx(
                           'form-control form-control-lg form-control-solid',
                           {
@@ -489,6 +528,7 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
                         type=''
                         // autoComplete='off'
                         {...formik.getFieldProps('agencia')}
+                        value={agencia}
                         className={clsx(
                           'form-control form-control-lg form-control-solid',
                           {
@@ -516,6 +556,7 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
                         type=''
                         // autoComplete='off'
                         {...formik.getFieldProps('conta')}
+                        value={conta}
                         className={clsx(
                           'form-control form-control-lg form-control-solid',
                           {
@@ -550,6 +591,7 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
                         type=''
                         // autoComplete='off'
                         {...formik.getFieldProps('cep')}
+                        value={cep}
                         className={clsx(
                           'form-control form-control-lg form-control-solid',
                           {
@@ -578,6 +620,7 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
                         type=''
                         // autoComplete='off'
                         {...formik.getFieldProps('numero')}
+                        value={numero}
                         className={clsx(
                           'form-control form-control-lg form-control-solid',
                           {
@@ -600,65 +643,7 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
                   {/* end::Form group */}
 
 
-                  {/* begin::Form group Senha */}
-                  <div className='mt-5 fv-row' data-kt-password-meter='true'>
-                    <div className='mb-1'>
-                      <label className='form-label fw-bolder text-dark fs-6'>Senha</label>
-                      <div className='position-relative mb-3'>
-                        <input
-                          type='password'
-                          placeholder='Senha'
-                          autoComplete='off'
-                          {...formik.getFieldProps('senha')}
-                          className={clsx(
-                            'form-control form-control-lg form-control-solid',
-                            {
-                              'is-invalid': formik.touched.senha && formik.errors.senha,
-                            },
-                            {
-                              'is-valid': formik.touched.senha && !formik.errors.senha,
-                            }
-                          )}
-                        />
-                        {formik.touched.senha && formik.errors.senha && (
-                          <div className='fv-plugins-message-container'>
-                            <div className='fv-help-block'>
-                              <span role='alert'>{formik.errors.senha}</span>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                  {/* end::Form group */}
 
-                  {/* begin::Form group Confirm password */}
-                  <div className='fv-row mt-5 mb-10'>
-                    <label className='form-label fw-bolder text-dark fs-6'>Confirmar senha</label>
-                    <input
-                      type='password'
-                      placeholder='Confirmar senha'
-                      autoComplete='off'
-                      {...formik.getFieldProps('confsenha')}
-                      className={clsx(
-                        'form-control form-control-lg form-control-solid',
-                        {
-                          'is-invalid': formik.touched.confsenha && formik.errors.confsenha,
-                        },
-                        {
-                          'is-valid': formik.touched.confsenha && !formik.errors.confsenha,
-                        }
-                      )}
-                    />
-                    {formik.touched.confsenha && formik.errors.confsenha && (
-                      <div className='fv-plugins-message-container'>
-                        <div className='fv-help-block'>
-                          <span role='alert'>{formik.errors.confsenha}</span>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                  {/* end::Form group */}
 
 
                   {/* begin::Form Select */}
@@ -696,7 +681,7 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
                 <button
                   type="button"
                   className="btn btn-light-dark me-3"
-                  onClick={() => setModal(false)}
+                  onClick={() => setModalEdit(false)}
                 >
                   Cancelar
                 </button>
@@ -707,7 +692,7 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
                   className="btn btn-light-dark me-3"
                   disabled={formik.isSubmitting || !formik.isValid}
                 >
-                  {!loading && <span className='indicator-label'>Registrar-se</span>}
+                  {!loading && <span className='indicator-label'>Confirmar</span>}
                   {loading && (
                     <span className='indicator-progress' style={{ display: 'block' }}>
                       Please wait...{' '}
@@ -728,4 +713,4 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
   )
 }
 
-export default ModalAddUser;
+export default ModalEditUser;

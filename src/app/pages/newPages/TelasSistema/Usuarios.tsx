@@ -1,14 +1,22 @@
-import React, { useEffect, useState } from 'react'
-import ModalAddUser from '../../newComponents/ModalAddUser'
+import React, { useContext, useEffect, useState } from 'react'
 import api from '../../../../setup/api';
+
+import { AuthContext } from '../../../../context/authContext';
+
+
+//componentes
+import { KTSVG, toAbsoluteUrl } from '../../../../_metronic/helpers'
+
+import ModalDeleteUser from '../../newComponents/ModalDeleteUser';
+import ModalEditUser from '../../newComponents/ModalEditUser';
+import ModalAddUser from '../../newComponents/ModalAddUser'
+
+import Pagination from '../../newComponents/Pagination'
+import { AlertDoc } from '../components/AlertDoc';
 
 //styles
 import '../../../../_metronic/assets/stylesCss/style.css'
 
-//componentes
-import { KTSVG, toAbsoluteUrl } from '../../../../_metronic/helpers'
-import Pagination from '../../newComponents/Pagination'
-import { AlertDoc } from '../components/AlertDoc';
 
 type Props = {
   className: string
@@ -17,6 +25,25 @@ type Props = {
   itensPerPage: number
   modal: boolean
   setModal: React.Dispatch<React.SetStateAction<boolean>>
+  dataEdit: EditUser
+}
+type EditUser = {
+  celular: '',
+  cpf: '',
+  email: '',
+  name: '',
+  rg: '',
+  senha: '',
+  whats: '',
+  agencia: '',
+  banco: '',
+  conta: '',
+  cep: '',
+  numero: '',
+  nascimento: '',
+  nitpis: '',
+  nomedamae: '',
+  pix: '',
 }
 
 
@@ -26,9 +53,40 @@ type Props = {
 //offset pra identificar em qual pagina esta
 
 const Usuarios: React.FC<Props> = ({ className }) => {
+  const { att, setModalDelete, modalDelete } = useContext(AuthContext)
+
   const [modal, setModal] = useState(false)
-  const [modalDelete, setModalDelete] = useState(false)
-  const [idUserDelete, setIdUserDelete] = useState('')
+
+
+  const [modalNewPassword, setModalNewPassword] = useState(false) //modal with password
+  const [newPassword, setNewPassword] = useState(false) // const da senha
+  const [modalReset, setModalReset] = useState(false) //modal reset
+
+
+  const [modalEdit, setModalEdit] = useState(false) //modal edit
+
+  const [dataEdit, setDataEdit] = useState([{
+    celular: '',
+    cpf: '',
+    email: '',
+    name: '',
+    rg: '',
+    senha: '',
+    whats: '',
+    agencia: '',
+    banco: '',
+    conta: '',
+    cep: '',
+    numero: '',
+    nascimento: '',
+    nitpis: '',
+    nomedamae: '',
+    pix: '',
+  }]) //user edit
+
+
+
+  const [idUser, setIdUser] = useState('')
 
 
   const [users, setUsers] = useState([{
@@ -40,24 +98,36 @@ const Usuarios: React.FC<Props> = ({ className }) => {
     senha: '',
     whats: '',
     cpf: '',
+    agencia: '',
+    banco: '',
+    conta: '',
+    cep: '',
+    checkdoc: '',
+    confsenha: '',
+    nascimento: '',
+    nitpis: '',
+    nomedamae: '',
+    numero: '',
+    pix: '',
+    ccm: '',
   }])
 
 
-  const [currentPage, setCurrentPage] = useState(0) //pagina padrão 
-  const [itensPerPage, setItensPerPage] = useState(5) //itens por pagina
-  const [att, setAtt] = useState(false) //itens por pagina
+  const [currentPage, setCurrentPage] = useState(0)
+  const [itensPerPage, setItensPerPage] = useState(5)
+  // const [att, setAtt] = useState(false) //itens por pagina
 
-  const qtdUsers = users ? users.length : 0 //qtd de usuarios
+  const qtdUsers = users ? users.length : 0
 
-  const endIndex = currentPage + itensPerPage // 0 + 5
+  const endIndex = currentPage + itensPerPage
   const currentItens = users.slice(currentPage, endIndex)
 
 
-  useEffect(() => {
+  useEffect(() => { //renderizando todos os usuarios
     const fetchData = async () => {
       await api.get('/users')
         .then((response) => {
-          // console.log("usuarios da api", response.data);
+          console.log(response.data);
           setUsers(response.data)
         })
         .catch(error => alert('Erro ao requisitar o servidor para pegar usuários! ' + error))
@@ -71,52 +141,94 @@ const Usuarios: React.FC<Props> = ({ className }) => {
   }, [itensPerPage])
 
 
+  
+  const [teste, setTeste] = useState({
+    name: '',
+    email: '',
+    celular: '',
+    whats: '',
+    cpf: '',
+    rg: '',
+    pix: '',
+    nascimento: '',
+    nitpis: '',
+    nomedamae: '',
+    banco: '',
+    agencia: '',
+    conta: '',
+    cep: '',
+    numero: '',
+  })
 
-  const handleDelete = async (idDoUsuario: string) => {
-    await api.delete(`/users/${idDoUsuario}`)
-      .then((response) => { console.log(response.data) })
-      .catch(error => alert(error));
+  const handleMoldalEdit = async (idDoUsuario: string) => {
+    console.log(idDoUsuario);
 
-    setAtt(!att)
-    setModalDelete(false)
+    await api.get(`/users/${idDoUsuario}`)
+      .then((response) => {
+        // console.log(response.data);
+        setDataEdit(response.data)
+        setTeste(response.data)
+      })
+      .catch(error => alert('Erro ao requisitar o servidor para pegar usuários! ' + error))
+
+
+    setModalEdit(true)
+    // setIdUser(idDoUsuario)
   }
-  const handleEdit = async (idDoUsuario: string) => {
-    await api.delete(`/users/${idDoUsuario}`)
-      .then((response) => { console.log(response.data) })
-      .catch(error => alert(error));
 
-    setAtt(!att)
-    setModalDelete(false)
-  }
+
+
 
   const handleMoldalDelete = (idDoUsuario: string) => {
-    // console.log(idDoUsuario);
     setModalDelete(true)
-    setIdUserDelete(idDoUsuario)
+    setIdUser(idDoUsuario)
   }
 
-  const handleMoldalEdit = (idDoUsuario: string) => {
-    // console.log(idDoUsuario);
-    setModalDelete(true)
-    handleEdit(idDoUsuario)
+  const handleMoldalResetPassword = (idDoUsuario: string) => {
+    setModalReset(true)
+    setIdUser(idDoUsuario)
+  }
+
+  const handleResetPassword = async (idDoUsuario: string) => {
+    await api.put(`/resetPassword/${idDoUsuario}`)
+      .then((response) => {
+        // console.log(response.data.name);
+        setNewPassword(response.data.newPassword)
+        setModalNewPassword(true)
+      })
+      .catch(error => alert(error));
+    setModalReset(false)
   }
 
 
   return (
     <>
-
       <AlertDoc />
+
+
+      <ModalEditUser
+        modalEdit={modalEdit}
+        setModalEdit={setModalEdit}
+        dataEdit={dataEdit}
+        teste={teste}
+      />
+
+      <ModalDeleteUser
+        modalDelete={modalDelete}
+        idUser={idUser}
+      />
+
+      <ModalAddUser
+        modal={modal}
+        setModal={setModal}
+      />
       <div className={`card ${className}`}>
 
 
-        <ModalAddUser
-          modal={modal}
-          setModal={setModal}
-        />
-
-        {modalDelete && <div className="drawer-overlay" />}
-
-        <div className="modal" style={{ display: modalDelete ? 'block' : 'none' }} >
+        {/* Inicio Nova Senha */}
+        {/* modal reset password user */}
+        {modalReset && <div className="drawer-overlay" />}
+        <div className="modal" style={{ display: modalReset ? 'block' : 'none' }}>
           <div className="modal-dialog-centered modal-dialog mw-450px ">
             <div className="modal-footer modal-content ">
 
@@ -125,16 +237,40 @@ const Usuarios: React.FC<Props> = ({ className }) => {
               </div>
 
               <div className="blockquote text-center mt-10 mb-5">
-                <h4 >Você deseja exluir esse usuário do sistema ?</h4>
+                <h4 > Você deseja resetar a senha do usuário ? </h4>
               </div>
               <div className="card-body  text-center">
-                <button onClick={() => handleDelete(idUserDelete)} type="button" className="btn btn-primary fw-bold btn-danger m-1 "> Sim, Deletar! </button>
-                <button onClick={() => setModalDelete(false)} type="button" className="btn btn-light m-1 ">Não, Cancelar </button>
+                <button onClick={() => handleResetPassword(idUser)} type="button" className="btn btn-primary fw-bold btn-danger m-1 "> Sim, Resetar! </button>
+                <button onClick={() => setModalReset(false)} type="button" className="btn btn-light m-1 ">Não, Cancelar </button>
               </div>
 
             </div>
           </div>
         </div>
+
+        {/* modal new password  */}
+        {modalNewPassword && <div className="drawer-overlay" />}
+
+        <div className="modal" style={{ display: modalNewPassword ? 'block' : 'none' }}>
+          <div className="modal-dialog-centered modal-dialog mw-450px ">
+            <div className="modal-footer modal-content ">
+
+              <div className="swal2-icon swal2-warning swal2-icon-show mt-10" style={{ display: 'flex' }}>
+                <div className=" swal2-icon-content"> ! </div>
+              </div>
+
+              <div className="blockquote text-center mt-10 mb-5">
+                <h4 > Nova senha: {newPassword} </h4>
+              </div>
+              <div className="card-body  text-center">
+                <button onClick={() => setModalNewPassword(false)} type="button" className="btn btn-light m-1 "> OK </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        {/* Fim Nova Senha */}
+
 
 
         {/* begin::Header */}
@@ -172,14 +308,23 @@ const Usuarios: React.FC<Props> = ({ className }) => {
                 <tr className='fw-bolder text-muted'>
                   <th className='w-25px'>ID</th>
                   <th className='min-w-250px'>Nome</th>
-                  <th className='min-w-140px'>Email</th>
-                  <th className='min-w-100px'>Telefone</th>
-                  <th className='min-w-120px'>Permissões</th>
                   <th className='min-w-120px'>RG/CNH</th>
+                  <th className='min-w-100px'>CCM	</th>
+                  <th className='min-w-100px'>PIS/NIT	</th>
+                  <th className='min-w-100px'>Comprovante de endereço</th>
+                  <th className='min-w-140px'>Email</th>
+                  <th className='min-w-100px'>Celular</th>
+                  <th className='min-w-100px'>Whats</th>
+                  <th className='min-w-120px'>Permissões</th>
                   <th className='min-w-120px'>CNPJ</th>
-                  <th className='min-w-100px '>CCM	</th>
-                  <th className='min-w-100px '>pis/NIT	</th>
-                  <th className='min-w-100px '>Comprovante de endereço	</th>
+                  <th className='min-w-120px'>Nascimento</th>
+                  <th className='min-w-120px'>Nome da mãe</th>
+                  <th className='min-w-120px'>Pix</th>
+                  <th className='min-w-120px'>Banco</th>
+                  <th className='min-w-120px'>Agência</th>
+                  <th className='min-w-120px'>Conta</th>
+                  <th className='min-w-120px'>CEP</th>
+                  <th className='min-w-120px'>Número</th>
                 </tr>
               </thead>
               {/* end::Table head */}
@@ -191,13 +336,9 @@ const Usuarios: React.FC<Props> = ({ className }) => {
                   return (
                     <tr key={users.id}>
                       <td>
-
-                        <span className="badge p-3 badge-light">  {users.id}</span>
-                        {/* <span className=' m-1 btn-active-color-primary btn-sm'>
-                      
-                      </span> */}
-
+                        <span className="badge p-3 badge-light text-hover-primary">  {users.id}</span>
                       </td>
+
                       <td> {/* user */}
                         <div className='d-flex align-items-center'>
 
@@ -214,60 +355,123 @@ const Usuarios: React.FC<Props> = ({ className }) => {
 
                         </div>
                       </td>
-                      <td>  {/* email */}
-                        <span className='text-muted fw-bold text-muted d-block fs-7'>
-                          {users.email}
-                        </span>
-                      </td>
-                      <td>  {/* telefone */}
-                        <span className='text-muted fw-bold text-muted d-block fs-7'>
-                          {users.celular}
-                        </span>
-                      </td>
-                      <td>   {/* Permissoes */}
-                        <span className='text-muted fw-bold text-muted d-block fs-7'>
-                          {users.email}
-                        </span>
-                      </td>
                       <td> {/* RG/CNH */}
                         <span className='text-muted fw-bold text-muted d-block fs-7'>
                           {users.rg}
                         </span>
                       </td>
-                      <td> {/* CNPJ */}
-                        <span className='text-muted fw-bold text-muted d-block fs-7'>
-                          {users.rg}
-                        </span>
-                      </td>
-                      <td> {/* CCM */}
-                        <span className='text-muted fw-bold text-muted d-block fs-7'>
-                          {users.rg}
-                        </span>
-                      </td>
+
+                      {users.ccm ? (
+                        <td> {/* CCM */}
+                          <span className='text-muted fw-bold text-muted d-block fs-7  '>
+                            {users.ccm ? users.ccm : "Pendente"}
+                          </span>
+                        </td>
+                      ) : (
+                        <td>
+                          <span className='fs-7 fw-bold text-light-danger bg-danger p-2 rounded-1'>
+                            {users.ccm ? users.ccm : "Pendente"}
+                          </span>
+                        </td>
+                      )}
+
                       <td>  {/* pis/NIT */}
                         <span className='text-muted fw-bold text-muted d-block fs-7'>
-                          {users.email}
+                          {users.nitpis}
                         </span>
                       </td>
                       <td>  {/* Comprovante de endereço */}
                         <span className='text-muted fw-bold text-muted d-block fs-7'>
+                          {users.celular}
+                        </span>
+                      </td>
+                      <td>  {/* email */}
+                        <span className='text-muted fw-bold text-muted d-block fs-7'>
                           {users.email}
                         </span>
                       </td>
+                      <td>  {/* celular*/}
+                        <span className='text-muted fw-bold text-muted d-block fs-7'>
+                          {users.celular}
+                        </span>
+                      </td>
+                      <td>  {/* whats */}
+                        <span className='text-muted fw-bold text-muted d-block fs-7'>
+                          {users.whats}
+                        </span>
+                      </td>
+                      <td>   {/* Permissoes */}
+                        <span className='text-muted fw-bold text-muted d-block fs-7'>
+                          {/* {users.email} */}
+                          gerente
+                        </span>
+                      </td>
+                      <td> {/* cnpj */}
+                        <span className='text-muted fw-bold text-muted d-block fs-7'>
+                          {/* {users.nascimento} */}
+                          cnjp
+                        </span>
+                      </td>
+                      <td> {/* nascimento */}
+                        <span className='text-muted fw-bold text-muted d-block fs-7'>
+                          {users.nascimento}
+                        </span>
+                      </td>
+                      <td> {/* Nome da mãe*/}
+                        <span className='text-muted fw-bold text-muted d-block fs-7'>
+                          {users.nomedamae}
+                        </span>
+                      </td>
+                      <td> {/* Pix*/}
+                        <span className='text-muted fw-bold text-muted d-block fs-7'>
+                          {users.pix}
+                        </span>
+                      </td>
+                      <td> {/* banco*/}
+                        <span className='text-muted fw-bold text-muted d-block fs-7'>
+                          {users.banco}
+                        </span>
+                      </td>
+                      <td> {/* agencia*/}
+                        <span className='text-muted fw-bold text-muted d-block fs-7'>
+                          {users.agencia}
+                        </span>
+                      </td>
+                      <td> {/* Conta*/}
+                        <span className='text-muted fw-bold text-muted d-block fs-7'>
+                          {users.conta}
+                        </span>
+                      </td>
 
-                      <td>
+                      <td> {/* cep*/}
+                        <span className='text-muted fw-bold text-muted d-block fs-7'>
+                          {users.cep}
+                        </span>
+                      </td>
+                      <td> {/* numero*/}
+                        <span className='text-muted fw-bold text-muted d-block fs-7'>
+                          {users.numero}
+                        </span>
+                      </td>
+
+
+
+                      <td>  {/* inicio - buttons Edit/ delete/ resetar */}
                         <div className='d-flex justify-content-end flex-shrink-0'>
-                          <button className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1' title='Resetar usuário' >
+                          <button onClick={() => handleMoldalResetPassword(users.id)} className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1' title='Resetar usuário' >
                             <KTSVG path='/media/icons/duotune/general/gen019.svg' className='svg-icon-3' />
                           </button>
-                          <button onClick={() => handleMoldalEdit(users.id)}  type="button" className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1' title="Editar usuário" >
+
+                          <button onClick={() => handleMoldalEdit(users.id)} type="button" className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1  ' title="Editar usuário" >
                             <KTSVG path='/media/icons/duotune/art/art005.svg' className='svg-icon-3' />
                           </button>
+
                           <button onClick={() => handleMoldalDelete(users.id)} className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm ' title='Deletar usuário'>
                             <KTSVG path='/media/icons/duotune/general/gen027.svg' className='svg-icon-3' />
                           </button>
+
                         </div>
-                      </td>
+                      </td> {/* fim - buttons Edit/ delete/ resetar */}
 
                     </tr>
                   )
@@ -282,8 +486,7 @@ const Usuarios: React.FC<Props> = ({ className }) => {
           {/* end::Table */}
 
 
-
-          {/* paginação */}
+          {/* inicio - paginação */}
           <div className="example-preview">
             <div className="d-flex justify-content-between align-items-center flex-wrap">
 
@@ -291,7 +494,6 @@ const Usuarios: React.FC<Props> = ({ className }) => {
                 {users && qtdUsers && ( //verificar se existe
                   <Pagination
                     itensPerPage={itensPerPage}
-                    // maxPage={pages}
                     qtdUsers={qtdUsers}
                     currentPage={currentPage}
                     setCurrentPage={setCurrentPage}
@@ -300,7 +502,6 @@ const Usuarios: React.FC<Props> = ({ className }) => {
               </div>
 
               <div className="d-flex align-items-center py-6">
-
                 <div className="mr-2 text-muted">Mostrando </div>
 
                 <select
@@ -318,7 +519,7 @@ const Usuarios: React.FC<Props> = ({ className }) => {
 
             </div>
           </div>
-          {/* paginação */}
+          {/* fim - paginação */}
           {/* begin::Body */}
 
         </div>

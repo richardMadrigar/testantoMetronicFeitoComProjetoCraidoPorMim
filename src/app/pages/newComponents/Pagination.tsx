@@ -28,7 +28,6 @@ const Pagination = ({ itensPerPage, qtdUsers, currentPage, setCurrentPage }: IPr
   );
 
 
-
   function onPageChange(page: number) {
     setCurrentPage((page - 1) * itensPerPage);
   }
@@ -43,6 +42,7 @@ const Pagination = ({ itensPerPage, qtdUsers, currentPage, setCurrentPage }: IPr
       >
         &lt;
       </button>
+      
       {Array.from({ length: Math.min(MAX_ITEMS, pages) })
         .map((_, index) => index + first)
         .map((page) => (
