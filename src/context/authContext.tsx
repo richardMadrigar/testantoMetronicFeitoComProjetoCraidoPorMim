@@ -56,7 +56,7 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
   useEffect(() => {
     const resetUser = async () => {
       const token = localStorage.getItem('token')
-      console.log(token);
+      // console.log(token);
       
 
       if (!token) {
@@ -71,7 +71,7 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
 
         await api.post('/sessions')
           .then(response => {
-            console.log("usuario: ", response.data);
+            console.log("usuario logado: ", response.data);
             setUserPerfil(response.data)
 
             setLoading(false)
@@ -99,7 +99,7 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
 
       try {
         const resultToken = verify(token, SECRET)
-        console.log(resultToken);
+        // console.log(resultToken);
 
         if (!resultToken) {
           console.log('Token invalido')

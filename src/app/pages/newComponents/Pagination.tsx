@@ -36,13 +36,14 @@ const Pagination = ({ itensPerPage, qtdUsers, currentPage, setCurrentPage }: IPr
   return (
     <>
       <button
+        type="button"
         className="btn btn-icon m-1 btn-bg-light btn-active-color-primary btn-sm"
         onClick={() => onPageChange(current - 1)}
         disabled={current === 1}
       >
         &lt;
       </button>
-      
+
       {Array.from({ length: Math.min(MAX_ITEMS, pages) })
         .map((_, index) => index + first)
         .map((page) => (
@@ -50,16 +51,18 @@ const Pagination = ({ itensPerPage, qtdUsers, currentPage, setCurrentPage }: IPr
           <button
             key={page} value={page}
             onClick={() => onPageChange(page)}
+            type="button"
             className=" btn btn-icon m-1 btn-bg-light btn-active-color-primary btn-sm " >
             {page}
           </button>
         ))}
 
       <button
+        type="button"
         className="btn btn-icon m-1 btn-bg-light btn-active-color-primary btn-sm "
         onClick={() => onPageChange(current + 1)}
         disabled={current === pages}
-        >
+      >
         &gt;
       </button>
     </>

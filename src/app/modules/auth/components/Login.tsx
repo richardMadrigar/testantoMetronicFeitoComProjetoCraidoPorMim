@@ -2,10 +2,6 @@ import React, { useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
 import clsx from 'clsx'
 
-// // import { useDispatch } from 'react-redux'
-
-// import * as auth from '../redux/AuthRedux'
-
 
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
@@ -76,6 +72,8 @@ export function Login() {
 
         <input
           placeholder='CPF'
+          type='text'
+          // autoComplete='off'
           {...formik.getFieldProps('cpf')}
           className={clsx(
             'form-control form-control-lg form-control-solid',
@@ -84,9 +82,7 @@ export function Login() {
               'is-valid': formik.touched.cpf && !formik.errors.cpf,
             }
           )}
-          type='CPF'
-          name='cpf'
-          autoComplete='off'
+
         />
         {formik.touched.cpf && formik.errors.cpf && (
           <div className='fv-plugins-message-container'>
@@ -115,7 +111,8 @@ export function Login() {
         </div>
 
         <input
-          type='password' autoComplete='off'
+          type='password'
+          autoComplete='off'
           placeholder='Senha'
           {...formik.getFieldProps('senha')}
 

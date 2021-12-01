@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 
 import { useFormik } from 'formik'
@@ -14,26 +14,6 @@ interface IProps {
   setModal: any
 }
 
-const initialValues = {
-  name: '',
-  email: '',
-  celular: '',
-  whats: '',
-  cpf: '',
-  rg: '',
-  pix: '',
-  nascimento: '',
-  nitpis: '',
-  nomedamae: '',
-  banco: '',
-  agencia: '',
-  conta: '',
-  cep: '',
-  numero: '',
-  senha: '',
-  confsenha: '',
-  check: true,
-}
 
 const registrationSchema = Yup.object().shape({
   name: Yup.string()
@@ -41,7 +21,7 @@ const registrationSchema = Yup.object().shape({
     .max(60, "Limite máximo de 60 caracteres")
     .required('Esse campo é obrigatório'),
   email: Yup.string()
-    .email('Wrong email format')
+    .email('Formato de E-mail inválido')
     .min(8, ' "Quantidade de caracteres inválido"')
     .max(100, "Limite máximo de 100 caracteres")
     .required('Esse campo é obrigatório'),
@@ -111,10 +91,53 @@ const registrationSchema = Yup.object().shape({
 
 
 
+
 const ModalAddUser = ({ modal, setModal }: IProps) => {
   const [permisssao, setPermisssao] = useState('')
 
   const [loading, setLoading] = useState(false)
+
+  const [userr, setUserr] = useState()
+
+
+  useEffect(() => {
+    const teste = async () => {
+      const result = await api.get(`/users/${467}`)
+      console.log(result.data.celular);
+      setUserr(result.data.celular)
+    }
+    teste()
+  }, [])
+
+
+  // if(!userr){
+  //   return  "loading...."
+  // }
+  
+  
+  console.log(userr);
+  // const teste = 'richard'
+  
+  const initialValues = {
+    name: userr,
+    email: "",
+    celular: '',
+    whats: '',
+    cpf: '',
+    rg: '',
+    pix: '',
+    nascimento: '',
+    nitpis: '',
+    nomedamae: '',
+    banco: '',
+    agencia: '',
+    conta: '',
+    cep: '',
+    numero: '',
+    senha: '',
+    confsenha: '',
+    check: true,
+  }
 
 
   const formik = useFormik({
@@ -135,17 +158,15 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
 
   const handleRegister = async (data: {}) => {
     await api.post('/users', data)
-      .then((response) => {
+      .then(() => {
         alert("Usuario criado com sucesso!")
 
         setModal(false)
 
       }).catch((error) => {
-        alert("Usuario já existe! ");
+        alert("Usuario já existe! " + error);
       });
   }
-
-
 
 
   return (
@@ -182,7 +203,7 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
                     <label className='form-label fw-bolder text-dark fs-6'>Nome completo</label>
                     <input
                       placeholder='Nome completo'
-                      type=''
+                      type='text'
                       // autoComplete='off'
                       {...formik.getFieldProps('name')}
                       className={clsx(
@@ -209,9 +230,12 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
                     <label className='form-label fw-bolder text-dark fs-6'>Email</label>
                     <input
                       placeholder='Email'
-                      type='email'
-                      // autoComplete='off'
+                      type="email"
+                      autoComplete='off'
+
                       {...formik.getFieldProps('email')}
+                      // defaultValue=''
+
                       className={clsx(
                         'form-control form-control-lg form-control-solid',
                         { 'is-invalid': formik.touched.email && formik.errors.email },
@@ -547,7 +571,7 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
                       <label className='class="form-label fw-bolder text-dark fs-6'>CEP</label>
                       <input
                         placeholder='CEP'
-                        type=''
+                        type='text'
                         // autoComplete='off'
                         {...formik.getFieldProps('cep')}
                         className={clsx(
@@ -575,7 +599,7 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
                       <label className='class="form-label fw-bolder text-dark fs-6'>Número</label>
                       <input
                         placeholder='Número'
-                        type=''
+                        type='text'
                         // autoComplete='off'
                         {...formik.getFieldProps('numero')}
                         className={clsx(
@@ -610,6 +634,7 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
                           placeholder='Senha'
                           autoComplete='off'
                           {...formik.getFieldProps('senha')}
+                          value=''
                           className={clsx(
                             'form-control form-control-lg form-control-solid',
                             {
