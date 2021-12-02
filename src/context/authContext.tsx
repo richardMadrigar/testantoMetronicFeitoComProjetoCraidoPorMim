@@ -5,7 +5,6 @@ import api, { SECRET } from "../setup/api";
 import {verify} from 'jsonwebtoken'
 
 
-
 type AuthContextType = {
   userPerfil: IUsers | undefined;
   setUserPerfil: any
