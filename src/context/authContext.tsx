@@ -1,7 +1,9 @@
 import React, { createContext, ReactNode, useEffect, useState } from "react";
 import { IUsers } from "../types/TypeModels";
 import api, { SECRET } from "../setup/api";
-import { verify } from 'jsonwebtoken'
+
+import {verify} from 'jsonwebtoken'
+// import { verify } from 'jsonwebtoken'
 
 
 
