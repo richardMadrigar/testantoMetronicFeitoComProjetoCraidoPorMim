@@ -5,7 +5,7 @@ import { toAbsoluteUrl } from '../../../_metronic/helpers'
 
 
 import { Register } from './components/Register'
-import { Login } from './components/Login'
+import Login from './components/Login'
 import NewLogin from './components/NreLogin'
 
 

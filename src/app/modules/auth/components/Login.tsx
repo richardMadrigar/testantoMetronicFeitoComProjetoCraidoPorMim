@@ -3,10 +3,12 @@ import { Link } from 'react-router-dom'
 import clsx from 'clsx'
 
 
-import { Field, Form, Formik, useFormik, ErrorMessage } from 'formik'
+import { Field, Form, Formik, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 
 import { AuthContext } from '../../../../context/authContext'
+
+
 
 
 const loginSchema = Yup.object().shape({
@@ -21,20 +23,16 @@ const loginSchema = Yup.object().shape({
 })
 
 
+// const initialValues = {
+//   cpf: '',
+//   senha: '',
+// }
 
-const initialValues = {
-  cpf: '',
-  senha: '',
-}
 
-
-export function Login() {
-
-  const [loading, setLoading] = useState(false)
-
+const Login = () => {
   const { handleLogin } = useContext(AuthContext)
 
-  // const dispatch = useDispatch()
+  const [loading, setLoading] = useState(false)
 
 
   // const formik = useFormik({
@@ -85,10 +83,9 @@ export function Login() {
       }}
     >
 
-      {({ errors, touched }) => (
+      {({ errors, touched, isValid }) => (
 
-        <Form> 
-
+        <Form>
 
           <div className='form  fv-plugins-bootstrap5 fv-plugins-framework '>
             <div className='text-center mb-10'>
@@ -96,40 +93,31 @@ export function Login() {
             </div>
 
 
-
-            {/* begin::input Login*/}
+            {/* begin::input CPF*/}
             <div className='fv-row mb-10'>
 
               <label className='justify-content-between fw-bolder text-dark fs-6 mb-2'>CPF</label>
 
               <Field
                 name="cpf"
+                placeholder="CPF"
                 className={clsx(
                   'form-control form-control-lg form-control-solid w-100',
                   {
-                    'is-invalid': touched.senha && errors.senha,
+                    'is-invalid': touched.cpf && errors.cpf,
                   },
                   {
-                    'is-valid': touched.senha && !errors.senha,
+                    'is-valid': touched.cpf && !errors.cpf,
                   }
                 )}
               />
-
-              {errors.cpf && touched.cpf ? (
-                <div>{errors.cpf}</div>
-              ) : <> </>}
-
-              {/* <ErrorMessage
-                name="cpf"
-                component="div"
-                className="field-error"
-              /> */}
+              <ErrorMessage name="cpf"  />
 
             </div>
-            {/* end::input Login */}
+            {/* end::input CPF */}
 
 
-            {/* begin::input senha */}
+            {/* begin::input SENHA */}
             <div className='fv-row mb-10'>
 
               <div className='d-flex justify-content-between mt-n5'>
@@ -147,8 +135,9 @@ export function Login() {
               <Field
                 type="password"
                 name="senha"
+                placeholder="Senha"
                 className={clsx(
-                  'form-control form-control-lg form-control-solid w-100',
+                  'form-control form-control-lg form-control-solid w-100 light-dark',
                   {
                     'is-invalid': touched.senha && errors.senha,
                   },
@@ -157,31 +146,18 @@ export function Login() {
                   }
                 )}
               />
-              <ErrorMessage
-                name="senha"
-                component="div"
-              />
-              {touched.senha && errors.senha && (
-                <div className='fv-plugins-message-container'>
-                  <div className='fv-help-block'>
-                    <span role='alert'>{errors.senha}</span>
-                  </div>
-                </div>
-              )}
+              <ErrorMessage name="senha" />
 
             </div>
             {/* end::input senha */}
 
 
 
-
-
-
             {/* begin::Buttons */}
             <button
               type="submit"
-              className='btn btn-lg  btn-light-dark w-100 mb-5'
-            // disabled={!formik.isValid}
+              className='btn btn-lg btn-light-dark w-100 mb-5 '
+              disabled={!isValid}
             >
               {!loading && <span className='indicator-label'>Login</span>}
               {loading && (
@@ -194,7 +170,7 @@ export function Login() {
 
             <div className='d-flex align-items-center mb-5'>
               <div className='border-bottom border-gray-300 mw-50 w-100'></div>
-              <span className='fw-bold text-gray-400 fs-7 mx-2'>OU</span>
+              <span className='fw-bold text-gray-400 fs-7 mx-2'> OU </span>
               <div className='border-bottom border-gray-300 mw-50 w-100'></div>
             </div>
 
@@ -216,3 +192,4 @@ export function Login() {
 }
 
 
+export default Login;
