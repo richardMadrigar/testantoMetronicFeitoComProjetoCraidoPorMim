@@ -6,6 +6,9 @@ import { toAbsoluteUrl } from '../../../_metronic/helpers'
 
 import { Register } from './components/Register'
 import { Login } from './components/Login'
+import NewLogin from './components/NreLogin'
+
+
 
 
 
@@ -33,6 +36,7 @@ export function AuthPage() {
 
         <div className='w-lg-500px  bg-white rounded shadow-sm p-10 p-lg-15 mx-auto'>
           <Switch>
+            <Route path='/auth/novoForm' component={NewLogin} />
             <Route path='/auth/login' component={Login} />
             <Route path='/auth/registration' component={Register} />
             <Redirect from='/auth' exact={true} to='/auth/login' />

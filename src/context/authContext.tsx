@@ -122,7 +122,9 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
 
 
   const handleLogin = async (data: {}) => {
+    console.log(data)
     await api.post('/login', data)
+    
 
       .then(response => {
         const { token } = response.data;
