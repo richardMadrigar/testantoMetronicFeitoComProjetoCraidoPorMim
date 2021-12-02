@@ -2,7 +2,6 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 
-
 //contextos
 import { AuthContextProvider } from './context/authContext'
 import store, { persistor } from './setup/redux/Store'
@@ -11,7 +10,6 @@ import { Provider } from 'react-redux'
 
 import { App } from './app/App'
 
-
 import './_metronic/assets/sass/style.react.scss'
 import './_metronic/assets/sass/style.scss'
 
@@ -19,7 +17,7 @@ import './_metronic/assets/sass/style.scss'
 const { PUBLIC_URL } = process.env
 
 ReactDOM.render(
-  <AuthContextProvider> {/*contexto de dados de todos usuarios*/}
+  <AuthContextProvider> {/*contexto do perfil do usuario*/}
       <Provider store={store}>
         <PersistGate persistor={persistor} loading={<div>Loading...</div>}>
           <App basename={PUBLIC_URL} />

@@ -1,5 +1,5 @@
 import { FC, useContext } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 
 import { AuthContext } from '../../../../context/authContext';
@@ -8,12 +8,15 @@ const HeaderUserMenu: FC = () => {
   const { userPerfil, setAutorization } = useContext(AuthContext)
 
 
-  const logout = () => {
+  const history = useHistory();
+
+  const logout = async () => {
     localStorage.removeItem('token')
 
     setAutorization(false)
+    history.push('/')
   }
-  
+
 
   return (
     <div
@@ -42,7 +45,7 @@ const HeaderUserMenu: FC = () => {
 
 
       <div className='menu-item px-5'>
-        <Link to='/crafted/account/settings' className='menu-link px-5'>
+        <Link to='/' className='menu-link px-5'>
           <div onClick={logout} className='menu-link px-5'>
             Sair
           </div>

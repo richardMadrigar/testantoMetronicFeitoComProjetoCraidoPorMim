@@ -17,6 +17,8 @@ type AuthContextType = {
   setAtt: React.Dispatch<React.SetStateAction<boolean>>
   modalDelete: boolean
   setModalDelete: React.Dispatch<React.SetStateAction<boolean>>
+  setModalEdit: React.Dispatch<React.SetStateAction<boolean>>
+  modalEdit: boolean
 };
 
 type AuthContextProviderProps = {
@@ -37,6 +39,8 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
   const [loading, setLoading] = useState(false)
 
   const [modalDelete, setModalDelete] = useState(false) //modal deletar
+  const [modalEdit, setModalEdit] = useState(false) //modal editar usuario
+                      
   const [att, setAtt] = useState(false) //itens por pagina
 
   const [userPerfil, setUserPerfil] = useState() //dados do usuario logado
@@ -144,7 +148,7 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
 
 
   return (
-    <AuthContext.Provider value={{ modalDelete, setModalDelete, att, setAtt, loading, token, userPerfil, setUserPerfil, autorization, setAutorization, handleLogin }}>
+    <AuthContext.Provider value={{modalEdit, setModalEdit, modalDelete, setModalDelete, att, setAtt, loading, token, userPerfil, setUserPerfil, autorization, setAutorization, handleLogin }}>
       {props.children}
     </AuthContext.Provider>
   );

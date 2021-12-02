@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 
 import { useFormik } from 'formik'
@@ -91,36 +91,14 @@ const registrationSchema = Yup.object().shape({
 
 
 
-
 const ModalAddUser = ({ modal, setModal }: IProps) => {
   const [permisssao, setPermisssao] = useState('')
-
   const [loading, setLoading] = useState(false)
 
-  const [userr, setUserr] = useState()
 
-
-  useEffect(() => {
-    const teste = async () => {
-      const result = await api.get(`/users/${467}`)
-      console.log(result.data.celular);
-      setUserr(result.data.celular)
-    }
-    teste()
-  }, [])
-
-
-  // if(!userr){
-  //   return  "loading...."
-  // }
-  
-  
-  console.log(userr);
-  // const teste = 'richard'
-  
   const initialValues = {
-    name: userr,
-    email: "",
+    name: '',
+    email: '',
     celular: '',
     whats: '',
     cpf: '',
@@ -634,7 +612,7 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
                           placeholder='Senha'
                           autoComplete='off'
                           {...formik.getFieldProps('senha')}
-                          value=''
+                          // value=''
                           className={clsx(
                             'form-control form-control-lg form-control-solid',
                             {
