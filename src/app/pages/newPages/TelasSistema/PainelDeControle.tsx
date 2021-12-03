@@ -4,7 +4,7 @@ import { AuthContext } from '../../../../context/authContext';
 
 import { AlertDoc } from '../components/AlertDoc';
 
-var QRCode = require('qrcode.react');
+var QRCodeUser = require('qrcode.react');
 
 
 var crypto = require('crypto');
@@ -70,7 +70,7 @@ const Header = () => {
 
               {/*QRCode */}
               <div className="mt-16"  >
-                <QRCode value={valueQRCode} style={myDivStyle} title={valueQRCode} />
+                <QRCodeUser value={valueQRCode} style={myDivStyle} title={valueQRCode} />
               </div>
               {/*QRCode */}
 

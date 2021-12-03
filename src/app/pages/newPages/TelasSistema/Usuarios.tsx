@@ -199,7 +199,7 @@ const Usuarios: React.FC<Props> = ({ className }) => {
 
         {/* Inicio Nova Senha */}
         {/* modal reset password user */}
-        {modalReset && <div className="drawer-overlay" />}
+        {modalReset ? <div className="drawer-overlay" /> : null}
         <div className="modal" style={{ display: modalReset ? 'block' : 'none' }}>
           <div className="modal-dialog-centered modal-dialog mw-450px ">
             <div className="modal-footer modal-content ">
@@ -221,7 +221,7 @@ const Usuarios: React.FC<Props> = ({ className }) => {
         </div>
 
         {/* modal new password  */}
-        {modalNewPassword && <div className="drawer-overlay" />}
+        {modalNewPassword ? <div className="drawer-overlay" /> : null}
 
         <div className="modal" style={{ display: modalNewPassword ? 'block' : 'none' }}>
           <div className="modal-dialog-centered modal-dialog mw-450px ">
@@ -311,11 +311,11 @@ const Usuarios: React.FC<Props> = ({ className }) => {
                         <span className="badge p-3 badge-light text-hover-primary">  {users.id}</span>
                       </td>
 
-                      <td> {/* user */}
+                      <td>{/* user */}
                         <div className='d-flex align-items-center'>
 
                           <div className='symbol symbol-45px me-5'>
-                            <img src={toAbsoluteUrl('/media/avatars/150-3.jpg')} alt='' />
+                            <img src={toAbsoluteUrl('/media/avatars/150-3.jpg')} alt='Imagem do Usuário' />
                           </div>
 
                           <div className='text-dark fw-bolder text-hover-primary fs-6'>
@@ -327,14 +327,14 @@ const Usuarios: React.FC<Props> = ({ className }) => {
 
                         </div>
                       </td>
-                      <td> {/* RG/CNH */}
+                      <td>{/* RG/CNH */}
                         <span className='text-muted fw-bold text-muted d-block fs-7'>
                           {users.rg}
                         </span>
                       </td>
 
                       {users.ccm ? (
-                        <td> {/* CCM */}
+                        <td>{/* CCM */}
                           <span className='text-muted fw-bold text-muted d-block fs-7 text-center '>
                             {users.ccm ? users.ccm : "Pendente"}
                           </span>
@@ -349,7 +349,7 @@ const Usuarios: React.FC<Props> = ({ className }) => {
 
 
                       {users.nitpis ? (
-                        <td> {/* nit/pis */}
+                        <td>{/* nit/pis */}
                           <span className='text-muted fw-bold text-muted d-block fs-7 text-center '>
                             {users.nitpis ? users.nitpis : "Pendente"}
                           </span>
@@ -361,75 +361,74 @@ const Usuarios: React.FC<Props> = ({ className }) => {
                           </span>
                         </td>
                       )}
-                      <td>  {/* Comprovante de endereço */}
+                      <td>{/* Comprovante de endereço */}
                         <span className='text-muted fw-bold text-muted d-block fs-7'>
                           {users.celular}
                         </span>
                       </td>
-                      <td>  {/* email */}
+                      <td>{/* email */}
                         <span className='text-muted fw-bold text-muted d-block fs-7'>
                           {users.email}
                         </span>
                       </td>
-                      <td>  {/* celular*/}
+                      <td>{/* celular*/}
                         <span className='text-muted fw-bold text-muted d-block fs-7'>
                           {users.celular}
                         </span>
                       </td>
-                      <td>  {/* whats */}
+                      <td>{/* whats */}
                         <span className='text-muted fw-bold text-muted d-block fs-7'>
                           {users.whats}
                         </span>
                       </td>
-                      <td>   {/* Permissoes */}
-                        <span className='text-muted fw-bold text-muted d-block fs-7'>
-                          {/* {users.email} */}
+                      <td>{/* Permissoes */}
+                        <span className='text-muted fw-bold text-muted d-block fs-7'>{/* {users.email} */}
                           gerente
                         </span>
                       </td>
-                      <td> {/* cnpj */}
-                        <span className='text-muted fw-bold text-muted d-block fs-7'>
-                          {/* {users.nascimento} */}
+                      <td>{/* cnpj */}
+                        <span className='text-muted fw-bold text-muted d-block fs-7'>{/* {users.nascimento} */}
+                       
                           cnjp
                         </span>
                       </td>
-                      <td> {/* nascimento */}
+                      <td>{/* nascimento */}
                         <span className='text-muted fw-bold text-muted d-block fs-7'>
                           {users.nascimento}
                         </span>
                       </td>
-                      <td> {/* Nome da mãe*/}
+                      <td>{/* Nome da mãe*/}
                         <span className='text-muted fw-bold text-muted d-block fs-7'>
                           {users.nomedamae}
                         </span>
                       </td>
-                      <td> {/* Pix*/}
+                      <td>{/* Pix*/}
                         <span className='text-muted fw-bold text-muted d-block fs-7'>
                           {users.pix}
                         </span>
                       </td>
-                      <td> {/* banco*/}
+                      <td>{/* banco*/}
                         <span className='text-muted fw-bold text-muted d-block fs-7'>
                           {users.banco}
                         </span>
                       </td>
-                      <td> {/* agencia*/}
+                      <td>{/* agencia*/}
                         <span className='text-muted fw-bold text-muted d-block fs-7'>
                           {users.agencia}
                         </span>
                       </td>
-                      <td> {/* Conta*/}
+                      <td>{/* Conta*/}
                         <span className='text-muted fw-bold text-muted d-block fs-7'>
                           {users.conta}
                         </span>
                       </td>
 
-                      <td> {/* cep*/}
+                      <td>{/* cep*/}
                         <span className='text-muted fw-bold text-muted d-block fs-7'>
                           {users.cep}
                         </span>
                       </td>
-                      <td> {/* numero*/}
+                      <td>{/* numero*/}
                         <span className='text-muted fw-bold text-muted d-block fs-7'>
                           {users.numero}
                         </span>
@@ -437,7 +436,7 @@ const Usuarios: React.FC<Props> = ({ className }) => {
 
 
 
-                      <td>  {/* inicio - buttons Edit/ delete/ resetar */}
+                      <td>{/* inicio - buttons Edit/ delete/ resetar */}
                         <div className='d-flex justify-content-end flex-shrink-0'>
                           <button onClick={() => handleMoldalResetPassword(users.id)} className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1' title='Resetar usuário' >
                             <KTSVG path='/media/icons/duotune/general/gen019.svg' className='svg-icon-3' />
@@ -452,7 +451,7 @@ const Usuarios: React.FC<Props> = ({ className }) => {
                           </button>
 
                         </div>
-                      </td> {/* fim - buttons Edit/ delete/ resetar */}
+                      </td>{/* fim - buttons Edit/ delete/ resetar */}
 
                     </tr>
                   )
@@ -472,14 +471,14 @@ const Usuarios: React.FC<Props> = ({ className }) => {
             <div className="d-flex justify-content-between align-items-center flex-wrap">
 
               <div className="d-flex flex-wrap py-2 mr-3">
-                {users && qtdUsers && ( //verificar se existe
+                {users && qtdUsers  ? ( //verificar se existe
                   <Pagination
                     itensPerPage={itensPerPage}
                     qtdUsers={qtdUsers}
                     currentPage={currentPage}
                     setCurrentPage={setCurrentPage}
                   />
-                )}
+                ): null}
               </div>
 
               <div className="d-flex align-items-center py-6">

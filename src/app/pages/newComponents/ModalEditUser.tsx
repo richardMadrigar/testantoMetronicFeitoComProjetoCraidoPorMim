@@ -1,7 +1,7 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import api from "../../../setup/api";
 
-import { Formik, Field, Form, useFormik } from 'formik';
+import { Formik, Field, Form} from 'formik';
 import * as Yup from 'yup'
 import clsx from "clsx";
 import { AuthContext } from "../../../context/authContext";
@@ -82,38 +82,7 @@ interface IProps {
 const ModalEditUser = ({ userId, dataEdit, modalEdit }: IProps) => {
   const { att, setAtt, setModalEdit } = useContext(AuthContext)
 
-  const initialValues = {
-    name: '',
-    email: '',
-    celular: '',
-    whats: '',
-    cpf: '',
-    rg: '',
-    pix: '',
-    nascimento: '',
-    nitpis: '',
-    nomedamae: '',
-    banco: '',
-    agencia: '',
-    conta: '',
-    cep: '',
-    numero: '',
-  }
-
-
-
-  const formik = useFormik({
-    initialValues,
-    validationSchema: registrationSchema,
-
-    onSubmit: (values: any) => {
-      // console.log(values);
-      handleMoldalEdit(values)
-
-      setTimeout(() => {
-      }, 1000)
-    },
-  })
+  const [loading, setLoading] = useState(false)
 
 
   const handleMoldalEdit = async (data: {}) => {
@@ -132,8 +101,6 @@ const ModalEditUser = ({ userId, dataEdit, modalEdit }: IProps) => {
 
 
 
-  const loading = false
-
 
   return (
     <>
@@ -141,35 +108,44 @@ const ModalEditUser = ({ userId, dataEdit, modalEdit }: IProps) => {
       <Formik
         enableReinitialize={true}
         initialValues={{
-          name: dataEdit.name,
-          email: dataEdit.email,
-          celular: dataEdit.celular,
-          whats: dataEdit.whats,
-          cpf: dataEdit.cpf,
-          rg: dataEdit.rg,
-          nascimento: dataEdit.nascimento,
-          nitpis: dataEdit.nitpis,
-          nomedamae: dataEdit.nomedamae,
-          pix: dataEdit.pix,
-          banco: dataEdit.banco,
-          agencia: dataEdit.agencia,
-          conta: dataEdit.conta,
-          cep: dataEdit.cep,
-          numero: dataEdit.numero
+          name: dataEdit.name ? dataEdit.name : "",
+          email: dataEdit.email ? dataEdit.email : "",
+          celular: dataEdit.celular ? dataEdit.celular : "",
+          whats: dataEdit.whats ? dataEdit.whats : "",
+          cpf: dataEdit.cpf ? dataEdit.cpf : "",
+          rg: dataEdit.rg ? dataEdit.rg : "",
+          nascimento: dataEdit.nascimento ? dataEdit.nascimento : "",
+          nitpis: dataEdit.nitpis ? dataEdit.nitpis : "",
+          nomedamae: dataEdit.nomedamae ? dataEdit.nomedamae : "",
+          pix: dataEdit.pix ? dataEdit.pix : "",
+          banco: dataEdit.banco ? dataEdit.banco : "",
+          agencia: dataEdit.agencia ? dataEdit.agencia : "",
+          conta: dataEdit.conta ? dataEdit.conta : "",
+          cep: dataEdit.cep ? dataEdit.cep : "",
+          numero: dataEdit.numero ? dataEdit.numero : ""
         }}
-
+        validationSchema={registrationSchema}
 
         onSubmit={(values, actions) => {
-          handleMoldalEdit(values)
+          setLoading(true)
+
+          try {
+            handleMoldalEdit(values)
+          } catch (error) {
+            alert("erro ao criar usuário: " + error)
+          }
+
+          setTimeout(() => {
+            setLoading(false)
+          }, 1000)
           actions.setSubmitting(false);
-        }}
+        }} >
 
 
-        render={() => (
-
+        {({ errors, touched, isValid, isSubmitting }) => (
           <Form>
 
-            {/* {modalEdit && <div className="drawer-overlay" />} */}
+            {modalEdit && <div className="drawer-overlay" />}
 
             <div className="modal fade show" style={{ display: modalEdit ? 'block' : 'none' }}  >
               <div className="modal-dialog modal-dialog-centered mw-850px">
@@ -208,16 +184,16 @@ const ModalEditUser = ({ userId, dataEdit, modalEdit }: IProps) => {
                           name="name"
                           className={clsx(
                             'form-control form-control-lg form-control-solid',
-                            { 'is-invalid': formik.touched.name && formik.errors.name },
+                            { 'is-invalid': touched.name && errors.name },
                             {
-                              'is-valid': formik.touched.name && !formik.errors.name,
+                              'is-valid': touched.name && !errors.name,
                             }
                           )}
                         />
-                        {formik.touched.name && formik.errors.name && (
+                        {touched.name && errors.name && (
                           <div className='fv-plugins-message-container'>
                             <div className='fv-help-block'>
-                              <span role='alert'>{formik.errors.name}</span>
+                              <span role='alert'>{errors.name}</span>
                             </div>
                           </div>
                         )}
@@ -236,16 +212,16 @@ const ModalEditUser = ({ userId, dataEdit, modalEdit }: IProps) => {
                           name="email"
                           className={clsx(
                             'form-control form-control-lg form-control-solid',
-                            { 'is-invalid': formik.touched.email && formik.errors.email },
+                            { 'is-invalid': touched.email && errors.email },
                             {
-                              'is-valid': formik.touched.email && !formik.errors.email,
+                              'is-valid': touched.email && !errors.email,
                             }
                           )}
                         />
-                        {formik.touched.email && formik.errors.email && (
+                        {touched.email && errors.email && (
                           <div className='fv-plugins-message-container'>
                             <div className='fv-help-block'>
-                              <span role='alert'>{formik.errors.email}</span>
+                              <span role='alert'>{errors.email}</span>
                             </div>
                           </div>
                         )}
@@ -266,17 +242,17 @@ const ModalEditUser = ({ userId, dataEdit, modalEdit }: IProps) => {
                             className={clsx(
                               'form-control form-control-lg form-control-solid',
                               {
-                                'is-invalid': formik.touched.celular && formik.errors.celular,
+                                'is-invalid': touched.celular && errors.celular,
                               },
                               {
-                                'is-valid': formik.touched.celular && !formik.errors.celular,
+                                'is-valid': touched.celular && !errors.celular,
                               }
                             )}
                           />
-                          {formik.touched.celular && formik.errors.celular && (
+                          {touched.celular && errors.celular && (
                             <div className='fv-plugins-message-container'>
                               <div className='fv-help-block'>
-                                <span role='alert'>{formik.errors.celular}</span>
+                                <span role='alert'>{errors.celular}</span>
                               </div>
                             </div>
                           )}
@@ -293,17 +269,17 @@ const ModalEditUser = ({ userId, dataEdit, modalEdit }: IProps) => {
                             className={clsx(
                               'form-control form-control-lg form-control-solid',
                               {
-                                'is-invalid': formik.touched.whats && formik.errors.whats,
+                                'is-invalid': touched.whats && errors.whats,
                               },
                               {
-                                'is-valid': formik.touched.whats && !formik.errors.whats,
+                                'is-valid': touched.whats && !errors.whats,
                               }
                             )}
                           />
-                          {formik.touched.whats && formik.errors.whats && (
+                          {touched.whats && errors.whats && (
                             <div className='fv-plugins-message-container'>
                               <div className='fv-help-block'>
-                                <span role='alert'>{formik.errors.whats}</span>
+                                <span role='alert'>{errors.whats}</span>
                               </div>
                             </div>
                           )}
@@ -323,16 +299,16 @@ const ModalEditUser = ({ userId, dataEdit, modalEdit }: IProps) => {
                           name="cpf"
                           className={clsx(
                             'form-control form-control-lg form-control-solid',
-                            { 'is-invalid': formik.touched.cpf && formik.errors.cpf },
+                            { 'is-invalid': touched.cpf && errors.cpf },
                             {
-                              'is-valid': formik.touched.cpf && !formik.errors.cpf,
+                              'is-valid': touched.cpf && !errors.cpf,
                             }
                           )}
                         />
-                        {formik.touched.cpf && formik.errors.cpf && (
+                        {touched.cpf && errors.cpf && (
                           <div className='fv-plugins-message-container'>
                             <div className='fv-help-block'>
-                              <span role='alert'>{formik.errors.cpf}</span>
+                              <span role='alert'>{errors.cpf}</span>
                             </div>
                           </div>
                         )}
@@ -350,16 +326,16 @@ const ModalEditUser = ({ userId, dataEdit, modalEdit }: IProps) => {
                           name="rg"
                           className={clsx(
                             'form-control form-control-lg form-control-solid',
-                            { 'is-invalid': formik.touched.rg && formik.errors.rg },
+                            { 'is-invalid': touched.rg && errors.rg },
                             {
-                              'is-valid': formik.touched.rg && !formik.errors.rg,
+                              'is-valid': touched.rg && !errors.rg,
                             }
                           )}
                         />
-                        {formik.touched.rg && formik.errors.rg && (
+                        {touched.rg && errors.rg && (
                           <div className='fv-plugins-message-container'>
                             <div className='fv-help-block'>
-                              <span role='alert'>{formik.errors.rg}</span>
+                              <span role='alert'>{errors.rg}</span>
                             </div>
                           </div>
                         )}
@@ -376,16 +352,16 @@ const ModalEditUser = ({ userId, dataEdit, modalEdit }: IProps) => {
                           name="nascimento"
                           className={clsx(
                             'form-control form-control-lg form-control-solid',
-                            { 'is-invalid': formik.touched.nascimento && formik.errors.nascimento },
+                            { 'is-invalid': touched.nascimento && errors.nascimento },
                             {
-                              'is-valid': formik.touched.nascimento && !formik.errors.nascimento,
+                              'is-valid': touched.nascimento && !errors.nascimento,
                             }
                           )}
                         />
-                        {formik.touched.nascimento && formik.errors.nascimento && (
+                        {touched.nascimento && errors.nascimento && (
                           <div className='fv-plugins-message-container'>
                             <div className='fv-help-block'>
-                              <span role='alert'>{formik.errors.nascimento}</span>
+                              <span role='alert'>{errors.nascimento}</span>
                             </div>
                           </div>
                         )}
@@ -402,16 +378,16 @@ const ModalEditUser = ({ userId, dataEdit, modalEdit }: IProps) => {
                           name="pix"
                           className={clsx(
                             'form-control form-control-lg form-control-solid',
-                            { 'is-invalid': formik.touched.pix && formik.errors.pix },
+                            { 'is-invalid': touched.pix && errors.pix },
                             {
-                              'is-valid': formik.touched.pix && !formik.errors.pix,
+                              'is-valid': touched.pix && !errors.pix,
                             }
                           )}
                         />
-                        {formik.touched.pix && formik.errors.pix && (
+                        {touched.pix && errors.pix && (
                           <div className='fv-plugins-message-container'>
                             <div className='fv-help-block'>
-                              <span role='alert'>{formik.errors.pix}</span>
+                              <span role='alert'>{errors.pix}</span>
                             </div>
                           </div>
                         )}
@@ -427,16 +403,16 @@ const ModalEditUser = ({ userId, dataEdit, modalEdit }: IProps) => {
                           name="nitpis"
                           className={clsx(
                             'form-control form-control-lg form-control-solid',
-                            { 'is-invalid': formik.touched.nitpis && formik.errors.nitpis },
+                            { 'is-invalid': touched.nitpis && errors.nitpis },
                             {
-                              'is-valid': formik.touched.nitpis && !formik.errors.nitpis,
+                              'is-valid': touched.nitpis && !errors.nitpis,
                             }
                           )}
                         />
-                        {formik.touched.nitpis && formik.errors.nitpis && (
+                        {touched.nitpis && errors.nitpis && (
                           <div className='fv-plugins-message-container'>
                             <div className='fv-help-block'>
-                              <span role='alert'>{formik.errors.nitpis}</span>
+                              <span role='alert'>{errors.nitpis}</span>
                             </div>
                           </div>
                         )}
@@ -452,16 +428,16 @@ const ModalEditUser = ({ userId, dataEdit, modalEdit }: IProps) => {
                           name="nomedamae"
                           className={clsx(
                             'form-control form-control-lg form-control-solid',
-                            { 'is-invalid': formik.touched.nomedamae && formik.errors.nomedamae },
+                            { 'is-invalid': touched.nomedamae && errors.nomedamae },
                             {
-                              'is-valid': formik.touched.nomedamae && !formik.errors.nomedamae,
+                              'is-valid': touched.nomedamae && !errors.nomedamae,
                             }
                           )}
                         />
-                        {formik.touched.nomedamae && formik.errors.nomedamae && (
+                        {touched.nomedamae && errors.nomedamae && (
                           <div className='fv-plugins-message-container'>
                             <div className='fv-help-block'>
-                              <span role='alert'>{formik.errors.nomedamae}</span>
+                              <span role='alert'>{errors.nomedamae}</span>
                             </div>
                           </div>
                         )}
@@ -483,17 +459,17 @@ const ModalEditUser = ({ userId, dataEdit, modalEdit }: IProps) => {
                             className={clsx(
                               'form-control form-control-lg form-control-solid',
                               {
-                                'is-invalid': formik.touched.banco && formik.errors.banco,
+                                'is-invalid': touched.banco && errors.banco,
                               },
                               {
-                                'is-valid': formik.touched.banco && !formik.errors.banco,
+                                'is-valid': touched.banco && !errors.banco,
                               }
                             )}
                           />
-                          {formik.touched.banco && formik.errors.banco && (
+                          {touched.banco && errors.banco && (
                             <div className='fv-plugins-message-container'>
                               <div className='fv-help-block'>
-                                <span role='alert'>{formik.errors.banco}</span>
+                                <span role='alert'>{errors.banco}</span>
                               </div>
                             </div>
                           )}
@@ -509,17 +485,17 @@ const ModalEditUser = ({ userId, dataEdit, modalEdit }: IProps) => {
                             className={clsx(
                               'form-control form-control-lg form-control-solid',
                               {
-                                'is-invalid': formik.touched.agencia && formik.errors.agencia,
+                                'is-invalid': touched.agencia && errors.agencia,
                               },
                               {
-                                'is-valid': formik.touched.agencia && !formik.errors.agencia,
+                                'is-valid': touched.agencia && !errors.agencia,
                               }
                             )}
                           />
-                          {formik.touched.agencia && formik.errors.agencia && (
+                          {touched.agencia && errors.agencia && (
                             <div className='fv-plugins-message-container'>
                               <div className='fv-help-block'>
-                                <span role='alert'>{formik.errors.agencia}</span>
+                                <span role='alert'>{errors.agencia}</span>
                               </div>
                             </div>
                           )}
@@ -535,17 +511,17 @@ const ModalEditUser = ({ userId, dataEdit, modalEdit }: IProps) => {
                             className={clsx(
                               'form-control form-control-lg form-control-solid',
                               {
-                                'is-invalid': formik.touched.conta && formik.errors.conta,
+                                'is-invalid': touched.conta && errors.conta,
                               },
                               {
-                                'is-valid': formik.touched.conta && !formik.errors.conta,
+                                'is-valid': touched.conta && !errors.conta,
                               }
                             )}
                           />
-                          {formik.touched.conta && formik.errors.conta && (
+                          {touched.conta && errors.conta && (
                             <div className='fv-plugins-message-container'>
                               <div className='fv-help-block'>
-                                <span role='alert'>{formik.errors.conta}</span>
+                                <span role='alert'>{errors.conta}</span>
                               </div>
                             </div>
                           )}
@@ -568,17 +544,17 @@ const ModalEditUser = ({ userId, dataEdit, modalEdit }: IProps) => {
                             className={clsx(
                               'form-control form-control-lg form-control-solid',
                               {
-                                'is-invalid': formik.touched.cep && formik.errors.cep,
+                                'is-invalid': touched.cep && errors.cep,
                               },
                               {
-                                'is-valid': formik.touched.cep && !formik.errors.cep,
+                                'is-valid': touched.cep && !errors.cep,
                               }
                             )}
                           />
-                          {formik.touched.cep && formik.errors.cep && (
+                          {touched.cep && errors.cep && (
                             <div className='fv-plugins-message-container'>
                               <div className='fv-help-block'>
-                                <span role='alert'>{formik.errors.cep}</span>
+                                <span role='alert'>{errors.cep}</span>
                               </div>
                             </div>
                           )}
@@ -595,17 +571,17 @@ const ModalEditUser = ({ userId, dataEdit, modalEdit }: IProps) => {
                             className={clsx(
                               'form-control form-control-lg form-control-solid',
                               {
-                                'is-invalid': formik.touched.numero && formik.errors.numero,
+                                'is-invalid': touched.numero && errors.numero,
                               },
                               {
-                                'is-valid': formik.touched.numero && !formik.errors.numero,
+                                'is-valid': touched.numero && !errors.numero,
                               }
                             )}
                           />
-                          {formik.touched.numero && formik.errors.numero && (
+                          {touched.numero && errors.numero && (
                             <div className='fv-plugins-message-container'>
                               <div className='fv-help-block'>
-                                <span role='alert'>{formik.errors.numero}</span>
+                                <span role='alert'>{errors.numero}</span>
                               </div>
                             </div>
                           )}
@@ -659,7 +635,7 @@ const ModalEditUser = ({ userId, dataEdit, modalEdit }: IProps) => {
                       type='submit'
                       // id='kt_sign_up_submit'
                       className="btn btn-light-dark me-3"
-                      disabled={formik.isSubmitting || !formik.isValid}
+                      disabled={isSubmitting || !isValid}
                     >
                       {!loading && <span className='indicator-label'>Confirmar</span>}
                       {loading && (
@@ -680,8 +656,8 @@ const ModalEditUser = ({ userId, dataEdit, modalEdit }: IProps) => {
 
           </Form>
         )}
+      </Formik>
 
-      />
     </>
   )
 }

@@ -182,7 +182,7 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
                     <input
                       placeholder='Nome completo'
                       type='text'
-                      // autoComplete='off'
+                      autoComplete='off'
                       {...formik.getFieldProps('name')}
                       className={clsx(
                         'form-control form-control-lg form-control-solid',
@@ -713,7 +713,7 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
                   {!loading && <span className='indicator-label'>Registrar-se</span>}
                   {loading && (
                     <span className='indicator-progress' style={{ display: 'block' }}>
-                      Please wait...{' '}
+                      Please wait...
                       <span className='spinner-border spinner-border-sm align-middle ms-2'></span>
                     </span>
                   )}
