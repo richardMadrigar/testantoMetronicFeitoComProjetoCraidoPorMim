@@ -6,19 +6,19 @@ import {verify} from 'jsonwebtoken'
 
 
 type AuthContextType = {
-  userPerfil: IUsers | undefined;
-  setUserPerfil: any
-  autorization: boolean
   setAutorization: React.Dispatch<React.SetStateAction<boolean>>
+  autorization: boolean
+  setModalDelete: React.Dispatch<React.SetStateAction<boolean>>
+  modalDelete: boolean
+  setModalEdit: React.Dispatch<React.SetStateAction<boolean>>
+  modalEdit: boolean
+  setAtt: React.Dispatch<React.SetStateAction<boolean>>
+  att: boolean
+  setUserPerfil: any
+  userPerfil: IUsers | undefined;
   handleLogin: (data: {}) => Promise<void>
   token: TokenState;
   loading: boolean
-  att: boolean
-  setAtt: React.Dispatch<React.SetStateAction<boolean>>
-  modalDelete: boolean
-  setModalDelete: React.Dispatch<React.SetStateAction<boolean>>
-  setModalEdit: React.Dispatch<React.SetStateAction<boolean>>
-  modalEdit: boolean
 };
 
 type AuthContextProviderProps = {
@@ -62,14 +62,12 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
       const token = localStorage.getItem('token')
       // console.log(token);
       
-
       if (!token) {
         setAutorization(false)
         return console.log('Você não tem um token')
       }
       api.defaults.headers.authorization = `Bearer ${token}`
 
-      
       try {
         setLoading(true)
 
@@ -125,7 +123,6 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
     console.log(data)
     await api.post('/login', data)
     
-
       .then(response => {
         const { token } = response.data;
 

@@ -17,6 +17,8 @@ const Header = () => {
 
   // Metodo para criptografia cpf
   const teste = crypto.createCipher(alg, userPerfil?.cpf)
+  console.log(typeof teste);
+  
   const crypted = teste.update(userPerfil?.cpf, 'utf8', 'hex')
   // console.log(crypted);
 
@@ -26,7 +28,7 @@ const Header = () => {
   // console.log(plain);
 
 
-  const valueQRCode = crypted
+  const valueQRCode = crypted ? crypted : ""
   const myDivStyle = { width: '18rem', height: '17rem' };
 
 

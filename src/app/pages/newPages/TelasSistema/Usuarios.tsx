@@ -18,6 +18,25 @@ import { AlertDoc } from '../components/AlertDoc';
 import '../../../../_metronic/assets/stylesCss/style.css'
 
 
+// type EditUser = {
+//   celular: string,
+//   cpf: string,
+//   email: string,
+//   name: string,
+//   rg: string,
+//   senha: string,
+//   whats: string,
+//   agencia: string,
+//   banco: string,
+//   conta: string,
+//   cep: string,
+//   numero: string,
+//   nascimento: string,
+//   nitpis: string,
+//   nomedamae: string,
+//   pix: string,
+// }
+
 type Props = {
   className: string
   qtdUsers: number
@@ -25,44 +44,25 @@ type Props = {
   itensPerPage: number
   modal: boolean
   setModal: React.Dispatch<React.SetStateAction<boolean>>
-  dataEdit: EditUser
-}
-type EditUser = {
-  celular: '',
-  cpf: '',
-  email: '',
-  name: '',
-  rg: '',
-  senha: '',
-  whats: '',
-  agencia: '',
-  banco: '',
-  conta: '',
-  cep: '',
-  numero: '',
-  nascimento: '',
-  nitpis: '',
-  nomedamae: '',
-  pix: '',
+  // dataEdit: EditUser
 }
 
 
-//offset pra identificar em qual pagina esta
+
+//offset pra identificar em qual pagina está
 
 const Usuarios: React.FC<Props> = ({ className }) => {
   const { att, setModalDelete, modalDelete, setModalEdit, modalEdit } = useContext(AuthContext)
 
   const [modal, setModal] = useState(false)
 
-
-  const [modalNewPassword, setModalNewPassword] = useState(false) //modal with password
-  const [newPassword, setNewPassword] = useState(false) // const da senha
-  const [modalReset, setModalReset] = useState(false) //modal reset
+  const [modalWithNewPassword, setModalWithNewPassword] = useState(false)
+  const [newPassword, setNewPassword] = useState('') // const da senha
+  const [modalReset, setModalReset] = useState(false)
 
   const [idUser, setIdUser] = useState('')
-  const [userId, setUserId] = useState('')
 
-  const [dataEdit, setDataEdit] = useState([{
+  const [dataEdit, setDataEdit] = useState({
     celular: '',
     cpf: '',
     email: '',
@@ -79,7 +79,7 @@ const Usuarios: React.FC<Props> = ({ className }) => {
     nitpis: '',
     nomedamae: '',
     pix: '',
-  }]) //user edit
+  })
 
   const [users, setUsers] = useState([{
     id: '',
@@ -112,6 +112,9 @@ const Usuarios: React.FC<Props> = ({ className }) => {
 
   const endIndex = currentPage + itensPerPage
   const currentItens = users.slice(currentPage, endIndex)
+
+
+
 
 
   useEffect(() => { //renderizando todos os usuarios
@@ -150,18 +153,16 @@ const Usuarios: React.FC<Props> = ({ className }) => {
       .then((response) => {
         // console.log(response.data.name);
         setNewPassword(response.data.newPassword)
-        setModalNewPassword(true)
+        setModalWithNewPassword(true)
       })
       .catch(error => alert(error));
     setModalReset(false)
   }
 
-
-
   const handleMoldalEdit = async (idDoUsuario: string) => {
     console.log(idDoUsuario);
 
-    setUserId(idDoUsuario)
+    setIdUser(idDoUsuario)
 
     await api.get(`/users/${idDoUsuario}`)
       .then((response) => {
@@ -173,8 +174,6 @@ const Usuarios: React.FC<Props> = ({ className }) => {
   }
 
 
-
-
   return (
     <>
       <AlertDoc />
@@ -182,7 +181,7 @@ const Usuarios: React.FC<Props> = ({ className }) => {
       <ModalEditUser
         modalEdit={modalEdit}
         dataEdit={dataEdit}
-        userId={userId}
+        idUser={idUser}
       />
 
       <ModalDeleteUser
@@ -197,9 +196,8 @@ const Usuarios: React.FC<Props> = ({ className }) => {
 
       <div className={`card ${className}`}>
 
-        {/* Inicio Nova Senha */}
-        {/* modal reset password user */}
-        {modalReset ? <div className="drawer-overlay" /> : null}
+        {/* modal resetPassword user */}
+        {modalWithNewPassword || modalReset ? <div className="drawer-overlay" /> : null}
         <div className="modal" style={{ display: modalReset ? 'block' : 'none' }}>
           <div className="modal-dialog-centered modal-dialog mw-450px ">
             <div className="modal-footer modal-content ">
@@ -220,10 +218,8 @@ const Usuarios: React.FC<Props> = ({ className }) => {
           </div>
         </div>
 
-        {/* modal new password  */}
-        {modalNewPassword ? <div className="drawer-overlay" /> : null}
-
-        <div className="modal" style={{ display: modalNewPassword ? 'block' : 'none' }}>
+        {/* modal newPassword  */}
+        <div className="modal" style={{ display: modalWithNewPassword ? 'block' : 'none' }}>
           <div className="modal-dialog-centered modal-dialog mw-450px ">
             <div className="modal-footer modal-content ">
 
@@ -235,13 +231,12 @@ const Usuarios: React.FC<Props> = ({ className }) => {
                 <h4 > Nova senha: {newPassword} </h4>
               </div>
               <div className="card-body  text-center">
-                <button onClick={() => setModalNewPassword(false)} type="button" className="btn btn-light m-1 "> OK </button>
+                <button onClick={() => setModalWithNewPassword(false)} type="button" className="btn btn-light m-1 "> OK </button>
               </div>
 
             </div>
           </div>
         </div>
-        {/* Fim Nova Senha */}
 
 
 
@@ -249,20 +244,15 @@ const Usuarios: React.FC<Props> = ({ className }) => {
         <div className='card-header border-0 pt-5'>
 
           <h3 className='card-title align-items-start flex-column'>
-            <span className='card-label fw-bolder fs-3  '>Lista</span>
-            <span className='text-muted mt-1 fw-bold fs-7'>Total de registros: {qtdUsers}</span>
+            <span className='card-label fw-bolder fs-3'> Lista </span>
+            <span className='text-muted mt-1 fw-bold fs-7'> Total de registros: {qtdUsers} </span>
           </h3>
 
-          <div
-            className='card-toolbar' data-bs-toggle='tooltip'
-            data-bs-placement='top' data-bs-trigger='hover'
-            title='Click to add a user'
-          >
-            <button className='btn btn-sm btn-light-dark' onClick={() => setModal(true)}>
+          <div className='card-toolbar' >
+            <button className='btn btn-sm btn-light-dark' onClick={() => setModal(true)} title='Adicionar novo usuário'>
               <KTSVG path='media/icons/duotune/arrows/arr075.svg' className='svg-icon-3' />
               Novo usuário
             </button>
-
           </div>
 
         </div>
@@ -271,32 +261,33 @@ const Usuarios: React.FC<Props> = ({ className }) => {
 
         {/* begin::Body */}
         <div className='card-body py-3'>
-          {/* begin::Table */}
-          <div className='table-responsive'>
-            <table className='table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4 table-hover'>
 
-              {/* begin::Table head */}
+          <div className='table-responsive'>  {/* Inicio::Table */}
+            <table className='table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4 table-hover'>{/* incio :Table  */}
+
+
               <thead>
                 <tr className='fw-bolder text-muted'>
                   <th className='w-25px text-center'>ID</th>
                   <th className='min-w-250px'>Nome</th>
-                  <th className='min-w-120px'>RG/CNH</th>
+                  <th className='min-w-120px text-center'>RG/CNH</th>
                   <th className='min-w-100px text-center'>CCM	</th>
                   <th className='min-w-100px text-center'>PIS/NIT	</th>
-                  <th className='min-w-100px'>Comprovante de endereço</th>
+                  <th className='min-w-100px text-center'>Comprovante de endereço</th>
                   <th className='min-w-140px'>Email</th>
-                  <th className='min-w-100px'>Celular</th>
-                  <th className='min-w-100px'>Whats</th>
-                  <th className='min-w-120px'>Permissões</th>
-                  <th className='min-w-120px'>CNPJ</th>
-                  <th className='min-w-120px'>Nascimento</th>
-                  <th className='min-w-120px'>Nome da mãe</th>
-                  <th className='min-w-120px'>Pix</th>
-                  <th className='min-w-120px'>Banco</th>
-                  <th className='min-w-120px'>Agência</th>
-                  <th className='min-w-120px'>Conta</th>
-                  <th className='min-w-120px'>CEP</th>
-                  <th className='min-w-120px'>Número</th>
+                  <th className='min-w-150px  text-center'>Celular</th>
+                  <th className='min-w-100px text-center'>Whats</th>
+                  <th className='min-w-120px text-center'>Permissões</th>
+                  <th className='min-w-120px text-center'>CNPJ</th>
+                  <th className='min-w-120px text-center'>Nascimento</th>
+                  <th className='min-w-120px text-center'>Nome da mãe</th>
+                  <th className='min-w-120px text-center'>Pix</th>
+                  <th className='min-w-120px text-center'>Banco</th>
+                  <th className='min-w-120px text-center'>Agência</th>
+                  <th className='min-w-120px text-center'>Conta</th>
+                  <th className='min-w-120px text-center'>CEP</th>
+                  <th className='min-w-120px text-center'>Número</th>
+                  <th className='text-center'></th>
                 </tr>
               </thead>
               {/* end::Table head */}
@@ -308,7 +299,7 @@ const Usuarios: React.FC<Props> = ({ className }) => {
                   return (
                     <tr key={users.id}>
                       <td>
-                        <span className="badge p-3 badge-light text-hover-primary">  {users.id}</span>
+                        <span className="badge p-3 badge-light text-hover-primary text-center">  {users.id}</span>
                       </td>
 
                       <td>{/* user */}
@@ -328,7 +319,7 @@ const Usuarios: React.FC<Props> = ({ className }) => {
                         </div>
                       </td>
                       <td>{/* RG/CNH */}
-                        <span className='text-muted fw-bold text-muted d-block fs-7'>
+                        <span className='text-muted fw-bold text-muted d-block fs-7 text-center'>
                           {users.rg}
                         </span>
                       </td>
@@ -362,7 +353,7 @@ const Usuarios: React.FC<Props> = ({ className }) => {
                         </td>
                       )}
                       <td>{/* Comprovante de endereço */}
-                        <span className='text-muted fw-bold text-muted d-block fs-7'>
+                        <span className='text-muted fw-bold text-muted d-block fs-7 text-center'>
                           {users.celular}
                         </span>
                       </td>
@@ -372,64 +363,62 @@ const Usuarios: React.FC<Props> = ({ className }) => {
                         </span>
                       </td>
                       <td>{/* celular*/}
-                        <span className='text-muted fw-bold text-muted d-block fs-7'>
+                        <span className='text-muted fw-bold text-muted d-block fs-7 text-center'>
                           {users.celular}
                         </span>
                       </td>
                       <td>{/* whats */}
-                        <span className='text-muted fw-bold text-muted d-block fs-7'>
+                        <span className='text-muted fw-bold text-muted d-block fs-7 text-center '>
                           {users.whats}
                         </span>
                       </td>
                       <td>{/* Permissoes */}
-                        <span className='text-muted fw-bold text-muted d-block fs-7'>{/* {users.email} */}
+                        <span className='text-muted fw-bold text-muted d-block fs-7 text-center'>
                           gerente
                         </span>
                       </td>
                       <td>{/* cnpj */}
-                        <span className='text-muted fw-bold text-muted d-block fs-7'>{/* {users.nascimento} */}
-                       
+                        <span className='text-muted fw-bold text-muted d-block fs-7 text-center'>
                           cnjp
                         </span>
                       </td>
                       <td>{/* nascimento */}
-                        <span className='text-muted fw-bold text-muted d-block fs-7'>
+                        <span className='text-muted fw-bold text-muted d-block fs-7 text-center'>
                           {users.nascimento}
                         </span>
                       </td>
                       <td>{/* Nome da mãe*/}
-                        <span className='text-muted fw-bold text-muted d-block fs-7'>
+                        <span className='text-muted fw-bold text-muted d-block fs-7 text-center'>
                           {users.nomedamae}
                         </span>
                       </td>
                       <td>{/* Pix*/}
-                        <span className='text-muted fw-bold text-muted d-block fs-7'>
+                        <span className='text-muted fw-bold text-muted d-block fs-7 text-center'>
                           {users.pix}
                         </span>
                       </td>
                       <td>{/* banco*/}
-                        <span className='text-muted fw-bold text-muted d-block fs-7'>
+                        <span className='text-muted fw-bold text-muted d-block fs-7 text-center'>
                           {users.banco}
                         </span>
                       </td>
                       <td>{/* agencia*/}
-                        <span className='text-muted fw-bold text-muted d-block fs-7'>
+                        <span className='text-muted fw-bold text-muted d-block fs-7 text-center'>
                           {users.agencia}
                         </span>
                       </td>
                       <td>{/* Conta*/}
-                        <span className='text-muted fw-bold text-muted d-block fs-7'>
+                        <span className='text-muted fw-bold text-muted d-block fs-7 text-center'>
                           {users.conta}
                         </span>
                       </td>
-
                       <td>{/* cep*/}
-                        <span className='text-muted fw-bold text-muted d-block fs-7'>
+                        <span className='text-muted fw-bold text-muted d-block fs-7 text-center'>
                           {users.cep}
                         </span>
                       </td>
                       <td>{/* numero*/}
-                        <span className='text-muted fw-bold text-muted d-block fs-7'>
+                        <span className='text-muted fw-bold text-muted d-block fs-7 text-center'>
                           {users.numero}
                         </span>
                       </td>
@@ -437,7 +426,7 @@ const Usuarios: React.FC<Props> = ({ className }) => {
 
 
                       <td>{/* inicio - buttons Edit/ delete/ resetar */}
-                        <div className='d-flex justify-content-end flex-shrink-0'>
+                        <div className='d-flex justify-content-end flex-shrink-0 ms-5'>
                           <button onClick={() => handleMoldalResetPassword(users.id)} className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1' title='Resetar usuário' >
                             <KTSVG path='/media/icons/duotune/general/gen019.svg' className='svg-icon-3' />
                           </button>
@@ -460,10 +449,10 @@ const Usuarios: React.FC<Props> = ({ className }) => {
 
                 {/* fim do usuario */}
               </tbody>
-              {/* end::Table body */}
-            </table>
-          </div>
-          {/* end::Table */}
+
+
+            </table>  {/* fim :Table*/}
+          </div>{/* Fim ::Table */}
 
 
           {/* inicio - paginação */}
@@ -471,23 +460,23 @@ const Usuarios: React.FC<Props> = ({ className }) => {
             <div className="d-flex justify-content-between align-items-center flex-wrap">
 
               <div className="d-flex flex-wrap py-2 mr-3">
-                {users && qtdUsers  ? ( //verificar se existe
+                {users && qtdUsers ? ( //verificar se existe
                   <Pagination
                     itensPerPage={itensPerPage}
                     qtdUsers={qtdUsers}
                     currentPage={currentPage}
                     setCurrentPage={setCurrentPage}
                   />
-                ): null}
+                ) : null}
               </div>
 
               <div className="d-flex align-items-center py-6">
-                <div className="mr-2 text-muted">Mostrando </div>
+                <div className="mr-2 text-muted"> Mostrando </div>
 
                 <select
                   value={itensPerPage}
                   onChange={(e) => setItensPerPage(Number(e.target.value))}
-                  className=" form-control btn btn-icon btn-sm btn-bg-light font-weight-bold mr-4 border-0 m-1" >
+                  className="form-control btn btn-icon btn-sm btn-bg-light font-weight-bold mr-4 border-0 m-1" >
                   <option value="5"> 5 </option>
                   <option value="10"> 10 </option>
                   <option value="15"> 15 </option>

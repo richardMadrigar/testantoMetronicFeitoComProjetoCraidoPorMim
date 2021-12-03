@@ -3,7 +3,8 @@ import React, { useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
 import api from '../../../../setup/api'
 
-import { Field, Form, Formik } from 'formik'
+// import InputMask from "react-input-mask";
+import { ErrorMessage, Field, Form, Formik } from 'formik'
 import * as Yup from 'yup'
 
 import clsx from 'clsx'
@@ -17,7 +18,7 @@ const registrationSchema = Yup.object().shape({
     .max(60, "Limite máximo de 60 caracteres")
     .required('Esse campo é obrigatório'),
   email: Yup.string()
-    .email('Wrong email format')
+    .email('Formato de E-mail inválido')
     .min(8, ' "Quantidade de caracteres inválido"')
     .max(100, "Limite máximo de 100 caracteres")
     .required('Esse campo é obrigatório'),
@@ -111,14 +112,13 @@ export function Register() {
   }
 
 
-
   return (
     <>
       <Formik
 
         initialValues={{
           name: '',
-          email: '',
+          email: '@',
           celular: '',
           whats: '',
           cpf: '',
@@ -138,13 +138,12 @@ export function Register() {
         }}
 
         validationSchema={registrationSchema}
-        
+
         onSubmit={(values, actions) => {
           actions.setSubmitting(false);
-          
           setLoading(true)
           console.log(values);
-          
+
           try {
             handleRegister(values)
           } catch (error) {
@@ -157,13 +156,13 @@ export function Register() {
 
       >
 
-        {({ errors, touched, isValid, isSubmitting }) => (
+        {({ errors, touched, isValid }) => (
 
           <Form>
             {/* begin::Heading */}
             <div className='mb-5 text-center'>
 
-              <h1 className='text-dark mb-3'>Cadastre-se</h1>
+              <h1 className='text-dark mb-3'> Cadastre -se</h1>
 
               {/* begin::Link */}
               <div className='text-gray-500 fw-bold fs-4'>
@@ -195,7 +194,6 @@ export function Register() {
             {/* begin::Form group Nome completo */}
             <div className='fv-row '>
               <label className='form-label fw-bolder text-dark fs-6'>Nome completo</label>
-
               <Field
                 placeholder='Nome'
                 type='text'
@@ -209,13 +207,8 @@ export function Register() {
                   }
                 )}
               />
-              {touched.name && errors.name && (
-                <div className='fv-plugins-message-container'>
-                  <div className='fv-help-block'>
-                    <span role='alert'>{errors.name}</span>
-                  </div>
-                </div>
-              )}
+              <ErrorMessage name="name"  />
+       
             </div>
             {/* end::Form group */}
 
@@ -223,11 +216,13 @@ export function Register() {
             {/* begin::Form group Email */}
             <div className='fv-row mt-5'>
               <label className='form-label fw-bolder text-dark fs-6'>Email</label>
+
               <Field
                 placeholder='email'
                 id="email"
                 type=""
                 name="email"
+                defaultValue={''}
                 className={clsx(
                   'form-control form-control-lg form-control-solid',
                   { 'is-invalid': touched.email && errors.email },
@@ -236,13 +231,7 @@ export function Register() {
                   }
                 )}
               />
-              {touched.email && errors.email && (
-                <div className='fv-plugins-message-container'>
-                  <div className='fv-help-block'>
-                    <span role='alert'>{errors.email}</span>
-                  </div>
-                </div>
-              )}
+                 <ErrorMessage name="email"  />
             </div>
             {/* end::Form group */}
 
@@ -268,13 +257,7 @@ export function Register() {
                     }
                   )}
                 />
-                {touched.celular && errors.celular && (
-                  <div className='fv-plugins-message-container'>
-                    <div className='fv-help-block'>
-                      <span role='alert'>{errors.celular}</span>
-                    </div>
-                  </div>
-                )}
+                 <ErrorMessage name="celular"/>
               </div>
 
               {/* begin::Form group Whatsapp */}
@@ -295,13 +278,7 @@ export function Register() {
                     }
                   )}
                 />
-                {touched.whats && errors.whats && (
-                  <div className='fv-plugins-message-container'>
-                    <div className='fv-help-block'>
-                      <span role='alert'>{errors.whats}</span>
-                    </div>
-                  </div>
-                )}
+               <ErrorMessage name="whats"/>
               </div>
 
             </div>
@@ -324,13 +301,7 @@ export function Register() {
                   }
                 )}
               />
-              {touched.cpf && errors.cpf && (
-                <div className='fv-plugins-message-container'>
-                  <div className='fv-help-block'>
-                    <span role='alert'>{errors.cpf}</span>
-                  </div>
-                </div>
-              )}
+              <ErrorMessage name="cpf"/>
             </div>
             {/* end::Form group */}
 
@@ -350,13 +321,7 @@ export function Register() {
                   }
                 )}
               />
-              {touched.rg && errors.rg && (
-                <div className='fv-plugins-message-container'>
-                  <div className='fv-help-block'>
-                    <span role='alert'>{errors.rg}</span>
-                  </div>
-                </div>
-              )}
+             <ErrorMessage name="rg"/>
             </div>
             {/* end::Form group */}
 
@@ -376,13 +341,7 @@ export function Register() {
                   }
                 )}
               />
-              {touched.nascimento && errors.nascimento && (
-                <div className='fv-plugins-message-container'>
-                  <div className='fv-help-block'>
-                    <span role='alert'>{errors.nascimento}</span>
-                  </div>
-                </div>
-              )}
+              <ErrorMessage name="nascimento"/>
             </div>
             {/* end::Form group */}
 
@@ -402,13 +361,7 @@ export function Register() {
                   }
                 )}
               />
-              {touched.pix && errors.pix && (
-                <div className='fv-plugins-message-container'>
-                  <div className='fv-help-block'>
-                    <span role='alert'>{errors.pix}</span>
-                  </div>
-                </div>
-              )}
+              <ErrorMessage name="pix"/>
             </div>
             {/* end::Form group */}
 
@@ -427,13 +380,7 @@ export function Register() {
                   }
                 )}
               />
-              {touched.nitpis && errors.nitpis && (
-                <div className='fv-plugins-message-container'>
-                  <div className='fv-help-block'>
-                    <span role='alert'>{errors.nitpis}</span>
-                  </div>
-                </div>
-              )}
+             <ErrorMessage name="nitpis"/>
             </div>
             {/* end::Form group */}
 
@@ -452,13 +399,7 @@ export function Register() {
                   }
                 )}
               />
-              {touched.nomedamae && errors.nomedamae && (
-                <div className='fv-plugins-message-container'>
-                  <div className='fv-help-block'>
-                    <span role='alert'>{errors.nomedamae}</span>
-                  </div>
-                </div>
-              )}
+             <ErrorMessage name="nomedamae"/>
             </div>
             {/* end::Form group */}
 
@@ -484,13 +425,7 @@ export function Register() {
                     }
                   )}
                 />
-                {touched.banco && errors.banco && (
-                  <div className='fv-plugins-message-container'>
-                    <div className='fv-help-block'>
-                      <span role='alert'>{errors.banco}</span>
-                    </div>
-                  </div>
-                )}
+               <ErrorMessage name="banco"/>
               </div>
 
               {/* begin::Form group Agência */}
@@ -510,13 +445,7 @@ export function Register() {
                     }
                   )}
                 />
-                {touched.agencia && errors.agencia && (
-                  <div className='fv-plugins-message-container'>
-                    <div className='fv-help-block'>
-                      <span role='alert'>{errors.agencia}</span>
-                    </div>
-                  </div>
-                )}
+               <ErrorMessage name="agencia"/>
               </div>
 
 
@@ -537,13 +466,7 @@ export function Register() {
                     }
                   )}
                 />
-                {touched.conta && errors.conta && (
-                  <div className='fv-plugins-message-container'>
-                    <div className='fv-help-block'>
-                      <span role='alert'>{errors.conta}</span>
-                    </div>
-                  </div>
-                )}
+                <ErrorMessage name="conta"/>
               </div>
 
             </div>
@@ -570,13 +493,7 @@ export function Register() {
                     }
                   )}
                 />
-                {touched.cep && errors.cep && (
-                  <div className='fv-plugins-message-container'>
-                    <div className='fv-help-block'>
-                      <span role='alert'>{errors.cep}</span>
-                    </div>
-                  </div>
-                )}
+               <ErrorMessage name="cep"/>
               </div>
 
 
@@ -597,13 +514,7 @@ export function Register() {
                     }
                   )}
                 />
-                {touched.numero && errors.numero && (
-                  <div className='fv-plugins-message-container'>
-                    <div className='fv-help-block'>
-                      <span role='alert'>{errors.numero}</span>
-                    </div>
-                  </div>
-                )}
+                <ErrorMessage name="numero"/>
               </div>
             </div>
             {/* end::Form group */}
@@ -630,13 +541,7 @@ export function Register() {
                       }
                     )}
                   />
-                  {touched.senha && errors.senha && (
-                    <div className='fv-plugins-message-container'>
-                      <div className='fv-help-block'>
-                        <span role='alert'>{errors.senha}</span>
-                      </div>
-                    </div>
-                  )}
+                 <ErrorMessage name="senha"/>
                 </div>
               </div>
             </div>
@@ -660,13 +565,7 @@ export function Register() {
                   }
                 )}
               />
-              {touched.confsenha && errors.confsenha && (
-                <div className='fv-plugins-message-container'>
-                  <div className='fv-help-block'>
-                    <span role='alert'>{errors.confsenha}</span>
-                  </div>
-                </div>
-              )}
+             <ErrorMessage name="confsenha"/>
             </div>
             {/* end::Form group */}
 
@@ -709,7 +608,8 @@ export function Register() {
               <button
                 type='submit'
                 className='btn btn-lg btn-light-dark w-100 mb-5'
-                disabled={isSubmitting || !isValid}
+                disabled={!isValid}
+              // disabled={isSubmitting || !isValid}
               // disabled={!isValid}
               >
                 {!loading && <span className='indicator-label'>Registrar-se</span>}

@@ -9,8 +9,6 @@ import * as Yup from 'yup'
 import { AuthContext } from '../../../../context/authContext'
 
 
-
-
 const loginSchema = Yup.object().shape({
   cpf: Yup.string()
     .min(11, "Quantidade caracteres invalido")
@@ -23,38 +21,10 @@ const loginSchema = Yup.object().shape({
 })
 
 
-// const initialValues = {
-//   cpf: '',
-//   senha: '',
-// }
-
-
 const Login = () => {
   const { handleLogin } = useContext(AuthContext)
 
   const [loading, setLoading] = useState(false)
-
-
-  // const formik = useFormik({
-  //   initialValues,
-  //   validationSchema: loginSchema,
-
-  //   onSubmit: (values) => {
-  //     setLoading(true)
-  //     console.log(values);
-
-  //     try {
-  //       handleLogin(values)
-  //     } catch (error) {
-  //       alert("ocorreu um erro no seu login: " + error)
-  //     }
-
-  //     setTimeout(() => {
-  //       setLoading(false)
-  //     }, 1000)
-  //   },
-  // })
-
 
   return (
 
@@ -111,7 +81,7 @@ const Login = () => {
                   }
                 )}
               />
-              <ErrorMessage name="cpf"  />
+              <ErrorMessage name="cpf" />
 
             </div>
             {/* end::input CPF */}

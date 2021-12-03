@@ -121,13 +121,13 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
   const formik = useFormik({
     initialValues,
     validationSchema: registrationSchema,
-
+    
     onSubmit: (values) => {
       setLoading(true)
       console.log(values);
-
+      
       handleRegister(values)
-
+      
       setTimeout(() => {
         setLoading(false)
       }, 1000)
@@ -135,6 +135,7 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
   })
 
   const handleRegister = async (data: {}) => {
+    
     await api.post('/users', data)
       .then(() => {
         alert("Usuario criado com sucesso!")
@@ -155,7 +156,7 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
         <div className="modal-dialog modal-dialog-centered mw-850px">
           <div className="modal-content">
 
-            <form onSubmit={formik.handleSubmit} className="form fv-plugins-bootstrap5 fv-plugins-framework" >
+            <form onSubmit={formik.handleSubmit}  className="form fv-plugins-bootstrap5 fv-plugins-framework" >
 
               <div className="modal-header" >
                 <h2>Cadastro de usuários</h2>
@@ -708,7 +709,7 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
                   type='submit'
                   // id='kt_sign_up_submit'
                   className="btn btn-light-dark me-3"
-                  disabled={formik.isSubmitting || !formik.isValid}
+                  disabled={ !formik.isValid}
                 >
                   {!loading && <span className='indicator-label'>Registrar-se</span>}
                   {loading && (

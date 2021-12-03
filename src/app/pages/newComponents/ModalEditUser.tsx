@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import api from "../../../setup/api";
 
-import { Formik, Field, Form} from 'formik';
+import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup'
 import clsx from "clsx";
 import { AuthContext } from "../../../context/authContext";
@@ -54,45 +54,70 @@ const registrationSchema = Yup.object().shape({
     .max(10, "Limite máximo de 10 caracteres")
     .required('Esse campo é obrigatório'),
   agencia: Yup.string()
-    .min(2, 'Minimum 8 symbols')
+    .min(2, "Quantidade de caracteres inválido")
     .max(10, "Limite máximo de 10 caracteres")
     .required('Esse campo é obrigatório'),
   conta: Yup.string()
-    .min(3, 'Minimum 8 symbols')
+    .min(3, "Quantidade de caracteres inválido")
     .max(15, "Limite máximo de 15 caracteres")
     .required('Esse campo é obrigatório'),
   cep: Yup.string()
-    .min(5, 'Minimum 8 symbols')
+    .min(5, "Quantidade de caracteres inválido")
     .max(15, "Limite máximo de 15 caracteres")
     .required('Esse campo é obrigatório'),
   numero: Yup.string()
-    .min(3, 'Minimum 8 symbols')
+    .min(3, "Quantidade de caracteres inválido")
     .max(10, "Limite máximo de 6 caracteres")
-    .required('Esse campo é obrigatório'),
-  check: Yup.bool().required('Você deve aceitar os Termos e Condições'),
+    .required('Esse campo é obrigatório')
 })
+
+type EditUser = {
+  celular: string,
+  cpf: string,
+  email: string,
+  name: string,
+  rg: string,
+  senha: string,
+  whats: string,
+  agencia: string,
+  banco: string,
+  conta: string,
+  cep: string,
+  numero: string,
+  nascimento: string,
+  nitpis: string,
+  nomedamae: string,
+  pix: string,
+}
+
 
 
 interface IProps {
-  userId: string
-  dataEdit: any
+  idUser: string
+  dataEdit: EditUser
   modalEdit: boolean
 }
 
-const ModalEditUser = ({ userId, dataEdit, modalEdit }: IProps) => {
+const ModalEditUser = ({ idUser, dataEdit, modalEdit }: IProps) => {
   const { att, setAtt, setModalEdit } = useContext(AuthContext)
 
-  const [loading, setLoading] = useState(false)
+
+  const [modalOkUserEdit, setModalOkUserEdit] = useState(false)
+
 
 
   const handleMoldalEdit = async (data: {}) => {
-    console.log(data);
-    console.log("id dentro da funcao ", userId);
+    // console.log(data);
+    console.log("id dentro da funcao ", idUser);
 
-    await api.put(`/users/${userId}`, data)
+    await api.put(`/users/${idUser}`, data)
       .then((response) => {
         console.log(response.data);
         setAtt(!att)
+        setModalOkUserEdit(true)
+        setTimeout(() => {
+          setModalOkUserEdit(false)
+        }, 4000)
       })
       .catch(error => alert('Erro ao requisitar o servidor para pegar usuários! ' + error))
 
@@ -100,49 +125,67 @@ const ModalEditUser = ({ userId, dataEdit, modalEdit }: IProps) => {
   }
 
 
+  const loading = false
 
 
   return (
     <>
 
+      {/* modal newPassword  */}
+      {modalOkUserEdit ? <div className="drawer-overlay" /> : null}
+
+      <div className="modal" style={{ display: modalOkUserEdit ? 'block' : 'none' }}>
+        <div className="modal-dialog-centered modal-dialog mw-450px ">
+          <div className="modal-footer modal-content ">
+
+            <div className="swal2-icon swal2-warning swal2-icon-show mt-10" style={{ display: 'flex' }}>
+              <div className=" swal2-icon-content"> ! </div>
+            </div>
+
+            <div className="blockquote text-center mt-10 mb-5">
+              <h4 > Usuário {dataEdit.name} foi editado com sucesso ! </h4>
+            </div>
+            <div className="card-body  text-center">
+              <button onClick={() => setModalOkUserEdit(false)} type="button" className="btn btn-light m-1 "> OK </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
       <Formik
         enableReinitialize={true}
         initialValues={{
-          name: dataEdit.name ? dataEdit.name : "",
-          email: dataEdit.email ? dataEdit.email : "",
-          celular: dataEdit.celular ? dataEdit.celular : "",
-          whats: dataEdit.whats ? dataEdit.whats : "",
-          cpf: dataEdit.cpf ? dataEdit.cpf : "",
-          rg: dataEdit.rg ? dataEdit.rg : "",
-          nascimento: dataEdit.nascimento ? dataEdit.nascimento : "",
-          nitpis: dataEdit.nitpis ? dataEdit.nitpis : "",
-          nomedamae: dataEdit.nomedamae ? dataEdit.nomedamae : "",
-          pix: dataEdit.pix ? dataEdit.pix : "",
-          banco: dataEdit.banco ? dataEdit.banco : "",
-          agencia: dataEdit.agencia ? dataEdit.agencia : "",
-          conta: dataEdit.conta ? dataEdit.conta : "",
-          cep: dataEdit.cep ? dataEdit.cep : "",
-          numero: dataEdit.numero ? dataEdit.numero : ""
+          name: dataEdit.name,
+          email: dataEdit.email,
+          celular: dataEdit.celular,
+          whats: dataEdit.whats,
+          cpf: dataEdit.cpf,
+          rg: dataEdit.rg,
+          nascimento: dataEdit.nascimento,
+          nitpis: dataEdit.nitpis,
+          nomedamae: dataEdit.nomedamae,
+          pix: dataEdit.pix,
+          banco: dataEdit.banco,
+          agencia: dataEdit.agencia,
+          conta: dataEdit.conta,
+          cep: dataEdit.cep,
+          numero: dataEdit.numero
         }}
         validationSchema={registrationSchema}
 
         onSubmit={(values, actions) => {
-          setLoading(true)
-
           try {
+
             handleMoldalEdit(values)
           } catch (error) {
             alert("erro ao criar usuário: " + error)
           }
-
-          setTimeout(() => {
-            setLoading(false)
-          }, 1000)
-          actions.setSubmitting(false);
+          actions.setSubmitting(true);
         }} >
 
 
-        {({ errors, touched, isValid, isSubmitting }) => (
+        {({ errors, touched, isValid }) => (
           <Form>
 
             {modalEdit && <div className="drawer-overlay" />}
@@ -190,6 +233,8 @@ const ModalEditUser = ({ userId, dataEdit, modalEdit }: IProps) => {
                             }
                           )}
                         />
+
+
                         {touched.name && errors.name && (
                           <div className='fv-plugins-message-container'>
                             <div className='fv-help-block'>
@@ -635,7 +680,8 @@ const ModalEditUser = ({ userId, dataEdit, modalEdit }: IProps) => {
                       type='submit'
                       // id='kt_sign_up_submit'
                       className="btn btn-light-dark me-3"
-                      disabled={isSubmitting || !isValid}
+                      // disabled={isSubmitting || !isValid}
+                      disabled={!isValid}
                     >
                       {!loading && <span className='indicator-label'>Confirmar</span>}
                       {loading && (
