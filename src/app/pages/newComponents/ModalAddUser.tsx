@@ -121,21 +121,26 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
   const formik = useFormik({
     initialValues,
     validationSchema: registrationSchema,
-    
-    onSubmit: (values) => {
+
+    onSubmit: (values,) => {
       setLoading(true)
       console.log(values);
-      
-      handleRegister(values)
-      
-      setTimeout(() => {
-        setLoading(false)
-      }, 1000)
+
+      try {
+        handleRegister(values)
+        setTimeout(() => {
+          setLoading(false)
+        }, 1000)
+      } catch (error) {
+        alert('erro no servidor para editar usuario ')
+      }
+
+
     },
   })
 
   const handleRegister = async (data: {}) => {
-    
+
     await api.post('/users', data)
       .then(() => {
         alert("Usuario criado com sucesso!")
@@ -156,7 +161,7 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
         <div className="modal-dialog modal-dialog-centered mw-850px">
           <div className="modal-content">
 
-            <form onSubmit={formik.handleSubmit}  className="form fv-plugins-bootstrap5 fv-plugins-framework" >
+            <form onSubmit={formik.handleSubmit} noValidate className="form fv-plugins-bootstrap5 fv-plugins-framework" id='kt_login_signup_form'>
 
               <div className="modal-header" >
                 <h2>Cadastro de usuários</h2>
@@ -185,12 +190,9 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
                       type='text'
                       autoComplete='off'
                       {...formik.getFieldProps('name')}
-                      className={clsx(
-                        'form-control form-control-lg form-control-solid',
+                      className={clsx(  'form-control form-control-lg form-control-solid',
                         { 'is-invalid': formik.touched.name && formik.errors.name },
-                        {
-                          'is-valid': formik.touched.name && !formik.errors.name,
-                        }
+                        { 'is-valid': formik.touched.name && !formik.errors.name, }
                       )}
                     />
                     {formik.touched.name && formik.errors.name && (
@@ -211,16 +213,10 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
                       placeholder='Email'
                       type="email"
                       autoComplete='off'
-
                       {...formik.getFieldProps('email')}
-                      // defaultValue=''
-
-                      className={clsx(
-                        'form-control form-control-lg form-control-solid',
+                      className={clsx( 'form-control form-control-lg form-control-solid',
                         { 'is-invalid': formik.touched.email && formik.errors.email },
-                        {
-                          'is-valid': formik.touched.email && !formik.errors.email,
-                        }
+                        { 'is-valid': formik.touched.email && !formik.errors.email, }
                       )}
                     />
                     {formik.touched.email && formik.errors.email && (
@@ -243,14 +239,9 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
                         type='tel'
                         // autoComplete='off'
                         {...formik.getFieldProps('celular')}
-                        className={clsx(
-                          'form-control form-control-lg form-control-solid',
-                          {
-                            'is-invalid': formik.touched.celular && formik.errors.celular,
-                          },
-                          {
-                            'is-valid': formik.touched.celular && !formik.errors.celular,
-                          }
+                        className={clsx('form-control form-control-lg form-control-solid',
+                          { 'is-invalid': formik.touched.celular && formik.errors.celular, },
+                          { 'is-valid': formik.touched.celular && !formik.errors.celular, }
                         )}
                       />
                       {formik.touched.celular && formik.errors.celular && (
@@ -270,14 +261,9 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
                         type='tel'
                         // autoComplete='off'
                         {...formik.getFieldProps('whats')}
-                        className={clsx(
-                          'form-control form-control-lg form-control-solid',
-                          {
-                            'is-invalid': formik.touched.whats && formik.errors.whats,
-                          },
-                          {
-                            'is-valid': formik.touched.whats && !formik.errors.whats,
-                          }
+                        className={clsx('form-control form-control-lg form-control-solid',
+                          { 'is-invalid': formik.touched.whats && formik.errors.whats, },
+                          { 'is-valid': formik.touched.whats && !formik.errors.whats, }
                         )}
                       />
                       {formik.touched.whats && formik.errors.whats && (
@@ -304,9 +290,7 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
                       className={clsx(
                         'form-control form-control-lg form-control-solid',
                         { 'is-invalid': formik.touched.cpf && formik.errors.cpf },
-                        {
-                          'is-valid': formik.touched.cpf && !formik.errors.cpf,
-                        }
+                        { 'is-valid': formik.touched.cpf && !formik.errors.cpf, }
                       )}
                     />
                     {formik.touched.cpf && formik.errors.cpf && (
@@ -328,12 +312,9 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
                       type=''
                       // autoComplete='off'
                       {...formik.getFieldProps('rg')}
-                      className={clsx(
-                        'form-control form-control-lg form-control-solid',
+                      className={clsx('form-control form-control-lg form-control-solid',
                         { 'is-invalid': formik.touched.rg && formik.errors.rg },
-                        {
-                          'is-valid': formik.touched.rg && !formik.errors.rg,
-                        }
+                        { 'is-valid': formik.touched.rg && !formik.errors.rg, }
                       )}
                     />
                     {formik.touched.rg && formik.errors.rg && (
@@ -355,12 +336,9 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
                       type=''
                       // autoComplete='off'
                       {...formik.getFieldProps('nascimento')}
-                      className={clsx(
-                        'form-control form-control-lg form-control-solid',
+                      className={clsx('form-control form-control-lg form-control-solid',
                         { 'is-invalid': formik.touched.nascimento && formik.errors.nascimento },
-                        {
-                          'is-valid': formik.touched.nascimento && !formik.errors.nascimento,
-                        }
+                        { 'is-valid': formik.touched.nascimento && !formik.errors.nascimento, }
                       )}
                     />
                     {formik.touched.nascimento && formik.errors.nascimento && (
@@ -382,12 +360,9 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
                       type=''
                       // autoComplete='off'
                       {...formik.getFieldProps('pix')}
-                      className={clsx(
-                        'form-control form-control-lg form-control-solid',
+                      className={clsx('form-control form-control-lg form-control-solid',
                         { 'is-invalid': formik.touched.pix && formik.errors.pix },
-                        {
-                          'is-valid': formik.touched.pix && !formik.errors.pix,
-                        }
+                        { 'is-valid': formik.touched.pix && !formik.errors.pix, }
                       )}
                     />
                     {formik.touched.pix && formik.errors.pix && (
@@ -408,12 +383,9 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
                       type=''
                       // autoComplete='off'
                       {...formik.getFieldProps('nitpis')}
-                      className={clsx(
-                        'form-control form-control-lg form-control-solid',
+                      className={clsx('form-control form-control-lg form-control-solid',
                         { 'is-invalid': formik.touched.nitpis && formik.errors.nitpis },
-                        {
-                          'is-valid': formik.touched.nitpis && !formik.errors.nitpis,
-                        }
+                        { 'is-valid': formik.touched.nitpis && !formik.errors.nitpis, }
                       )}
                     />
                     {formik.touched.nitpis && formik.errors.nitpis && (
@@ -434,12 +406,9 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
                       type=''
                       // autoComplete='off'
                       {...formik.getFieldProps('nomedamae')}
-                      className={clsx(
-                        'form-control form-control-lg form-control-solid',
+                      className={clsx('form-control form-control-lg form-control-solid',
                         { 'is-invalid': formik.touched.nomedamae && formik.errors.nomedamae },
-                        {
-                          'is-valid': formik.touched.nomedamae && !formik.errors.nomedamae,
-                        }
+                        { 'is-valid': formik.touched.nomedamae && !formik.errors.nomedamae, }
                       )}
                     />
                     {formik.touched.nomedamae && formik.errors.nomedamae && (
@@ -465,14 +434,9 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
                         type=''
                         // autoComplete='off'
                         {...formik.getFieldProps('banco')}
-                        className={clsx(
-                          'form-control form-control-lg form-control-solid',
-                          {
-                            'is-invalid': formik.touched.banco && formik.errors.banco,
-                          },
-                          {
-                            'is-valid': formik.touched.banco && !formik.errors.banco,
-                          }
+                        className={clsx('form-control form-control-lg form-control-solid',
+                          { 'is-invalid': formik.touched.banco && formik.errors.banco, },
+                          { 'is-valid': formik.touched.banco && !formik.errors.banco, }
                         )}
                       />
                       {formik.touched.banco && formik.errors.banco && (
@@ -492,14 +456,9 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
                         type=''
                         // autoComplete='off'
                         {...formik.getFieldProps('agencia')}
-                        className={clsx(
-                          'form-control form-control-lg form-control-solid',
-                          {
-                            'is-invalid': formik.touched.agencia && formik.errors.agencia,
-                          },
-                          {
-                            'is-valid': formik.touched.agencia && !formik.errors.agencia,
-                          }
+                        className={clsx('form-control form-control-lg form-control-solid',
+                          { 'is-invalid': formik.touched.agencia && formik.errors.agencia, },
+                          { 'is-valid': formik.touched.agencia && !formik.errors.agencia, }
                         )}
                       />
                       {formik.touched.agencia && formik.errors.agencia && (
@@ -519,14 +478,9 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
                         type=''
                         // autoComplete='off'
                         {...formik.getFieldProps('conta')}
-                        className={clsx(
-                          'form-control form-control-lg form-control-solid',
-                          {
-                            'is-invalid': formik.touched.conta && formik.errors.conta,
-                          },
-                          {
-                            'is-valid': formik.touched.conta && !formik.errors.conta,
-                          }
+                        className={clsx('form-control form-control-lg form-control-solid',
+                          { 'is-invalid': formik.touched.conta && formik.errors.conta, },
+                          { 'is-valid': formik.touched.conta && !formik.errors.conta, }
                         )}
                       />
                       {formik.touched.conta && formik.errors.conta && (
@@ -553,14 +507,9 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
                         type='text'
                         // autoComplete='off'
                         {...formik.getFieldProps('cep')}
-                        className={clsx(
-                          'form-control form-control-lg form-control-solid',
-                          {
-                            'is-invalid': formik.touched.cep && formik.errors.cep,
-                          },
-                          {
-                            'is-valid': formik.touched.cep && !formik.errors.cep,
-                          }
+                        className={clsx('form-control form-control-lg form-control-solid',
+                          { 'is-invalid': formik.touched.cep && formik.errors.cep, },
+                          { 'is-valid': formik.touched.cep && !formik.errors.cep, }
                         )}
                       />
                       {formik.touched.cep && formik.errors.cep && (
@@ -581,14 +530,9 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
                         type='text'
                         // autoComplete='off'
                         {...formik.getFieldProps('numero')}
-                        className={clsx(
-                          'form-control form-control-lg form-control-solid',
-                          {
-                            'is-invalid': formik.touched.numero && formik.errors.numero,
-                          },
-                          {
-                            'is-valid': formik.touched.numero && !formik.errors.numero,
-                          }
+                        className={clsx('form-control form-control-lg form-control-solid',
+                          { 'is-invalid': formik.touched.numero && formik.errors.numero, },
+                          { 'is-valid': formik.touched.numero && !formik.errors.numero, }
                         )}
                       />
                       {formik.touched.numero && formik.errors.numero && (
@@ -614,14 +558,9 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
                           autoComplete='off'
                           {...formik.getFieldProps('senha')}
                           // value=''
-                          className={clsx(
-                            'form-control form-control-lg form-control-solid',
-                            {
-                              'is-invalid': formik.touched.senha && formik.errors.senha,
-                            },
-                            {
-                              'is-valid': formik.touched.senha && !formik.errors.senha,
-                            }
+                          className={clsx('form-control form-control-lg form-control-solid',
+                            { 'is-invalid': formik.touched.senha && formik.errors.senha, },
+                            { 'is-valid': formik.touched.senha && !formik.errors.senha, }
                           )}
                         />
                         {formik.touched.senha && formik.errors.senha && (
@@ -644,14 +583,9 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
                       placeholder='Confirmar senha'
                       autoComplete='off'
                       {...formik.getFieldProps('confsenha')}
-                      className={clsx(
-                        'form-control form-control-lg form-control-solid',
-                        {
-                          'is-invalid': formik.touched.confsenha && formik.errors.confsenha,
-                        },
-                        {
-                          'is-valid': formik.touched.confsenha && !formik.errors.confsenha,
-                        }
+                      className={clsx('form-control form-control-lg form-control-solid',
+                        { 'is-invalid': formik.touched.confsenha && formik.errors.confsenha, },
+                        { 'is-valid': formik.touched.confsenha && !formik.errors.confsenha, }
                       )}
                     />
                     {formik.touched.confsenha && formik.errors.confsenha && (
@@ -709,7 +643,7 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
                   type='submit'
                   // id='kt_sign_up_submit'
                   className="btn btn-light-dark me-3"
-                  disabled={ !formik.isValid}
+                  disabled={!formik.isValid}
                 >
                   {!loading && <span className='indicator-label'>Registrar-se</span>}
                   {loading && (

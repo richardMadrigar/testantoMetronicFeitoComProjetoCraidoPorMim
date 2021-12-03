@@ -12,13 +12,71 @@ const alg = 'aes-256-ctr'
 
 
 const Header = () => {
+
+
+  // function hash(senha: number) {
+  //   var result = '';
+
+  //   const senhaUser = senha
+
+  //   const num = senhaUser.toString().length
+
+  //   // const lengthSenha = length.length
+  //   var characters = 'ab4352435354edgfv3242efgdfg32532c';
+
+  //   var charactersLength = characters.length;
+
+  //   result += Math.floor((senhaUser * charactersLength) / num)
+
+  //   return result;
+  // }
+  // console.log(hash(7223555));
+
+
+  // function hashh() {
+  //   var result = '';
+  //   const senhaBanco = 7223555
+  //   const senhaUser = senhaBanco.toString().length
+
+  //   // const num = senhaUser.toString().length
+
+  //   // const lengthSenha = length.length
+  //   var characters = 'ab4352435354edgfv3242efgdfg32532c';
+
+  //   var charactersLength = characters.length;
+
+  //   result += Math.floor((senhaBanco / senhaUser) * charactersLength)
+
+  //   return result;
+  // }
+  // console.log(hashh());
+
+
+  // function makeid(length: number) {
+  //   var result = '';
+
+  //   const num = length.toString().length
+
+
+  //   var characters = 'rstuvwxyz0123456789';
+  //   var charactersLength = characters.length;
+  //   for (var i = 0; i < length; i++) {
+  //     result += (num * charactersLength) / num;
+  //   }
+  //   return result;
+  // }
+  // console.log(makeid(54234));?
+
+
+
+
+
   const { userPerfil } = useContext(AuthContext)
   // console.log(userPerfil);
 
   // Metodo para criptografia cpf
   const teste = crypto.createCipher(alg, userPerfil?.cpf)
-  console.log(typeof teste);
-  
+
   const crypted = teste.update(userPerfil?.cpf, 'utf8', 'hex')
   // console.log(crypted);
 

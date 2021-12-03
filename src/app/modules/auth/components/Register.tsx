@@ -1,3 +1,5 @@
+
+
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -44,7 +46,8 @@ const registrationSchema = Yup.object().shape({
     .required('Esse campo é obrigatório'),
   nascimento: Yup.string()
     .min(3, "Quantidade de caracteres inválido")
-    .max(10, 'Maximum 50 symbols'),
+    .max(10, 'Maximum 50 symbols')
+    .required('Esse campo é obrigatório'),
   nitpis: Yup.string()
     .min(11, "Precisa ter 11 caracteres")
     .max(11, "Limite máximo de 11 caracteres")
@@ -184,12 +187,6 @@ export function Register() {
               <div className='border-bottom border-gray-300 mw-50 w-100'></div>
             </div>
 
-            {/* {formik.status && (
-              <div className='mb-lg-15 alert alert-danger'>
-                <div className='alert-text font-weight-bold'>{formik.status}</div>
-              </div>
-            )} */}
-
 
             {/* begin::Form group Nome completo */}
             <div className='fv-row '>
@@ -199,16 +196,13 @@ export function Register() {
                 type='text'
                 autoComplete='off'
                 name="name"
-                className={clsx(
-                  'form-control form-control-lg form-control-solid',
+                className={clsx('form-control form-control-lg form-control-solid',
                   { 'is-invalid': touched.name && errors.name },
-                  {
-                    'is-valid': touched.name && !errors.name,
-                  }
+                  { 'is-valid': touched.name && !errors.name, }
                 )}
               />
-              <ErrorMessage name="name"  />
-       
+              <ErrorMessage name="name" />
+
             </div>
             {/* end::Form group */}
 
@@ -219,19 +213,14 @@ export function Register() {
 
               <Field
                 placeholder='email'
-                id="email"
-                type=""
                 name="email"
-                defaultValue={''}
-                className={clsx(
-                  'form-control form-control-lg form-control-solid',
+                type="email"
+                className={clsx('form-control form-control-lg form-control-solid',
                   { 'is-invalid': touched.email && errors.email },
-                  {
-                    'is-valid': touched.email && !errors.email,
-                  }
+                  { 'is-valid': touched.email && !errors.email, }
                 )}
               />
-                 <ErrorMessage name="email"  />
+              <ErrorMessage name="email" />
             </div>
             {/* end::Form group */}
 
@@ -244,20 +233,14 @@ export function Register() {
                 <label className='class="form-label fw-bolder text-dark fs-6'>Celular</label>
                 <Field
                   placeholder='Celular'
-                  type='tel'
-                  // autoComplete='off'
+                  autoComplete='off'
                   name="celular"
-                  className={clsx(
-                    'form-control form-control-lg form-control-solid',
-                    {
-                      'is-invalid': touched.celular && errors.celular,
-                    },
-                    {
-                      'is-valid': touched.celular && !errors.celular,
-                    }
+                  className={clsx('form-control form-control-lg form-control-solid',
+                    { 'is-invalid': touched.celular && errors.celular, },
+                    { 'is-valid': touched.celular && !errors.celular, }
                   )}
                 />
-                 <ErrorMessage name="celular"/>
+                <ErrorMessage name="celular" />
               </div>
 
               {/* begin::Form group Whatsapp */}
@@ -265,20 +248,14 @@ export function Register() {
                 <label className='class="form-label fw-bolder text-dark fs-6'>Whatsapp</label>
                 <Field
                   placeholder='Whatsapp'
-                  type='tel'
-                  // autoComplete='off'
+                  autoComplete='off'
                   name="whats"
-                  className={clsx(
-                    'form-control form-control-lg form-control-solid',
-                    {
-                      'is-invalid': touched.whats && errors.whats,
-                    },
-                    {
-                      'is-valid': touched.whats && !errors.whats,
-                    }
+                  className={clsx('form-control form-control-lg form-control-solid',
+                    { 'is-invalid': touched.whats && errors.whats, },
+                    { 'is-valid': touched.whats && !errors.whats, }
                   )}
                 />
-               <ErrorMessage name="whats"/>
+                <ErrorMessage name="whats" />
               </div>
 
             </div>
@@ -290,18 +267,15 @@ export function Register() {
               <label className='form-label fw-bolder text-dark fs-6'>CPF</label>
               <Field
                 placeholder='CPF'
-                type=''
                 // autoComplete='off'
                 name="cpf"
                 className={clsx(
                   'form-control form-control-lg form-control-solid',
                   { 'is-invalid': touched.cpf && errors.cpf },
-                  {
-                    'is-valid': touched.cpf && !errors.cpf,
-                  }
+                  { 'is-valid': touched.cpf && !errors.cpf, }
                 )}
               />
-              <ErrorMessage name="cpf"/>
+              <ErrorMessage name="cpf" />
             </div>
             {/* end::Form group */}
 
@@ -311,17 +285,13 @@ export function Register() {
               <label className='form-label fw-bolder text-dark fs-6'>RG</label>
               <Field
                 placeholder='RG'
-                type=''
                 name="rg"
-                className={clsx(
-                  'form-control form-control-lg form-control-solid',
+                className={clsx('form-control form-control-lg form-control-solid',
                   { 'is-invalid': touched.rg && errors.rg },
-                  {
-                    'is-valid': touched.rg && !errors.rg,
-                  }
+                  { 'is-valid': touched.rg && !errors.rg, }
                 )}
               />
-             <ErrorMessage name="rg"/>
+              <ErrorMessage name="rg" />
             </div>
             {/* end::Form group */}
 
@@ -331,142 +301,109 @@ export function Register() {
               <label className='form-label fw-bolder text-dark fs-6'>Data de nascimento</label>
               <Field
                 placeholder='Data de nascimento'
-                type=''
                 name="nascimento"
-                className={clsx(
-                  'form-control form-control-lg form-control-solid',
+                className={clsx('form-control form-control-lg form-control-solid',
                   { 'is-invalid': touched.nascimento && errors.nascimento },
-                  {
-                    'is-valid': touched.nascimento && !errors.nascimento,
-                  }
+                  { 'is-valid': touched.nascimento && !errors.nascimento, }
                 )}
               />
-              <ErrorMessage name="nascimento"/>
+              <ErrorMessage name="nascimento" />
             </div>
             {/* end::Form group */}
 
 
-            {/* begin::Form group Pix */}
-            <div className='fv-row mt-4'>
+            
+            <div className='fv-row mt-4'> {/* begin::Form group Pix */}
               <label className='form-label fw-bolder text-dark fs-6'>Pix</label>
               <Field
                 placeholder='Pix'
-                type=''
                 name="pix"
-                className={clsx(
-                  'form-control form-control-lg form-control-solid',
+                className={clsx('form-control form-control-lg form-control-solid',
                   { 'is-invalid': touched.pix && errors.pix },
-                  {
-                    'is-valid': touched.pix && !errors.pix,
-                  }
+                  { 'is-valid': touched.pix && !errors.pix, }
                 )}
               />
-              <ErrorMessage name="pix"/>
-            </div>
-            {/* end::Form group */}
+              <ErrorMessage name="pix" />
+            </div> {/* end::Form group */}
+            
 
-            {/* begin::Form group Nit / Pis */}
-            <div className='fv-row mt-4'>
+          
+            <div className='fv-row mt-4'>   {/* begin::Form group Nit / Pis */}
               <label className='form-label fw-bolder text-dark fs-6'>Nit / Pis</label>
               <Field
                 placeholder='Nit / Pis'
-                type=''
                 name="nitpis"
-                className={clsx(
-                  'form-control form-control-lg form-control-solid',
+                className={clsx('form-control form-control-lg form-control-solid',
                   { 'is-invalid': touched.nitpis && errors.nitpis },
-                  {
-                    'is-valid': touched.nitpis && !errors.nitpis,
-                  }
+                  { 'is-valid': touched.nitpis && !errors.nitpis, }
                 )}
               />
-             <ErrorMessage name="nitpis"/>
-            </div>
-            {/* end::Form group */}
+              <ErrorMessage name="nitpis" /> 
+            </div> {/* end::Form group */}
+            
 
-            {/* begin::Form group Nome da Mãe */}
-            <div className='fv-row mt-4'>
+         
+            <div className='fv-row mt-4'>     {/* begin::Form group Nome da Mãe */}
               <label className='form-label fw-bolder text-dark fs-6'>Nome da mãe</label>
               <Field
                 placeholder='Nome da mãe'
-                type=''
                 name="nomedamae"
-                className={clsx(
-                  'form-control form-control-lg form-control-solid',
+                className={clsx('form-control form-control-lg form-control-solid',
                   { 'is-invalid': touched.nomedamae && errors.nomedamae },
-                  {
-                    'is-valid': touched.nomedamae && !errors.nomedamae,
-                  }
+                  { 'is-valid': touched.nomedamae && !errors.nomedamae, }
                 )}
               />
-             <ErrorMessage name="nomedamae"/>
-            </div>
-            {/* end::Form group */}
+              <ErrorMessage name="nomedamae" />
+            </div>   {/* end::Form group */}
+           
 
 
             {/* begin::Form group Nome da Agência / Banco / Conta */}
 
-            {/* begin::Form group Banco */}
+           
             <div className='row fv-row mt-5'>
 
-              <div className='col-xl-4 mb-5'>
+              <div className='col-xl-4 mb-5'>  {/* begin::Form group Banco */}
                 <label className='class="form-label fw-bolder text-dark fs-6'>Banco</label>
                 <Field
                   placeholder='Banco'
-                  type=''
                   name="banco"
                   className={clsx(
                     'form-control form-control-lg form-control-solid',
-                    {
-                      'is-invalid': touched.banco && errors.banco,
-                    },
-                    {
-                      'is-valid': touched.banco && !errors.banco,
-                    }
+                    { 'is-invalid': touched.banco && errors.banco, },
+                    { 'is-valid': touched.banco && !errors.banco, }
                   )}
                 />
-               <ErrorMessage name="banco"/>
+                <ErrorMessage name="banco" />
               </div>
 
-              {/* begin::Form group Agência */}
-              <div className='col-xl-4'>
+             
+              <div className='col-xl-4'>   {/* begin::Form group Agência */}
                 <label className='class="form-label fw-bolder text-dark fs-6'>Agência</label>
                 <Field
                   placeholder='Agência'
-                  type=''
                   name="agencia"
-                  className={clsx(
-                    'form-control form-control-lg form-control-solid',
-                    {
-                      'is-invalid': touched.agencia && errors.agencia,
-                    },
-                    {
-                      'is-valid': touched.agencia && !errors.agencia,
-                    }
+                  className={clsx('form-control form-control-lg form-control-solid',
+                    { 'is-invalid': touched.agencia && errors.agencia, },
+                    { 'is-valid': touched.agencia && !errors.agencia, }
                   )}
                 />
-               <ErrorMessage name="agencia"/>
+                <ErrorMessage name="agencia" />
               </div>
 
 
-              {/* begin::Form group Conta */}
-              <div className='col-xl-4'>
+            
+              <div className='col-xl-4'>    {/* begin::Form group Conta */}
                 <label className='class="form-label fw-bolder text-dark fs-6'>Conta</label>
                 <Field
                   placeholder='Conta'
-                  type=''
                   name="conta"
-                  className={clsx(
-                    'form-control form-control-lg form-control-solid',
-                    {
-                      'is-invalid': touched.conta && errors.conta,
-                    },
-                    {
-                      'is-valid': touched.conta && !errors.conta,
-                    }
+                  className={clsx('form-control form-control-lg form-control-solid',
+                    { 'is-invalid': touched.conta && errors.conta, },
+                    { 'is-valid': touched.conta && !errors.conta, }
                   )}
                 />
-                <ErrorMessage name="conta"/>
+                <ErrorMessage name="conta" />
               </div>
 
             </div>
@@ -474,100 +411,78 @@ export function Register() {
 
 
 
-            {/* begin::Form group CEP */}
-            <div className='row fv-row mt-4'>
+        
+            <div className='row fv-row mt-4'>      {/* begin::Form group CEP */}
 
               <div className='col-xl-6'>
                 <label className='class="form-label fw-bolder text-dark fs-6'>CEP</label>
                 <Field
                   placeholder='CEP'
-                  type=''
                   name="cep"
-                  className={clsx(
-                    'form-control form-control-lg form-control-solid',
-                    {
-                      'is-invalid': touched.cep && errors.cep,
-                    },
-                    {
-                      'is-valid': touched.cep && !errors.cep,
-                    }
+                  className={clsx('form-control form-control-lg form-control-solid',
+                    { 'is-invalid': touched.cep && errors.cep, },
+                    { 'is-valid': touched.cep && !errors.cep, }
                   )}
                 />
-               <ErrorMessage name="cep"/>
+                <ErrorMessage name="cep" />
               </div>
 
 
-              {/* begin::Form group Número */}
-              <div className='col-xl-6'>
+            
+              <div className='col-xl-6'>    {/* begin::Form group Número */}
                 <label className='class="form-label fw-bolder text-dark fs-6'>Número</label>
                 <Field
                   placeholder='Número'
-                  type=''
                   name="numero"
-                  className={clsx(
-                    'form-control form-control-lg form-control-solid',
-                    {
-                      'is-invalid': touched.numero && errors.numero,
-                    },
-                    {
-                      'is-valid': touched.numero && !errors.numero,
-                    }
+                  className={clsx('form-control form-control-lg form-control-solid',
+                    { 'is-invalid': touched.numero && errors.numero, },
+                    { 'is-valid': touched.numero && !errors.numero, }
                   )}
                 />
-                <ErrorMessage name="numero"/>
+                <ErrorMessage name="numero" />
               </div>
-            </div>
-            {/* end::Form group */}
+            </div>    {/* end::Form group */}
+
+          
 
 
-
-            {/* begin::Form group Senha */}
-            <div className='mt-5 fv-row' data-kt-password-meter='true'>
+          
+            <div className='mt-5 fv-row' data-kt-password-meter='true'>   {/* begin::Form group Senha */}
               <div className='mb-1'>
                 <label className='form-label fw-bolder text-dark fs-6'>Senha</label>
                 <div className='position-relative mb-3'>
                   <Field
                     type='password'
                     placeholder='Senha'
-                    // autoComplete='off'
+                    autoComplete='off'
                     name='senha'
-                    className={clsx(
-                      'form-control form-control-lg form-control-solid',
-                      {
-                        'is-invalid': touched.senha && errors.senha,
-                      },
-                      {
-                        'is-valid': touched.senha && !errors.senha,
-                      }
+                    className={clsx('form-control form-control-lg form-control-solid',
+                      { 'is-invalid': touched.senha && errors.senha, },
+                      { 'is-valid': touched.senha && !errors.senha, }
                     )}
                   />
-                 <ErrorMessage name="senha"/>
+                  <ErrorMessage name="senha" />
                 </div>
               </div>
-            </div>
-            {/* end::Form group */}
+            </div>  {/* end::Form group */}
+          
 
-            {/* begin::Form group Confirm password */}
-            <div className='fv-row mt-5 mb-10'>
+           
+            <div className='fv-row mt-5 mb-10'>{/* begin::Form group Confirm password */}
               <label className='form-label fw-bolder text-dark fs-6'>Confirmar senha</label>
               <Field
                 type='password'
                 placeholder='Confirmar senha'
                 autoComplete='off'
                 name='confsenha'
-                className={clsx(
-                  'form-control form-control-lg form-control-solid',
-                  {
-                    'is-invalid': touched.confsenha && errors.confsenha,
-                  },
-                  {
-                    'is-valid': touched.confsenha && !errors.confsenha,
-                  }
+                className={clsx('form-control form-control-lg form-control-solid',
+                  { 'is-invalid': touched.confsenha && errors.confsenha, },
+                  { 'is-valid': touched.confsenha && !errors.confsenha, }
                 )}
               />
-             <ErrorMessage name="confsenha"/>
-            </div>
-            {/* end::Form group */}
+              <ErrorMessage name="confsenha" />
+            </div>    {/* end::Form group */}
+         
 
 
 

@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import api from "../../../setup/api";
 
-import { Formik, Field, Form } from 'formik';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup'
 import clsx from "clsx";
 import { AuthContext } from "../../../context/authContext";
@@ -12,63 +12,63 @@ const registrationSchema = Yup.object().shape({
   name: Yup.string()
     .min(3, "Quantidade de caracteres inválido")
     .max(60, "Limite máximo de 60 caracteres")
-    .required('Esse campo é obrigatório'),
+    .required('Esse campo é obrigatório ! !'),
   email: Yup.string()
     .email('Wrong email format')
     .min(8, ' "Quantidade de caracteres inválido"')
     .max(100, "Limite máximo de 100 caracteres")
-    .required('Esse campo é obrigatório'),
+    .required('Esse campo é obrigatório !'),
   celular: Yup.string()
     .min(8, "Quantidade de caracteres inválido")
     .max(20, "Limite máximo de 20 caracteres")
-    .required('Esse campo é obrigatório'),
+    .required('Esse campo é obrigatório !'),
   whats: Yup.string()
     .min(8, "Quantidade de caracteres inválido")
     .max(20, "Limite máximo de 20 caracteres")
-    .required('Esse campo é obrigatório'),
+    .required('Esse campo é obrigatório !'),
   cpf: Yup.string()
     .min(11, "Quantidade de caracteres inválido")
     .max(11, "Limite máximo de 11 caracteres")
-    .required('Esse campo é obrigatório'),
+    .required('Esse campo é obrigatório !'),
   rg: Yup.string()
     .min(9, "Quantidade de caracteres inválido")
     .max(9, "Limite máximo de 9 caracteres")
-    .required('Esse campo é obrigatório'),
+    .required('Esse campo é obrigatório !'),
   pix: Yup.string()
     .min(3, "Quantidade de caracteres inválido")
     .max(30, "Limite máximo de 30 caracteres"),
   nascimento: Yup.string()
     .min(3, "Quantidade de caracteres inválido")
     .max(10, 'Limite máximo de 10 caracteres')
-    .required('Esse campo é obrigatório'),
+    .required('Esse campo é obrigatório !'),
   nitpis: Yup.string()
     .min(11, "Precisa ter 11 caracteres")
     .max(11, "Limite máximo de 11 caracteres")
-    .required('Esse campo é obrigatório'),
+    .required('Esse campo é obrigatório !'),
   nomedamae: Yup.string()
     .min(3, "Quantidade de caracteres inválido")
     .max(60, "Limite máximo de 60 caracteres")
-    .required('Esse campo é obrigatório'),
+    .required('Esse campo é obrigatório !'),
   banco: Yup.string()
     .min(2, "Quantidade de caracteres inválido")
     .max(10, "Limite máximo de 10 caracteres")
-    .required('Esse campo é obrigatório'),
+    .required('Esse campo é obrigatório !'),
   agencia: Yup.string()
     .min(2, "Quantidade de caracteres inválido")
     .max(10, "Limite máximo de 10 caracteres")
-    .required('Esse campo é obrigatório'),
+    .required('Esse campo é obrigatório !'),
   conta: Yup.string()
     .min(3, "Quantidade de caracteres inválido")
     .max(15, "Limite máximo de 15 caracteres")
-    .required('Esse campo é obrigatório'),
+    .required('Esse campo é obrigatório !'),
   cep: Yup.string()
     .min(5, "Quantidade de caracteres inválido")
     .max(15, "Limite máximo de 15 caracteres")
-    .required('Esse campo é obrigatório'),
+    .required('Esse campo é obrigatório !'),
   numero: Yup.string()
     .min(3, "Quantidade de caracteres inválido")
     .max(10, "Limite máximo de 6 caracteres")
-    .required('Esse campo é obrigatório')
+    .required('Esse campo é obrigatório !')
 })
 
 type EditUser = {
@@ -108,13 +108,17 @@ const ModalEditUser = ({ idUser, dataEdit, modalEdit }: IProps) => {
 
   const handleMoldalEdit = async (data: {}) => {
     // console.log(data);
-    console.log("id dentro da funcao ", idUser);
+    console.log("id da FN Editar usuario ", idUser);
 
     await api.put(`/users/${idUser}`, data)
       .then((response) => {
         console.log(response.data);
         setAtt(!att)
+
+        setLoading(false)
+
         setModalOkUserEdit(true)
+
         setTimeout(() => {
           setModalOkUserEdit(false)
         }, 4000)
@@ -125,7 +129,7 @@ const ModalEditUser = ({ idUser, dataEdit, modalEdit }: IProps) => {
   }
 
 
-  const loading = false
+  const [loading, setLoading] = useState(false)
 
 
   return (
@@ -175,14 +179,17 @@ const ModalEditUser = ({ idUser, dataEdit, modalEdit }: IProps) => {
         validationSchema={registrationSchema}
 
         onSubmit={(values, actions) => {
-          try {
+          setLoading(true)
 
+          try {
             handleMoldalEdit(values)
           } catch (error) {
             alert("erro ao criar usuário: " + error)
           }
           actions.setSubmitting(true);
-        }} >
+
+        }}
+      >
 
 
         {({ errors, touched, isValid }) => (
@@ -225,23 +232,15 @@ const ModalEditUser = ({ idUser, dataEdit, modalEdit }: IProps) => {
                           // autoComplete='off'
                           // {...formik.getFieldProps('name')}
                           name="name"
-                          className={clsx(
-                            'form-control form-control-lg form-control-solid',
+                          className={clsx('form-control form-control-lg form-control-solid',
                             { 'is-invalid': touched.name && errors.name },
-                            {
-                              'is-valid': touched.name && !errors.name,
-                            }
+                            { 'is-valid': touched.name && !errors.name }
                           )}
                         />
+                        <div className="text-danger">
+                          <ErrorMessage name="name" />
+                        </div>
 
-
-                        {touched.name && errors.name && (
-                          <div className='fv-plugins-message-container'>
-                            <div className='fv-help-block'>
-                              <span role='alert'>{errors.name}</span>
-                            </div>
-                          </div>
-                        )}
                       </div>
                       {/* end::Form group */}
 
@@ -255,21 +254,14 @@ const ModalEditUser = ({ idUser, dataEdit, modalEdit }: IProps) => {
                           type='email'
                           // autoComplete='off'
                           name="email"
-                          className={clsx(
-                            'form-control form-control-lg form-control-solid',
+                          className={clsx('form-control form-control-lg form-control-solid',
                             { 'is-invalid': touched.email && errors.email },
-                            {
-                              'is-valid': touched.email && !errors.email,
-                            }
+                            { 'is-valid': touched.email && !errors.email }
                           )}
                         />
-                        {touched.email && errors.email && (
-                          <div className='fv-plugins-message-container'>
-                            <div className='fv-help-block'>
-                              <span role='alert'>{errors.email}</span>
-                            </div>
-                          </div>
-                        )}
+                        <div className="text-danger">
+                          <ErrorMessage name="email" />
+                        </div>
                       </div>
                       {/* end::Form group */}
 
@@ -284,23 +276,14 @@ const ModalEditUser = ({ idUser, dataEdit, modalEdit }: IProps) => {
                             type='tel'
                             // autoComplete='off'
                             name="celular"
-                            className={clsx(
-                              'form-control form-control-lg form-control-solid',
-                              {
-                                'is-invalid': touched.celular && errors.celular,
-                              },
-                              {
-                                'is-valid': touched.celular && !errors.celular,
-                              }
+                            className={clsx('form-control form-control-lg form-control-solid',
+                              { 'is-invalid': touched.celular && errors.celular, },
+                              { 'is-valid': touched.celular && !errors.celular }
                             )}
                           />
-                          {touched.celular && errors.celular && (
-                            <div className='fv-plugins-message-container'>
-                              <div className='fv-help-block'>
-                                <span role='alert'>{errors.celular}</span>
-                              </div>
-                            </div>
-                          )}
+                          <div className="text-danger">
+                            <ErrorMessage name="celular" />
+                          </div>
                         </div>
 
                         {/* begin::Form group Whatsapp */}
@@ -313,21 +296,13 @@ const ModalEditUser = ({ idUser, dataEdit, modalEdit }: IProps) => {
                             name="whats"
                             className={clsx(
                               'form-control form-control-lg form-control-solid',
-                              {
-                                'is-invalid': touched.whats && errors.whats,
-                              },
-                              {
-                                'is-valid': touched.whats && !errors.whats,
-                              }
+                              { 'is-invalid': touched.whats && errors.whats, },
+                              { 'is-valid': touched.whats && !errors.whats, }
                             )}
                           />
-                          {touched.whats && errors.whats && (
-                            <div className='fv-plugins-message-container'>
-                              <div className='fv-help-block'>
-                                <span role='alert'>{errors.whats}</span>
-                              </div>
-                            </div>
-                          )}
+                          <div className="text-danger">
+                            <ErrorMessage name="whats" />
+                          </div>
                         </div>
 
                       </div>
@@ -345,18 +320,12 @@ const ModalEditUser = ({ idUser, dataEdit, modalEdit }: IProps) => {
                           className={clsx(
                             'form-control form-control-lg form-control-solid',
                             { 'is-invalid': touched.cpf && errors.cpf },
-                            {
-                              'is-valid': touched.cpf && !errors.cpf,
-                            }
+                            { 'is-valid': touched.cpf && !errors.cpf, }
                           )}
                         />
-                        {touched.cpf && errors.cpf && (
-                          <div className='fv-plugins-message-container'>
-                            <div className='fv-help-block'>
-                              <span role='alert'>{errors.cpf}</span>
-                            </div>
-                          </div>
-                        )}
+                        <div className="text-danger">
+                          <ErrorMessage name="cpf" />
+                        </div>
                       </div>
                       {/* end::Form group */}
 
@@ -372,18 +341,12 @@ const ModalEditUser = ({ idUser, dataEdit, modalEdit }: IProps) => {
                           className={clsx(
                             'form-control form-control-lg form-control-solid',
                             { 'is-invalid': touched.rg && errors.rg },
-                            {
-                              'is-valid': touched.rg && !errors.rg,
-                            }
+                            { 'is-valid': touched.rg && !errors.rg }
                           )}
                         />
-                        {touched.rg && errors.rg && (
-                          <div className='fv-plugins-message-container'>
-                            <div className='fv-help-block'>
-                              <span role='alert'>{errors.rg}</span>
-                            </div>
-                          </div>
-                        )}
+                        <div className="text-danger">
+                          <ErrorMessage name="rg" />
+                        </div>
                       </div>
                       {/* end::Form group */}
 
@@ -398,18 +361,12 @@ const ModalEditUser = ({ idUser, dataEdit, modalEdit }: IProps) => {
                           className={clsx(
                             'form-control form-control-lg form-control-solid',
                             { 'is-invalid': touched.nascimento && errors.nascimento },
-                            {
-                              'is-valid': touched.nascimento && !errors.nascimento,
-                            }
+                            { 'is-valid': touched.nascimento && !errors.nascimento }
                           )}
                         />
-                        {touched.nascimento && errors.nascimento && (
-                          <div className='fv-plugins-message-container'>
-                            <div className='fv-help-block'>
-                              <span role='alert'>{errors.nascimento}</span>
-                            </div>
-                          </div>
-                        )}
+                        <div className="text-danger">
+                          <ErrorMessage name="nascimento" />
+                        </div>
                       </div>
                       {/* end::Form group */}
 
@@ -421,21 +378,14 @@ const ModalEditUser = ({ idUser, dataEdit, modalEdit }: IProps) => {
                           placeholder='Pix'
                           type=''
                           name="pix"
-                          className={clsx(
-                            'form-control form-control-lg form-control-solid',
+                          className={clsx('form-control form-control-lg form-control-solid',
                             { 'is-invalid': touched.pix && errors.pix },
-                            {
-                              'is-valid': touched.pix && !errors.pix,
-                            }
+                            { 'is-valid': touched.pix && !errors.pix }
                           )}
                         />
-                        {touched.pix && errors.pix && (
-                          <div className='fv-plugins-message-container'>
-                            <div className='fv-help-block'>
-                              <span role='alert'>{errors.pix}</span>
-                            </div>
-                          </div>
-                        )}
+                        <div className="text-danger">
+                          <ErrorMessage name="name" />
+                        </div>
                       </div>
                       {/* end::Form group */}
 
@@ -446,21 +396,14 @@ const ModalEditUser = ({ idUser, dataEdit, modalEdit }: IProps) => {
                           placeholder='Nit / Pis'
                           type=''
                           name="nitpis"
-                          className={clsx(
-                            'form-control form-control-lg form-control-solid',
+                          className={clsx('form-control form-control-lg form-control-solid',
                             { 'is-invalid': touched.nitpis && errors.nitpis },
-                            {
-                              'is-valid': touched.nitpis && !errors.nitpis,
-                            }
+                            { 'is-valid': touched.nitpis && !errors.nitpis, }
                           )}
                         />
-                        {touched.nitpis && errors.nitpis && (
-                          <div className='fv-plugins-message-container'>
-                            <div className='fv-help-block'>
-                              <span role='alert'>{errors.nitpis}</span>
-                            </div>
-                          </div>
-                        )}
+                        <div className="text-danger">
+                          <ErrorMessage name="nitpis" />
+                        </div>
                       </div>
                       {/* end::Form group */}
 
@@ -471,21 +414,14 @@ const ModalEditUser = ({ idUser, dataEdit, modalEdit }: IProps) => {
                           placeholder='Nome da mãe'
                           type=''
                           name="nomedamae"
-                          className={clsx(
-                            'form-control form-control-lg form-control-solid',
+                          className={clsx('form-control form-control-lg form-control-solid',
                             { 'is-invalid': touched.nomedamae && errors.nomedamae },
-                            {
-                              'is-valid': touched.nomedamae && !errors.nomedamae,
-                            }
+                            { 'is-valid': touched.nomedamae && !errors.nomedamae, }
                           )}
                         />
-                        {touched.nomedamae && errors.nomedamae && (
-                          <div className='fv-plugins-message-container'>
-                            <div className='fv-help-block'>
-                              <span role='alert'>{errors.nomedamae}</span>
-                            </div>
-                          </div>
-                        )}
+                        <div className="text-danger">
+                          <ErrorMessage name="nomedamae" />
+                        </div>
                       </div>
                       {/* end::Form group */}
 
@@ -501,23 +437,14 @@ const ModalEditUser = ({ idUser, dataEdit, modalEdit }: IProps) => {
                             placeholder='Banco'
                             type=''
                             name="banco"
-                            className={clsx(
-                              'form-control form-control-lg form-control-solid',
-                              {
-                                'is-invalid': touched.banco && errors.banco,
-                              },
-                              {
-                                'is-valid': touched.banco && !errors.banco,
-                              }
+                            className={clsx('form-control form-control-lg form-control-solid',
+                              { 'is-invalid': touched.banco && errors.banco, },
+                              { 'is-valid': touched.banco && !errors.banco, }
                             )}
                           />
-                          {touched.banco && errors.banco && (
-                            <div className='fv-plugins-message-container'>
-                              <div className='fv-help-block'>
-                                <span role='alert'>{errors.banco}</span>
-                              </div>
-                            </div>
-                          )}
+                          <div className="text-danger">
+                            <ErrorMessage name="banco" />
+                          </div>
                         </div>
 
                         {/* begin::Form group Agência */}
@@ -527,23 +454,14 @@ const ModalEditUser = ({ idUser, dataEdit, modalEdit }: IProps) => {
                             placeholder='Agência'
                             type=''
                             name="agencia"
-                            className={clsx(
-                              'form-control form-control-lg form-control-solid',
-                              {
-                                'is-invalid': touched.agencia && errors.agencia,
-                              },
-                              {
-                                'is-valid': touched.agencia && !errors.agencia,
-                              }
+                            className={clsx('form-control form-control-lg form-control-solid',
+                              { 'is-invalid': touched.agencia && errors.agencia, },
+                              { 'is-valid': touched.agencia && !errors.agencia, }
                             )}
                           />
-                          {touched.agencia && errors.agencia && (
-                            <div className='fv-plugins-message-container'>
-                              <div className='fv-help-block'>
-                                <span role='alert'>{errors.agencia}</span>
-                              </div>
-                            </div>
-                          )}
+                          <div className="text-danger">
+                            <ErrorMessage name="agencia" />
+                          </div>
                         </div>
 
                         {/* begin::Form group Conta */}
@@ -553,23 +471,14 @@ const ModalEditUser = ({ idUser, dataEdit, modalEdit }: IProps) => {
                             placeholder='Conta'
                             type=''
                             name="conta"
-                            className={clsx(
-                              'form-control form-control-lg form-control-solid',
-                              {
-                                'is-invalid': touched.conta && errors.conta,
-                              },
-                              {
-                                'is-valid': touched.conta && !errors.conta,
-                              }
+                            className={clsx('form-control form-control-lg form-control-solid',
+                              { 'is-invalid': touched.conta && errors.conta, },
+                              { 'is-valid': touched.conta && !errors.conta, }
                             )}
                           />
-                          {touched.conta && errors.conta && (
-                            <div className='fv-plugins-message-container'>
-                              <div className='fv-help-block'>
-                                <span role='alert'>{errors.conta}</span>
-                              </div>
-                            </div>
-                          )}
+                          <div className="text-danger">
+                            <ErrorMessage name="conta" />
+                          </div>
                         </div>
 
                       </div>
@@ -586,23 +495,14 @@ const ModalEditUser = ({ idUser, dataEdit, modalEdit }: IProps) => {
                             placeholder='CEP'
                             type=''
                             name="cep"
-                            className={clsx(
-                              'form-control form-control-lg form-control-solid',
-                              {
-                                'is-invalid': touched.cep && errors.cep,
-                              },
-                              {
-                                'is-valid': touched.cep && !errors.cep,
-                              }
+                            className={clsx('form-control form-control-lg form-control-solid',
+                              { 'is-invalid': touched.cep && errors.cep, },
+                              { 'is-valid': touched.cep && !errors.cep, }
                             )}
                           />
-                          {touched.cep && errors.cep && (
-                            <div className='fv-plugins-message-container'>
-                              <div className='fv-help-block'>
-                                <span role='alert'>{errors.cep}</span>
-                              </div>
-                            </div>
-                          )}
+                          <div className="text-danger">
+                            <ErrorMessage name="cep" />
+                          </div>
                         </div>
 
 
@@ -613,31 +513,22 @@ const ModalEditUser = ({ idUser, dataEdit, modalEdit }: IProps) => {
                             placeholder='Número'
                             type=''
                             name="numero"
-                            className={clsx(
-                              'form-control form-control-lg form-control-solid',
-                              {
-                                'is-invalid': touched.numero && errors.numero,
-                              },
-                              {
-                                'is-valid': touched.numero && !errors.numero,
-                              }
+                            className={clsx('form-control form-control-lg form-control-solid',
+                              { 'is-invalid': touched.numero && errors.numero, },
+                              { 'is-valid': touched.numero && !errors.numero, }
                             )}
                           />
-                          {touched.numero && errors.numero && (
-                            <div className='fv-plugins-message-container'>
-                              <div className='fv-help-block'>
-                                <span role='alert'>{errors.numero}</span>
-                              </div>
-                            </div>
-                          )}
+                          <div className="text-danger">
+                            <ErrorMessage name="numero" />
+                          </div>
                         </div>
                       </div>
                       {/* end::Form group */}
 
 
 
-                      {/* begin::Form Select */}
-                      <div className="row mt-4">
+
+                      <div className="row mt-4"> {/* Inicio: Select */}
                         <div className="col-md-6 fv-row fv-plugins-icon-container">
                           <label className="required fs-5 fw-bold mb-2">Função</label>
                           <input type="text" className="form-control form-control-solid mb-5" name="Função" />
@@ -659,15 +550,15 @@ const ModalEditUser = ({ idUser, dataEdit, modalEdit }: IProps) => {
                           </select>
                           <div className="fv-plugins-message-container invalid-feedback"></div>
                         </div>
-                      </div>
-                      {/* end::Form Select */}
+                      </div>{/* fim: Select */}
+
 
                     </div>
                   </div>
 
 
-                  {/* begin::  -- Buttons --  */}
-                  <div className="modal-footer flex-center">
+
+                  <div className="modal-footer flex-center"> {/* inicio : Buttons */}
                     <button
                       type="button"
                       className="btn btn-light-dark me-3"
@@ -678,7 +569,6 @@ const ModalEditUser = ({ idUser, dataEdit, modalEdit }: IProps) => {
 
                     <button
                       type='submit'
-                      // id='kt_sign_up_submit'
                       className="btn btn-light-dark me-3"
                       // disabled={isSubmitting || !isValid}
                       disabled={!isValid}
@@ -692,8 +582,7 @@ const ModalEditUser = ({ idUser, dataEdit, modalEdit }: IProps) => {
                       )}
                     </button>
 
-                  </div>
-                  {/* end::  -- Buttons --  */}
+                  </div>  {/* fim: Buttons*/}
 
                   {/* </form> */}
                 </div>
