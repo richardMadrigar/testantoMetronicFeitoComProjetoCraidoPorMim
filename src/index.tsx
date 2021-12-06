@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom'
 
 //contextos
 import { AuthContextProvider } from './context/authContext'
+
 import store, { persistor } from './setup/redux/Store'
 import { PersistGate } from 'redux-persist/integration/react'
 import { Provider } from 'react-redux'

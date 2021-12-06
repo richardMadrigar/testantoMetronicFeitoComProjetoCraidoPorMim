@@ -7,35 +7,16 @@ import { AuthContext } from '../../../../context/authContext';
 //componentes
 import { KTSVG, toAbsoluteUrl } from '../../../../_metronic/helpers'
 
-import ModalDeleteUser from '../../newComponents/ModalDeleteUser';
-import ModalEditUser from '../../newComponents/ModalEditUser';
-import ModalAddUser from '../../newComponents/ModalAddUser'
+import ModalDeleteUser from '../../components/ModalDeleteUser';
+import ModalEditUser from '../../components/ModalEditUser';
+import ModalAddUser from '../../components/ModalAddUser'
 
-import Pagination from '../../newComponents/Pagination'
+import Pagination from '../../components/Pagination'
 import { AlertDoc } from '../components/AlertDoc';
 
 //styles
 import '../../../../_metronic/assets/stylesCss/style.css'
 
-
-// type EditUser = {
-//   celular: string,
-//   cpf: string,
-//   email: string,
-//   name: string,
-//   rg: string,
-//   senha: string,
-//   whats: string,
-//   agencia: string,
-//   banco: string,
-//   conta: string,
-//   cep: string,
-//   numero: string,
-//   nascimento: string,
-//   nitpis: string,
-//   nomedamae: string,
-//   pix: string,
-// }
 
 type Props = {
   className: string
@@ -44,13 +25,11 @@ type Props = {
   itensPerPage: number
   modal: boolean
   setModal: React.Dispatch<React.SetStateAction<boolean>>
-  // dataEdit: EditUser
 }
 
 
 
 //offset pra identificar em qual pagina está
-
 const Usuarios: React.FC<Props> = ({ className }) => {
   const { att, setModalDelete, modalDelete, setModalEdit, modalEdit } = useContext(AuthContext)
 
@@ -115,8 +94,6 @@ const Usuarios: React.FC<Props> = ({ className }) => {
 
 
 
-
-
   useEffect(() => { //renderizando todos os usuarios
     const fetchData = async () => {
       await api.get('/users')
@@ -129,8 +106,7 @@ const Usuarios: React.FC<Props> = ({ className }) => {
     fetchData()
   }, [att, modal]);
 
-
-  useEffect(() => { //se mudar a qtd de pgn => volta para zero
+  useEffect(() => {
     setCurrentPage(0)
   }, [itensPerPage])
 
@@ -259,12 +235,10 @@ const Usuarios: React.FC<Props> = ({ className }) => {
         {/* end::Header */}
 
 
-        {/* begin::Body */}
         <div className='card-body py-3'>
 
-          <div className='table-responsive'>  {/* Inicio::Table */}
-            <table className='table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4 table-hover'>{/* incio :Table  */}
-
+          <div className='table-responsive'>  {/* Inicio-Table */}
+            <table className='table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4 table-hover'>
 
               <thead>
                 <tr className='fw-bolder text-muted'>
@@ -290,16 +264,14 @@ const Usuarios: React.FC<Props> = ({ className }) => {
                   <th className='text-center'></th>
                 </tr>
               </thead>
-              {/* end::Table head */}
 
-              {/* begin::Table body */}
               <tbody>
                 {/* inicio do usuario */}
                 {currentItens.map(users => {
                   return (
                     <tr key={users.id}>
                       <td>
-                        <span className="badge p-3 badge-light text-hover-primary text-center">  {users.id}</span>
+                        <span className="badge p-3 badge-light text-hover-primary text-center">{users.id}</span>
                       </td>
 
                       <td>{/* user */}
@@ -319,20 +291,23 @@ const Usuarios: React.FC<Props> = ({ className }) => {
                         </div>
                       </td>
                       <td>{/* RG/CNH */}
-                        <span className='text-muted fw-bold text-muted d-block fs-7 text-center'>
+                        <span
+                          className='text-muted fw-bold text-muted d-block fs-7 text-center'>
                           {users.rg}
                         </span>
                       </td>
 
                       {users.ccm ? (
                         <td>{/* CCM */}
-                          <span className='text-muted fw-bold text-muted d-block fs-7 text-center '>
+                          <span
+                            className='text-muted fw-bold text-muted d-block fs-7 text-center '>
                             {users.ccm ? users.ccm : "Pendente"}
                           </span>
                         </td>
                       ) : (
                         <td>
-                          <span className='fs-7 fw-bold text-light-danger bg-danger p-2 rounded-1 text-center d-flex justy justify-content-center '>
+                          <span
+                            className='fs-7 fw-bold text-light-danger bg-danger p-2 rounded-1 text-center d-flex justy justify-content-center '>
                             {users.ccm ? users.ccm : "Pendente"}
                           </span>
                         </td>
@@ -341,13 +316,15 @@ const Usuarios: React.FC<Props> = ({ className }) => {
 
                       {users.nitpis ? (
                         <td>{/* nit/pis */}
-                          <span className='text-muted fw-bold text-muted d-block fs-7 text-center '>
+                          <span
+                            className='text-muted fw-bold text-muted d-block fs-7 text-center '>
                             {users.nitpis ? users.nitpis : "Pendente"}
                           </span>
                         </td>
                       ) : (
                         <td>
-                          <span className='fs-7 fw-bold text-light-danger bg-danger p-2 rounded-1 text-center d-flex justy justify-content-center '>
+                          <span
+                            className='fs-7 fw-bold text-light-danger bg-danger p-2 rounded-1 text-center d-flex justy justify-content-center '>
                             {users.nitpis ? users.nitpis : "Pendente"}
                           </span>
                         </td>
@@ -427,15 +404,27 @@ const Usuarios: React.FC<Props> = ({ className }) => {
 
                       <td>{/* inicio - buttons Edit/ delete/ resetar */}
                         <div className='d-flex justify-content-end flex-shrink-0 ms-5'>
-                          <button onClick={() => handleMoldalResetPassword(users.id)} className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1' title='Resetar usuário' >
+                          <button
+                            type="button"
+                            onClick={() => handleMoldalResetPassword(users.id)}
+                            className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'
+                            title='Resetar usuário' >
                             <KTSVG path='/media/icons/duotune/general/gen019.svg' className='svg-icon-3' />
                           </button>
 
-                          <button onClick={() => handleMoldalEdit(users.id)} type="button" className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1  ' title="Editar usuário" >
+                          <button
+                            type="button"
+                            onClick={() => handleMoldalEdit(users.id)}
+                            className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'
+                            title="Editar usuário" >
                             <KTSVG path='/media/icons/duotune/art/art005.svg' className='svg-icon-3' />
                           </button>
 
-                          <button onClick={() => handleMoldalDelete(users.id)} className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm ' title='Deletar usuário'>
+                          <button
+                            type="button"
+                            onClick={() => handleMoldalDelete(users.id)}
+                            className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm'
+                            title='Deletar usuário'>
                             <KTSVG path='/media/icons/duotune/general/gen027.svg' className='svg-icon-3' />
                           </button>
 
@@ -445,17 +434,14 @@ const Usuarios: React.FC<Props> = ({ className }) => {
                     </tr>
                   )
                 })}
-
-
                 {/* fim do usuario */}
               </tbody>
 
+            </table>
+          </div>{/* Fim-Table */}
 
-            </table>  {/* fim :Table*/}
-          </div>{/* Fim ::Table */}
 
-
-          {/* inicio - paginação */}
+          {/* inicio-paginação */}
           <div className="example-preview">
             <div className="d-flex justify-content-between align-items-center flex-wrap">
 
@@ -488,8 +474,7 @@ const Usuarios: React.FC<Props> = ({ className }) => {
 
             </div>
           </div>
-          {/* fim - paginação */}
-          {/* begin::Body */}
+          {/* fim-paginação */}
 
         </div>
       </div>

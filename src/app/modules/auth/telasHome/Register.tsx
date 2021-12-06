@@ -1,11 +1,7 @@
-
-
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
 import api from '../../../../setup/api'
 
-// import InputMask from "react-input-mask";
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import * as Yup from 'yup'
 
@@ -97,7 +93,6 @@ export function Register() {
   const { setAutorization, setUserPerfil } = useContext(AuthContext)
 
 
-
   const handleRegister = async (data: {}) => {
     await api.post('/users', data)
       .then((response) => {
@@ -114,14 +109,13 @@ export function Register() {
       });
   }
 
-
   return (
     <>
       <Formik
 
         initialValues={{
           name: '',
-          email: '@',
+          email: '',
           celular: '',
           whats: '',
           cpf: '',
@@ -161,7 +155,7 @@ export function Register() {
 
         {({ errors, touched, isValid }) => (
 
-          <Form>
+          <Form autoComplete='false'>
             {/* begin::Heading */}
             <div className='mb-5 text-center'>
 
@@ -191,6 +185,7 @@ export function Register() {
             {/* begin::Form group Nome completo */}
             <div className='fv-row '>
               <label className='form-label fw-bolder text-dark fs-6'>Nome completo</label>
+
               <Field
                 placeholder='Nome'
                 type='text'
@@ -201,28 +196,36 @@ export function Register() {
                   { 'is-valid': touched.name && !errors.name, }
                 )}
               />
-              <ErrorMessage name="name" />
+              <div className="text-danger">
+                <ErrorMessage name="name" />
+              </div>
 
             </div>
             {/* end::Form group */}
 
 
             {/* begin::Form group Email */}
-            <div className='fv-row mt-5'>
+            <div className='fv-row mt-5' >
+
               <label className='form-label fw-bolder text-dark fs-6'>Email</label>
 
               <Field
                 placeholder='email'
                 name="email"
-                type="email"
+                type="text"
+                autoComplete='false'
                 className={clsx('form-control form-control-lg form-control-solid',
                   { 'is-invalid': touched.email && errors.email },
                   { 'is-valid': touched.email && !errors.email, }
                 )}
               />
-              <ErrorMessage name="email" />
+              <div className="text-danger">
+                <ErrorMessage name="email" />
+              </div>
             </div>
             {/* end::Form group */}
+
+
 
 
 
@@ -233,14 +236,16 @@ export function Register() {
                 <label className='class="form-label fw-bolder text-dark fs-6'>Celular</label>
                 <Field
                   placeholder='Celular'
-                  autoComplete='off'
+                  autoComplete='on'
                   name="celular"
                   className={clsx('form-control form-control-lg form-control-solid',
                     { 'is-invalid': touched.celular && errors.celular, },
                     { 'is-valid': touched.celular && !errors.celular, }
                   )}
                 />
-                <ErrorMessage name="celular" />
+                <div className="text-danger">
+                  <ErrorMessage name="celular" />
+                </div>
               </div>
 
               {/* begin::Form group Whatsapp */}
@@ -248,7 +253,7 @@ export function Register() {
                 <label className='class="form-label fw-bolder text-dark fs-6'>Whatsapp</label>
                 <Field
                   placeholder='Whatsapp'
-                  autoComplete='off'
+                  // autoComplete=''
                   name="whats"
                   className={clsx('form-control form-control-lg form-control-solid',
                     { 'is-invalid': touched.whats && errors.whats, },
@@ -275,7 +280,9 @@ export function Register() {
                   { 'is-valid': touched.cpf && !errors.cpf, }
                 )}
               />
-              <ErrorMessage name="cpf" />
+              <div className="text-danger">
+                <ErrorMessage name="cpf" />
+              </div>
             </div>
             {/* end::Form group */}
 
@@ -291,7 +298,9 @@ export function Register() {
                   { 'is-valid': touched.rg && !errors.rg, }
                 )}
               />
-              <ErrorMessage name="rg" />
+              <div className="text-danger">
+                <ErrorMessage name="rg" />
+              </div>
             </div>
             {/* end::Form group */}
 
@@ -307,12 +316,14 @@ export function Register() {
                   { 'is-valid': touched.nascimento && !errors.nascimento, }
                 )}
               />
-              <ErrorMessage name="nascimento" />
+              <div className="text-danger">
+                <ErrorMessage name="nascimento" />
+              </div>
             </div>
             {/* end::Form group */}
 
 
-            
+
             <div className='fv-row mt-4'> {/* begin::Form group Pix */}
               <label className='form-label fw-bolder text-dark fs-6'>Pix</label>
               <Field
@@ -323,11 +334,13 @@ export function Register() {
                   { 'is-valid': touched.pix && !errors.pix, }
                 )}
               />
-              <ErrorMessage name="pix" />
+              <div className="text-danger">
+                <ErrorMessage name="pix" />
+              </div>
             </div> {/* end::Form group */}
-            
 
-          
+
+
             <div className='fv-row mt-4'>   {/* begin::Form group Nit / Pis */}
               <label className='form-label fw-bolder text-dark fs-6'>Nit / Pis</label>
               <Field
@@ -338,11 +351,13 @@ export function Register() {
                   { 'is-valid': touched.nitpis && !errors.nitpis, }
                 )}
               />
-              <ErrorMessage name="nitpis" /> 
+              <div className="text-danger">
+                <ErrorMessage name="nitpis" />
+              </div>
             </div> {/* end::Form group */}
-            
 
-         
+
+
             <div className='fv-row mt-4'>     {/* begin::Form group Nome da Mãe */}
               <label className='form-label fw-bolder text-dark fs-6'>Nome da mãe</label>
               <Field
@@ -353,14 +368,16 @@ export function Register() {
                   { 'is-valid': touched.nomedamae && !errors.nomedamae, }
                 )}
               />
-              <ErrorMessage name="nomedamae" />
+              <div className="text-danger">
+                <ErrorMessage name="nomedamae" />
+              </div>
             </div>   {/* end::Form group */}
-           
+
 
 
             {/* begin::Form group Nome da Agência / Banco / Conta */}
 
-           
+
             <div className='row fv-row mt-5'>
 
               <div className='col-xl-4 mb-5'>  {/* begin::Form group Banco */}
@@ -374,10 +391,12 @@ export function Register() {
                     { 'is-valid': touched.banco && !errors.banco, }
                   )}
                 />
-                <ErrorMessage name="banco" />
+                <div className="text-danger">
+                  <ErrorMessage name="banco" />
+                </div>
               </div>
 
-             
+
               <div className='col-xl-4'>   {/* begin::Form group Agência */}
                 <label className='class="form-label fw-bolder text-dark fs-6'>Agência</label>
                 <Field
@@ -388,11 +407,13 @@ export function Register() {
                     { 'is-valid': touched.agencia && !errors.agencia, }
                   )}
                 />
-                <ErrorMessage name="agencia" />
+                <div className="text-danger">
+                  <ErrorMessage name="agencia" />
+                </div>
               </div>
 
 
-            
+
               <div className='col-xl-4'>    {/* begin::Form group Conta */}
                 <label className='class="form-label fw-bolder text-dark fs-6'>Conta</label>
                 <Field
@@ -403,7 +424,9 @@ export function Register() {
                     { 'is-valid': touched.conta && !errors.conta, }
                   )}
                 />
-                <ErrorMessage name="conta" />
+                <div className="text-danger">
+                  <ErrorMessage name="conta" />
+                </div>
               </div>
 
             </div>
@@ -411,7 +434,7 @@ export function Register() {
 
 
 
-        
+
             <div className='row fv-row mt-4'> {/* begin::Form group CEP */}
 
               <div className='col-xl-6'>
@@ -424,11 +447,13 @@ export function Register() {
                     { 'is-valid': touched.cep && !errors.cep, }
                   )}
                 />
-                <ErrorMessage name="cep" />
+                <div className="text-danger">
+                  <ErrorMessage name="cep" />
+                </div>
               </div>
 
 
-            
+
               <div className='col-xl-6'>    {/* begin::Form group Número */}
                 <label className='class="form-label fw-bolder text-dark fs-6'>Número</label>
                 <Field
@@ -443,46 +468,50 @@ export function Register() {
               </div>
             </div>    {/* end::Form group */}
 
-          
 
 
-          
-            <div className='mt-5 fv-row' data-kt-password-meter='true'>   {/* begin::Form group Senha */}
+
+
+            {/* begin::Form group Senha */}
+            <div className='mt-5 fv-row' data-kt-password-meter='true'>
               <div className='mb-1'>
                 <label className='form-label fw-bolder text-dark fs-6'>Senha</label>
                 <div className='position-relative mb-3'>
                   <Field
                     type='password'
                     placeholder='Senha'
-                    autoComplete='off'
+                    autocomplete="new-password"
                     name='senha'
                     className={clsx('form-control form-control-lg form-control-solid',
                       { 'is-invalid': touched.senha && errors.senha, },
                       { 'is-valid': touched.senha && !errors.senha, }
                     )}
                   />
-                  <ErrorMessage name="senha" />
+                  <div className="text-danger">
+                    <ErrorMessage name="senha" />
+                  </div>
                 </div>
               </div>
-            </div>  {/* end::Form group */}
-          
+            </div>
+            {/* end::Form group */}
 
-           
+
             <div className='fv-row mt-5 mb-10'>{/* begin::Form group Confirm password */}
               <label className='form-label fw-bolder text-dark fs-6'>Confirmar senha</label>
               <Field
-                type='password'
+                // type='password'
                 placeholder='Confirmar senha'
-                autoComplete='off'
                 name='confsenha'
                 className={clsx('form-control form-control-lg form-control-solid',
                   { 'is-invalid': touched.confsenha && errors.confsenha, },
                   { 'is-valid': touched.confsenha && !errors.confsenha, }
                 )}
               />
-              <ErrorMessage name="confsenha" />
+              <div className="text-danger">
+                <ErrorMessage name="confsenha" />
+              </div>
             </div>    {/* end::Form group */}
-         
+
 
 
 
@@ -537,10 +566,7 @@ export function Register() {
               </button>
 
               <Link to='/auth/login'>
-                <button
-                  type='button'
-                  className='btn btn-lg btn-light-dark w-100 mb-5'
-                >
+                <button type='button' className='btn btn-lg btn-light-dark w-100 mb-5'>
                   Cancel
                 </button>
               </Link>

@@ -37,6 +37,7 @@ const Login = () => {
 
       validationSchema={loginSchema}
 
+
       onSubmit={values => {
         setLoading(true)
         console.log(values);
@@ -70,18 +71,16 @@ const Login = () => {
 
               <Field
                 name="cpf"
-                placeholder="CPF"
-                className={clsx(
-                  'form-control form-control-lg form-control-solid w-100',
-                  {
-                    'is-invalid': touched.cpf && errors.cpf,
-                  },
-                  {
-                    'is-valid': touched.cpf && !errors.cpf,
-                  }
+                // value=""
+                placeholder=" CPF"
+                className={clsx('form-control form-control-lg form-control-solid w-100',
+                  { 'is-invalid': touched.cpf && errors.cpf, },
+                  { 'is-valid': touched.cpf && !errors.cpf, }
                 )}
               />
-              <ErrorMessage name="cpf" />
+              <div className="text-danger">
+                <ErrorMessage name="cpf" />
+              </div>
 
             </div>
             {/* end::input CPF */}
@@ -106,17 +105,14 @@ const Login = () => {
                 type="password"
                 name="senha"
                 placeholder="Senha"
-                className={clsx(
-                  'form-control form-control-lg form-control-solid w-100 light-dark',
-                  {
-                    'is-invalid': touched.senha && errors.senha,
-                  },
-                  {
-                    'is-valid': touched.senha && !errors.senha,
-                  }
+                className={clsx('form-control form-control-lg form-control-solid w-100 light-dark',
+                  { 'is-invalid': touched.senha && errors.senha, },
+                  { 'is-valid': touched.senha && !errors.senha, }
                 )}
               />
-              <ErrorMessage name="senha" />
+              <div className="text-danger">
+                <ErrorMessage name="senha" />
+              </div>
 
             </div>
             {/* end::input senha */}

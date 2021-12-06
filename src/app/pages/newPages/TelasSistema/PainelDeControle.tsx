@@ -12,65 +12,6 @@ const alg = 'aes-256-ctr'
 
 
 const Header = () => {
-
-
-  // function hash(senha: number) {
-  //   var result = '';
-
-  //   const senhaUser = senha
-
-  //   const num = senhaUser.toString().length
-
-  //   // const lengthSenha = length.length
-  //   var characters = 'ab4352435354edgfv3242efgdfg32532c';
-
-  //   var charactersLength = characters.length;
-
-  //   result += Math.floor((senhaUser * charactersLength) / num)
-
-  //   return result;
-  // }
-  // console.log(hash(7223555));
-
-
-  // function hashh() {
-  //   var result = '';
-  //   const senhaBanco = 7223555
-  //   const senhaUser = senhaBanco.toString().length
-
-  //   // const num = senhaUser.toString().length
-
-  //   // const lengthSenha = length.length
-  //   var characters = 'ab4352435354edgfv3242efgdfg32532c';
-
-  //   var charactersLength = characters.length;
-
-  //   result += Math.floor((senhaBanco / senhaUser) * charactersLength)
-
-  //   return result;
-  // }
-  // console.log(hashh());
-
-
-  // function makeid(length: number) {
-  //   var result = '';
-
-  //   const num = length.toString().length
-
-
-  //   var characters = 'rstuvwxyz0123456789';
-  //   var charactersLength = characters.length;
-  //   for (var i = 0; i < length; i++) {
-  //     result += (num * charactersLength) / num;
-  //   }
-  //   return result;
-  // }
-  // console.log(makeid(54234));?
-
-
-
-
-
   const { userPerfil } = useContext(AuthContext)
   // console.log(userPerfil);
 
@@ -89,18 +30,16 @@ const Header = () => {
   const valueQRCode = crypted ? crypted : ""
   const myDivStyle = { width: '18rem', height: '17rem' };
 
-
   return (
     <>
 
       <AlertDoc />
 
-      <div className="post alert-dismissible flex-column-fluid pe-0" > {/*container conteudo */}
-
+      <div className="post alert-dismissible flex-column-fluid pe-0">{/*container conteudo */}
 
         <div className=" d-flex flex-column flex-xl-row ">
 
-          <div className="  bg-white w-100 w-xl-350px w-xxl-450px me-9  "> {/*container conteudo 1 */}
+          <div className="  bg-white w-100 w-xl-350px w-xxl-450px me-9"> {/*container conteudo 1 */}
             <div className="px-6 px-lg-10 px-xxl-10 py-10 ">
 
               <div className="d-flex flex-wrap flex-sm-nowrap mb-3">
@@ -135,12 +74,14 @@ const Header = () => {
               {/*QRCode */}
 
             </div>
-          </div>   {/*container conteudo 1 */}
+          </div>{/*container conteudo 1 */}
+
+
 
           <div className="mb-7 "></div>
 
 
-          <div className="flex-row-fluid  bg-white"> {/*container conteudo 2 */}
+          <div className="flex-row-fluid  bg-white">{/*container conteudo 2 */}
             <div className="card-body">
 
               <div className="card-header ">
@@ -168,7 +109,7 @@ const Header = () => {
             </div>
           </div> {/*container conteudo 2 */}
 
-        </div>   {/*container conteudo */}
+        </div>
       </div> {/*container conteudo */}
 
     </>

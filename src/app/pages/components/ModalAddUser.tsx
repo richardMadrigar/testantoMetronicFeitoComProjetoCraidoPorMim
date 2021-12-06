@@ -1,220 +1,175 @@
-import React, { useContext, useState } from "react";
-import api from "../../../setup/api";
+import React, { useState } from 'react';
 
-import { Formik, Field, Form, ErrorMessage } from 'formik';
+
+import { ErrorMessage, Field, Form, Formik } from 'formik'
 import * as Yup from 'yup'
-import clsx from "clsx";
-import { AuthContext } from "../../../context/authContext";
 
+
+import clsx from 'clsx';
+import api from '../../../setup/api';
+import { toAbsoluteUrl } from '../../../_metronic/helpers';
+
+
+interface IProps {
+  modal: boolean
+  setModal: React.Dispatch<React.SetStateAction<boolean>>
+}
 
 
 const registrationSchema = Yup.object().shape({
   name: Yup.string()
     .min(3, "Quantidade de caracteres inválido")
     .max(60, "Limite máximo de 60 caracteres")
-    .required('Esse campo é obrigatório ! !'),
+    .required('Esse campo é obrigatório'),
   email: Yup.string()
-    .email('Wrong email format')
+    .email('Formato de E-mail inválido')
     .min(8, ' "Quantidade de caracteres inválido"')
     .max(100, "Limite máximo de 100 caracteres")
-    .required('Esse campo é obrigatório !'),
+    .required('Esse campo é obrigatório'),
   celular: Yup.string()
     .min(8, "Quantidade de caracteres inválido")
     .max(20, "Limite máximo de 20 caracteres")
-    .required('Esse campo é obrigatório !'),
+    .required('Esse campo é obrigatório'),
   whats: Yup.string()
     .min(8, "Quantidade de caracteres inválido")
     .max(20, "Limite máximo de 20 caracteres")
-    .required('Esse campo é obrigatório !'),
+    .required('Esse campo é obrigatório'),
   cpf: Yup.string()
     .min(11, "Quantidade de caracteres inválido")
     .max(11, "Limite máximo de 11 caracteres")
-    .required('Esse campo é obrigatório !'),
+    .required('Esse campo é obrigatório'),
   rg: Yup.string()
     .min(9, "Quantidade de caracteres inválido")
     .max(9, "Limite máximo de 9 caracteres")
-    .required('Esse campo é obrigatório !'),
+    .required('Esse campo é obrigatório'),
   pix: Yup.string()
     .min(3, "Quantidade de caracteres inválido")
-    .max(30, "Limite máximo de 30 caracteres"),
+    .max(30, "Limite máximo de 30 caracteres")
+    .required('Esse campo é obrigatório'),
   nascimento: Yup.string()
     .min(3, "Quantidade de caracteres inválido")
     .max(10, 'Limite máximo de 10 caracteres')
-    .required('Esse campo é obrigatório !'),
+    .required('Esse campo é obrigatório'),
   nitpis: Yup.string()
     .min(11, "Precisa ter 11 caracteres")
     .max(11, "Limite máximo de 11 caracteres")
-    .required('Esse campo é obrigatório !'),
+    .required('Esse campo é obrigatório'),
   nomedamae: Yup.string()
     .min(3, "Quantidade de caracteres inválido")
     .max(60, "Limite máximo de 60 caracteres")
-    .required('Esse campo é obrigatório !'),
+    .required('Esse campo é obrigatório'),
   banco: Yup.string()
     .min(2, "Quantidade de caracteres inválido")
     .max(10, "Limite máximo de 10 caracteres")
-    .required('Esse campo é obrigatório !'),
+    .required('Esse campo é obrigatório'),
   agencia: Yup.string()
-    .min(2, "Quantidade de caracteres inválido")
+    .min(2, 'Minimum 8 symbols')
     .max(10, "Limite máximo de 10 caracteres")
-    .required('Esse campo é obrigatório !'),
+    .required('Esse campo é obrigatório'),
   conta: Yup.string()
-    .min(3, "Quantidade de caracteres inválido")
+    .min(3, 'Minimum 8 symbols')
     .max(15, "Limite máximo de 15 caracteres")
-    .required('Esse campo é obrigatório !'),
+    .required('Esse campo é obrigatório'),
   cep: Yup.string()
-    .min(5, "Quantidade de caracteres inválido")
+    .min(5, 'Minimum 8 symbols')
     .max(15, "Limite máximo de 15 caracteres")
-    .required('Esse campo é obrigatório !'),
+    .required('Esse campo é obrigatório'),
   numero: Yup.string()
-    .min(3, "Quantidade de caracteres inválido")
+    .min(3, 'Minimum 8 symbols')
     .max(10, "Limite máximo de 6 caracteres")
-    .required('Esse campo é obrigatório !')
+    .required('Esse campo é obrigatório'),
+  senha: Yup.string()
+    .min(8, "Senha minima de 8 caracteres")
+    .max(20, "Limite máximo de 20 caracteres")
+    .required('Esse campo é obrigatório'),
+  confsenha: Yup.string()
+    .required('É necessário confimar a senha ')
+    .when('senha', {
+      is: (val: string) => (val && val.length > 0 ? true : false),
+      then: Yup.string().oneOf([Yup.ref('senha')], "Senha não corresponde"),
+    })
+  // check: Yup.bool().required('Você deve aceitar os Termos e Condições'),
 })
 
-type EditUser = {
-  celular: string,
-  cpf: string,
-  email: string,
-  name: string,
-  rg: string,
-  senha: string,
-  whats: string,
-  agencia: string,
-  banco: string,
-  conta: string,
-  cep: string,
-  numero: string,
-  nascimento: string,
-  nitpis: string,
-  nomedamae: string,
-  pix: string,
-}
 
 
-
-interface IProps {
-  idUser: string
-  dataEdit: EditUser
-  modalEdit: boolean
-}
-
-const ModalEditUser = ({ idUser, dataEdit, modalEdit }: IProps) => {
-  const { att, setAtt, setModalEdit } = useContext(AuthContext)
-
-
-  const [modalOkUserEdit, setModalOkUserEdit] = useState(false)
-
-
-
-  const handleMoldalEdit = async (data: {}) => {
-    // console.log(data);
-    console.log("id da FN Editar usuario ", idUser);
-
-    await api.put(`/users/${idUser}`, data)
-      .then((response) => {
-        console.log(response.data);
-        setAtt(!att)
-
-        setLoading(false)
-
-        setModalOkUserEdit(true)
-
-        setTimeout(() => {
-          setModalOkUserEdit(false)
-        }, 4000)
-      })
-      .catch(error => alert('Erro ao requisitar o servidor para pegar usuários! ' + error))
-
-    setModalEdit(false)
-  }
-
-
+const ModalAddUser = ({ modal, setModal }: IProps) => {
+  const [permisssao, setPermisssao] = useState('')
   const [loading, setLoading] = useState(false)
+
+  const handleRegister = async (data: {}) => {
+
+    await api.post('/users', data)
+      .then(() => {
+        alert("Usuario criado com sucesso!")
+
+        setModal(false)
+
+      }).catch((error) => {
+        alert("Usuario já existe! " + error);
+      });
+  }
 
 
   return (
     <>
-
-      {/* modal newPassword  */}
-      {modalOkUserEdit ? <div className="drawer-overlay" /> : null}
-
-      <div className="modal" style={{ display: modalOkUserEdit ? 'block' : 'none' }}>
-        <div className="modal-dialog-centered modal-dialog mw-450px ">
-          <div className="modal-footer modal-content ">
-
-            <div className="swal2-icon swal2-warning swal2-icon-show mt-10" style={{ display: 'flex' }}>
-              <div className=" swal2-icon-content"> ! </div>
-            </div>
-
-            <div className="blockquote text-center mt-10 mb-5">
-              <h4 > Usuário {dataEdit.name} foi editado com sucesso ! </h4>
-            </div>
-            <div className="card-body  text-center">
-              <button onClick={() => setModalOkUserEdit(false)} type="button" className="btn btn-light m-1 "> OK </button>
-            </div>
-
-          </div>
-        </div>
-      </div>
-
       <Formik
-        enableReinitialize={true}
+
         initialValues={{
-          name: dataEdit.name,
-          email: dataEdit.email,
-          celular: dataEdit.celular,
-          whats: dataEdit.whats,
-          cpf: dataEdit.cpf,
-          rg: dataEdit.rg,
-          nascimento: dataEdit.nascimento,
-          nitpis: dataEdit.nitpis,
-          nomedamae: dataEdit.nomedamae,
-          pix: dataEdit.pix,
-          banco: dataEdit.banco,
-          agencia: dataEdit.agencia,
-          conta: dataEdit.conta,
-          cep: dataEdit.cep,
-          numero: dataEdit.numero
+          name: '',
+          email: '',
+          celular: '',
+          whats: '',
+          cpf: '',
+          rg: '',
+          pix: '',
+          nascimento: '',
+          nitpis: '',
+          nomedamae: '',
+          banco: '',
+          agencia: '',
+          conta: '',
+          cep: '',
+          numero: '',
+          senha: '',
+          confsenha: '',
+          check: true,
         }}
+
         validationSchema={registrationSchema}
 
         onSubmit={(values, actions) => {
+          actions.setSubmitting(false);
           setLoading(true)
+          console.log(values);
 
           try {
-            handleMoldalEdit(values)
+            handleRegister(values)
           } catch (error) {
-            alert("erro ao criar usuário: " + error)
+            alert("erro ao fazer login: " + error)
           }
-          actions.setSubmitting(true);
-
+          setTimeout(() => {
+            setLoading(false)
+          }, 1000)
         }}
+
       >
 
-
         {({ errors, touched, isValid }) => (
-          <Form>
 
-            {modalEdit && <div className="drawer-overlay" />}
+          <Form autoComplete='false'>
 
-            <div className="modal fade show" style={{ display: modalEdit ? 'block' : 'none' }}  >
+            {modal && <div className="drawer-overlay" />}
+
+            <div className="modal fade show" style={{ display: modal ? 'block' : 'none' }}  >
               <div className="modal-dialog modal-dialog-centered mw-850px">
                 <div className="modal-content">
 
-                  {/* <form onSubmit={formik.handleSubmit} className="form fv-plugins-bootstrap5 fv-plugins-framework" > */}
-
                   <div className="modal-header" >
-                    <h2>Editar usuário</h2>
+                    <h2>Cadastro de usuários</h2>
 
-                    <button type="button" onClick={() => setModalEdit(false)} style={{ border: 'none' }} className="btn btn-icon btn-bg-light">
-                      <div className="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
-                        <span className="svg-icon svg-icon-1">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="black"></rect>
-                            <rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="black"></rect>
-                          </svg>
-                        </span>
-                      </div>
+                    <button type="button" onClick={() => setModal(false)} className="btn btn-icon btn-bg-light ">
+                      <img src={toAbsoluteUrl("/media/icons/duotune/arrows/arr011.svg")} alt='Fechar' />
                     </button>
 
                   </div>
@@ -227,36 +182,33 @@ const ModalEditUser = ({ idUser, dataEdit, modalEdit }: IProps) => {
                         <label className='form-label fw-bolder text-dark fs-6'>Nome completo</label>
 
                         <Field
-                          placeholder='Nome'
-                          type=''
-                          // autoComplete='off'
-                          // {...formik.getFieldProps('name')}
+                          placeholder='Nome completo'
+                          type='text'
+                          autoComplete='off'
                           name="name"
                           className={clsx('form-control form-control-lg form-control-solid',
                             { 'is-invalid': touched.name && errors.name },
-                            { 'is-valid': touched.name && !errors.name }
+                            { 'is-valid': touched.name && !errors.name, }
                           )}
                         />
                         <div className="text-danger">
                           <ErrorMessage name="name" />
                         </div>
-
                       </div>
                       {/* end::Form group */}
-
 
 
                       {/* begin::Form group Email */}
                       <div className='fv-row mt-5'>
                         <label className='form-label fw-bolder text-dark fs-6'>Email</label>
                         <Field
-                          placeholder='email'
-                          type='email'
-                          // autoComplete='off'
+                          placeholder='Email'
+                          type="email"
+                          autoComplete='off'
                           name="email"
                           className={clsx('form-control form-control-lg form-control-solid',
                             { 'is-invalid': touched.email && errors.email },
-                            { 'is-valid': touched.email && !errors.email }
+                            { 'is-valid': touched.email && !errors.email, }
                           )}
                         />
                         <div className="text-danger">
@@ -264,7 +216,6 @@ const ModalEditUser = ({ idUser, dataEdit, modalEdit }: IProps) => {
                         </div>
                       </div>
                       {/* end::Form group */}
-
 
                       {/* begin::Form group Celular */}
                       <div className='row fv-row mt-5'>
@@ -274,11 +225,10 @@ const ModalEditUser = ({ idUser, dataEdit, modalEdit }: IProps) => {
                           <Field
                             placeholder='Celular'
                             type='tel'
-                            // autoComplete='off'
                             name="celular"
                             className={clsx('form-control form-control-lg form-control-solid',
                               { 'is-invalid': touched.celular && errors.celular, },
-                              { 'is-valid': touched.celular && !errors.celular }
+                              { 'is-valid': touched.celular && !errors.celular, }
                             )}
                           />
                           <div className="text-danger">
@@ -292,10 +242,8 @@ const ModalEditUser = ({ idUser, dataEdit, modalEdit }: IProps) => {
                           <Field
                             placeholder='Whatsapp'
                             type='tel'
-                            // autoComplete='off'
                             name="whats"
-                            className={clsx(
-                              'form-control form-control-lg form-control-solid',
+                            className={clsx('form-control form-control-lg form-control-solid',
                               { 'is-invalid': touched.whats && errors.whats, },
                               { 'is-valid': touched.whats && !errors.whats, }
                             )}
@@ -315,7 +263,6 @@ const ModalEditUser = ({ idUser, dataEdit, modalEdit }: IProps) => {
                         <Field
                           placeholder='CPF'
                           type=''
-                          // autoComplete='off'
                           name="cpf"
                           className={clsx(
                             'form-control form-control-lg form-control-solid',
@@ -331,17 +278,15 @@ const ModalEditUser = ({ idUser, dataEdit, modalEdit }: IProps) => {
 
 
                       {/* begin::Form group RG */}
-
                       <div className='fv-row mt-4'>
                         <label className='form-label fw-bolder text-dark fs-6'>RG</label>
                         <Field
                           placeholder='RG'
                           type=''
                           name="rg"
-                          className={clsx(
-                            'form-control form-control-lg form-control-solid',
+                          className={clsx('form-control form-control-lg form-control-solid',
                             { 'is-invalid': touched.rg && errors.rg },
-                            { 'is-valid': touched.rg && !errors.rg }
+                            { 'is-valid': touched.rg && !errors.rg, }
                           )}
                         />
                         <div className="text-danger">
@@ -358,10 +303,9 @@ const ModalEditUser = ({ idUser, dataEdit, modalEdit }: IProps) => {
                           placeholder='Data de nascimento'
                           type=''
                           name="nascimento"
-                          className={clsx(
-                            'form-control form-control-lg form-control-solid',
+                          className={clsx('form-control form-control-lg form-control-solid',
                             { 'is-invalid': touched.nascimento && errors.nascimento },
-                            { 'is-valid': touched.nascimento && !errors.nascimento }
+                            { 'is-valid': touched.nascimento && !errors.nascimento, }
                           )}
                         />
                         <div className="text-danger">
@@ -380,11 +324,11 @@ const ModalEditUser = ({ idUser, dataEdit, modalEdit }: IProps) => {
                           name="pix"
                           className={clsx('form-control form-control-lg form-control-solid',
                             { 'is-invalid': touched.pix && errors.pix },
-                            { 'is-valid': touched.pix && !errors.pix }
+                            { 'is-valid': touched.pix && !errors.pix, }
                           )}
                         />
                         <div className="text-danger">
-                          <ErrorMessage name="name" />
+                          <ErrorMessage name="pix" />
                         </div>
                       </div>
                       {/* end::Form group */}
@@ -493,7 +437,7 @@ const ModalEditUser = ({ idUser, dataEdit, modalEdit }: IProps) => {
                           <label className='class="form-label fw-bolder text-dark fs-6'>CEP</label>
                           <Field
                             placeholder='CEP'
-                            type=''
+                            type='text'
                             name="cep"
                             className={clsx('form-control form-control-lg form-control-solid',
                               { 'is-invalid': touched.cep && errors.cep, },
@@ -511,7 +455,7 @@ const ModalEditUser = ({ idUser, dataEdit, modalEdit }: IProps) => {
                           <label className='class="form-label fw-bolder text-dark fs-6'>Número</label>
                           <Field
                             placeholder='Número'
-                            type=''
+                            type='text'
                             name="numero"
                             className={clsx('form-control form-control-lg form-control-solid',
                               { 'is-invalid': touched.numero && errors.numero, },
@@ -526,9 +470,51 @@ const ModalEditUser = ({ idUser, dataEdit, modalEdit }: IProps) => {
                       {/* end::Form group */}
 
 
+                      {/* begin::Form group Senha */}
+                      <div className='mt-5 fv-row' data-kt-password-meter='true'>
+                        <div className='mb-1'>
+                          <label className='form-label fw-bolder text-dark fs-6'>Senha</label>
+                          <div className='position-relative mb-3'>
+                            <Field
+                              type='password'
+                              autoComplete="new-password"
+                              placeholder='Senha'
+                              name='senha'
+                              className={clsx('form-control form-control-lg form-control-solid',
+                                { 'is-invalid': touched.senha && errors.senha, },
+                                { 'is-valid': touched.senha && !errors.senha, }
+                              )}
+                            />
+                            <div className="text-danger">
+                              <ErrorMessage name="senha" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      {/* end::Form group */}
+
+                      {/* begin::Form group Confirm password */}
+                      <div className='fv-row mt-5 mb-10'>
+                        <label className='form-label fw-bolder text-dark fs-6'>Confirmar senha</label>
+                        <Field
+                          type='password'
+                          placeholder='Confirmar senha'
+                          autoComplete='off'
+                          name='confsenha'
+                          className={clsx('form-control form-control-lg form-control-solid',
+                            { 'is-invalid': touched.confsenha && errors.confsenha, },
+                            { 'is-valid': touched.confsenha && !errors.confsenha, }
+                          )}
+                        />
+                        <div className="text-danger">
+                          <ErrorMessage name="confsenha" />
+                        </div>
+                      </div>
+                      {/* end::Form group */}
 
 
-                      <div className="row mt-4"> {/* Inicio: Select */}
+                      {/* begin::Form Select */}
+                      <div className="row mt-4">
                         <div className="col-md-6 fv-row fv-plugins-icon-container">
                           <label className="required fs-5 fw-bold mb-2">Função</label>
                           <input type="text" className="form-control form-control-solid mb-5" name="Função" />
@@ -538,8 +524,8 @@ const ModalEditUser = ({ idUser, dataEdit, modalEdit }: IProps) => {
                         <div className="col-md-6 fv-row fv-plugins-icon-container">
                           <label className="required fs-5 fw-bold mb-2">Permissão</label>
                           <select
-                            // value={permisssao}
-                            // onChange={(e) => setPermisssao(e.target.value)}
+                            value={permisssao}
+                            onChange={(e) => setPermisssao(e.target.value)}
                             className=" form-control form-control-solid" >
                             <option disabled value="">Selecione</option>
                             <option value="5"> Colaborador </option>
@@ -550,19 +536,19 @@ const ModalEditUser = ({ idUser, dataEdit, modalEdit }: IProps) => {
                           </select>
                           <div className="fv-plugins-message-container invalid-feedback"></div>
                         </div>
-                      </div>{/* fim: Select */}
-
+                      </div>
+                      {/* end::Form Select */}
 
                     </div>
                   </div>
 
 
-
-                  <div className="modal-footer flex-center"> {/* inicio : Buttons */}
+                  {/* begin::  -- Buttons --  */}
+                  <div className="modal-footer flex-center">
                     <button
                       type="button"
                       className="btn btn-light-dark me-3"
-                      onClick={() => setModalEdit(false)}
+                      onClick={() => setModal(false)}
                     >
                       Cancelar
                     </button>
@@ -570,21 +556,20 @@ const ModalEditUser = ({ idUser, dataEdit, modalEdit }: IProps) => {
                     <button
                       type='submit'
                       className="btn btn-light-dark me-3"
-                      // disabled={isSubmitting || !isValid}
                       disabled={!isValid}
                     >
-                      {!loading && <span className='indicator-label'>Confirmar</span>}
+                      {!loading && <span className='indicator-label'>Registrar-se</span>}
                       {loading && (
-                        <span className='indicator-progress ms-2 ' style={{ display: 'block' }}>
-                          Please wait...
+                        <div className='indicator-progress' style={{ display: 'block' }}>
+                          Um momento...
                           <span className='spinner-border spinner-border-sm align-middle ms-2'></span>
-                        </span>
+                        </div>
                       )}
                     </button>
 
-                  </div>  {/* fim: Buttons*/}
+                  </div>
+                  {/* end::  -- Buttons --  */}
 
-                  {/* </form> */}
                 </div>
               </div>
             </div>
@@ -597,4 +582,4 @@ const ModalEditUser = ({ idUser, dataEdit, modalEdit }: IProps) => {
   )
 }
 
-export default ModalEditUser
+export default ModalAddUser;
