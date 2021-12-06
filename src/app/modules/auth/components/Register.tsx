@@ -412,7 +412,7 @@ export function Register() {
 
 
         
-            <div className='row fv-row mt-4'>      {/* begin::Form group CEP */}
+            <div className='row fv-row mt-4'> {/* begin::Form group CEP */}
 
               <div className='col-xl-6'>
                 <label className='class="form-label fw-bolder text-dark fs-6'>CEP</label>
