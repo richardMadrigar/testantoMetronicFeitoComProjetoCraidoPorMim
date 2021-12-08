@@ -49,14 +49,13 @@ export function HeaderWrapper() {
           {/* end::Logo */}
 
 
-
-
-            <div
-              id='kt_toolbar_container'
-              className={clsx(classes.toolbarContainer.join(' '), 'd-flex flex-stack  f')}
-            >
-              Painel de controle  {/* colocar este nome dinamico conforme a tela  */}
-            </div>
+          <div
+            id='kt_toolbar_container'
+            className={clsx(classes.toolbarContainer.join(' '), 'd-flex flex-stack  f')}
+          >
+            {/* nome em cima => do lado do usuario */}
+            Painel de controle  {/* colocar este nome dinamico conforme a tela  */}
+          </div>
 
 
           {/* begin::Wrapper */}

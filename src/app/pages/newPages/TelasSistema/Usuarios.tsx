@@ -18,6 +18,9 @@ import { AlertDoc } from '../components/AlertDoc';
 import '../../../../_metronic/assets/stylesCss/style.css'
 
 
+import ButtonInfo from '../../components/Button';
+
+
 type Props = {
   className: string
   qtdUsers: number
@@ -91,6 +94,7 @@ const Usuarios: React.FC<Props> = ({ className }) => {
 
   const endIndex = currentPage + itensPerPage
   const currentItens = users.slice(currentPage, endIndex)
+
 
 
 
@@ -404,29 +408,22 @@ const Usuarios: React.FC<Props> = ({ className }) => {
 
                       <td>{/* inicio - buttons Edit/ delete/ resetar */}
                         <div className='d-flex justify-content-end flex-shrink-0 ms-5'>
-                          <button
-                            type="button"
+
+                          <ButtonInfo
+                            icon={<KTSVG path='/media/icons/duotune/general/gen019.svg' className='svg-icon-3' />}
+                            title="Resetar usuário"
                             onClick={() => handleMoldalResetPassword(users.id)}
-                            className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'
-                            title='Resetar usuário' >
-                            <KTSVG path='/media/icons/duotune/general/gen019.svg' className='svg-icon-3' />
-                          </button>
-
-                          <button
-                            type="button"
+                          />
+                          <ButtonInfo
+                            icon={<KTSVG path='/media/icons/duotune/art/art005.svg' className='svg-icon-3' />}
+                            title="Editar usuário"
                             onClick={() => handleMoldalEdit(users.id)}
-                            className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1'
-                            title="Editar usuário" >
-                            <KTSVG path='/media/icons/duotune/art/art005.svg' className='svg-icon-3' />
-                          </button>
-
-                          <button
-                            type="button"
+                          />
+                          <ButtonInfo
+                            icon={<KTSVG path='/media/icons/duotune/general/gen027.svg' className='svg-icon-3' />}
+                            title='Deletar usuário'
                             onClick={() => handleMoldalDelete(users.id)}
-                            className='btn btn-icon btn-bg-light btn-active-color-primary btn-sm'
-                            title='Deletar usuário'>
-                            <KTSVG path='/media/icons/duotune/general/gen027.svg' className='svg-icon-3' />
-                          </button>
+                          />
 
                         </div>
                       </td>{/* fim - buttons Edit/ delete/ resetar */}

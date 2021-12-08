@@ -31,10 +31,10 @@ const HeaderUserMenu: FC = () => {
 
           <div className='d-flex flex-column me-5'>
             <div className='fw-bolder d-flex align-items-center fs-5'>
-              {userPerfil?.name} {/*será dinamico*/}
+              {userPerfil?.name} {/* nome no toggle de perfil*/}
             </div>
             <div className='fw-bold text-muted text-hover-primary fs-7'>
-              {userPerfil?.email} {/*será dinamico*/}
+              {userPerfil?.email} {/* nome no toggle de perfil*/}
             </div>
           </div>
         </div>

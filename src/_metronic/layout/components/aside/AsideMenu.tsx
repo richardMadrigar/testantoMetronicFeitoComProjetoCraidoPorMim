@@ -44,9 +44,7 @@ const AsideMenu: React.FC<Props> = ({ asideMenuCSSClasses }) => {
           asideMenuCSSClasses.join(' ')
         )}
       >
-        {/* Lista de rotas do aside */}
-        <AsideMenuMain />
-        {/* Lista de rotas  */}
+        <AsideMenuMain />{/* Lista de rotas do menu lateral*/}
       </div>
     </div>
   )

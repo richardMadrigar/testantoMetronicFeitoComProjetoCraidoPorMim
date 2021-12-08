@@ -1,14 +1,14 @@
-import React, {FC} from 'react'
-import {Link} from 'react-router-dom'
+import React, { FC } from 'react'
+import { Link } from 'react-router-dom'
 import clsx from 'clsx'
 
-import {useLayout} from '../../core'
-import {KTSVG, toAbsoluteUrl} from '../../../helpers'
-import {AsideMenu} from './AsideMenu'
+import { useLayout } from '../../core'
+import { KTSVG, toAbsoluteUrl } from '../../../helpers'
+import { AsideMenu } from './AsideMenu'
 
 const AsideDefault: FC = () => {
-  const {config, classes} = useLayout()
-  const {aside} = config
+  const { config, classes } = useLayout()
+  const { aside } = config
 
   return (
     <div
@@ -23,9 +23,8 @@ const AsideDefault: FC = () => {
       data-kt-drawer-toggle='#kt_aside_mobile_toggle'
     >
 
-      {/* begin::Brand */}
       <div className='aside-logo flex-column-auto' id='kt_aside_logo'>
-        
+
         {/* begin::Logo */}
         {aside.theme === 'dark' && (
           <Link to='/painel'>
@@ -68,7 +67,7 @@ const AsideDefault: FC = () => {
         {/* end::Aside toggler */}
       </div>
 
-      
+
 
       {/* begin::Aside menu */}
       <div className='aside-menu flex-column-fluid'>
@@ -80,4 +79,4 @@ const AsideDefault: FC = () => {
   )
 }
 
-export {AsideDefault}
+export { AsideDefault }

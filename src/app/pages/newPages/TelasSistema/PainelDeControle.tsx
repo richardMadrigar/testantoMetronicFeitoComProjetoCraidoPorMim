@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-
 import { AuthContext } from '../../../../context/authContext';
 
 import { AlertDoc } from '../components/AlertDoc';
@@ -12,6 +11,7 @@ const alg = 'aes-256-ctr'
 
 
 const Header = () => {
+
   const { userPerfil } = useContext(AuthContext)
   // console.log(userPerfil);
 
