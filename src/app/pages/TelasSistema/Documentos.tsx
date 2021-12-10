@@ -4,8 +4,6 @@ import DropzoneComp from '../components/DropzoneComp'
 
 const Documentos = () => {
 
-
-
   return (
     <>
       <div className='card-header'>
@@ -15,7 +13,7 @@ const Documentos = () => {
         </div>
 
         <div className="table-responsive">
-          <table className="table-hover table gs-5 table-rounded border mt-5 mb-10">
+          <table className="table-hover table gs-5 table-rounded border mt-5 mb-10 ">
             <tbody>
               <Tr name='RG/CNH' isPending={true} />
               <Tr name='CCM' isPending={false} />
@@ -26,17 +24,11 @@ const Documentos = () => {
           </table>
         </div>
 
-        <div className=' mb-5 wh-50 border rounded border-primary p-10 text-center '>
-          < DropzoneComp />
-        </div>
-        <div className='mb-5  wh-50 border rounded border-primary p-10 text-center '>
+        < DropzoneComp />
 
-          < DropzoneComp />
-        </div>
-        <div className='wh-50 border rounded border-primary p-10 text-center '>
+        < DropzoneComp />
 
-          < DropzoneComp />
-        </div>
+        < DropzoneComp />
 
       </div>
     </>
@@ -57,21 +49,25 @@ const Tr = ({ name, isPending }: IPropsTr) => {
   const styleSpan = `min-w-90px fw-bold text-light p-1 rounded-1 d-flex justify-content-center`
 
   return (
-    <tr className='border-bottom'>
+    <tr className='border-bottom' >
 
-      <td className='border-end w-100  '>{name}</td>
+      <td className='border-end w-100 d-flex align-items-center' style={{ height: '46.5px' }}>
+        <p className='m-0' >
+          {name}
+        </p>
+      </td>
 
       {isPending ? (
-        <td>
+        <td style={{ height: '46.5px' }} className='w-100px' >
           <span
-            className={`bg-success ${styleSpan}`}>
-            {isPending && 'OK'}
+            className={`bg-success fw-bold text-uppercase shadow ${styleSpan}`} >
+            {isPending && 'Ok'}
           </span>
         </td>
       ) : (
         <td>
           <span
-            className={`bg-danger ${styleSpan}`}>
+            className={`bg-danger fw-bold text-uppercase shadow ${styleSpan}`}>
             {!isPending && "Pendente"}
           </span>
         </td>

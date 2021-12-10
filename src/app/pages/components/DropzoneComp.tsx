@@ -1,7 +1,10 @@
 import React from 'react'
 
-import Dropzone from 'react-dropzone'
 import api from '../../../setup/api';
+
+import Dropzone from 'react-dropzone'
+import { Box } from '@mui/system';
+
 
 const handleInserImg = async (files: any) => {
 
@@ -23,22 +26,25 @@ const handleInserImg = async (files: any) => {
 }
 
 
-
 const DropzoneComp = () => {
   return (
+    <div className='mb-5 wh-50 rounded border-secondary p-10 text-center ' style={{borderStyle: 'dashed'}}>
 
-    <Dropzone
-      onDrop={(files) => handleInserImg(files)}
-    >
-      {({ getRootProps, getInputProps }) => (
-        <section>
-          <div {...getRootProps()}>
-            <input {...getInputProps()} />
-            <p>Arraste e solte alguns arquivos aqui ou clique para selecioná-los</p>
-          </div>
-        </section>
-      )}
-    </Dropzone>
+      <Dropzone onDrop={(files) => handleInserImg(files)}  >
+
+        {({ getRootProps, getInputProps }) => (
+          <Box sx={{  display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <div {...getRootProps()}>
+              <input {...getInputProps()} />
+              <p  className='m-0'>
+                Arraste e solte alguns arquivos aqui ou clique para selecioná-los
+              </p>
+            </div>
+          </Box>
+        )}
+      </Dropzone>
+
+    </div>
   )
 }
 export default DropzoneComp;
