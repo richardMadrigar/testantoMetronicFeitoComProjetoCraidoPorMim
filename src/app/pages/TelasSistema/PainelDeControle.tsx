@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { AuthContext } from '../../../../context/authContext';
+import { AuthContext } from '../../../context/authContext';
 
 import { AlertDoc } from '../components/AlertDoc';
 
@@ -29,6 +29,14 @@ const Header = () => {
 
   const valueQRCode = crypted ? crypted : ""
   const myDivStyle = { width: '18rem', height: '17rem' };
+
+  const numero = [1, 2, 4, 5]
+
+  const result = numero.map(function (elemento, i, arr) {
+    return elemento * 2
+  })
+
+  console.log(result);
 
   return (
     <>
@@ -67,19 +75,17 @@ const Header = () => {
                 </a>
               </div>
 
-              {/*QRCode */}
-              <div className="mt-16"  >
+            
+              <div className="mt-16">{/*QRCode */}
                 <QRCodeUser value={valueQRCode} style={myDivStyle} title={valueQRCode} />
               </div>
-              {/*QRCode */}
-
+    
             </div>
           </div>{/*container conteudo 1 */}
 
 
 
           <div className="mb-7 "></div>
-
 
           <div className="flex-row-fluid  bg-white">{/*container conteudo 2 */}
             <div className="card-body">

@@ -7,7 +7,6 @@ import * as Yup from 'yup'
 
 import clsx from 'clsx';
 import api from '../../../setup/api';
-import { toAbsoluteUrl } from '../../../_metronic/helpers';
 
 
 interface IProps {
@@ -168,9 +167,11 @@ const ModalAddUser = ({ modal, setModal }: IProps) => {
                   <div className="modal-header" >
                     <h2>Cadastro de usuários</h2>
 
-                    <button type="button" onClick={() => setModal(false)} className="btn btn-icon btn-bg-light ">
-                      <img src={toAbsoluteUrl("/media/icons/duotune/arrows/arr011.svg")} alt='Fechar' />
-                    </button>
+                    <button
+                      onClick={() => setModal(false)}
+                      type="button"
+                      className=" btn btn-close btn-icon btn-bg-light" aria-label="Close"
+                    />
 
                   </div>
 

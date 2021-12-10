@@ -74,8 +74,5 @@ export function* saga() {
     yield put(actions.requestUser())
   })
 
-  yield takeLatest(actionTypes.UserRequested, function* userRequested() {
-
-
-  })
+  yield takeLatest(actionTypes.UserRequested, function* userRequested() {})
 }

@@ -8,9 +8,7 @@ type PropsBtnPerson = {
 }
 
 
-const ButtonInfo = ({ icon, onClick, title }: PropsBtnPerson) => {
-
-
+const ButtonInfoEditDeletAdd = ({ icon, onClick, title }: PropsBtnPerson) => {
 
   return (
 
@@ -36,4 +34,4 @@ const ButtonInfo = ({ icon, onClick, title }: PropsBtnPerson) => {
 
   )
 }
-export default ButtonInfo;
+export default ButtonInfoEditDeletAdd;

@@ -1,24 +1,24 @@
 import React, { useContext, useEffect, useState } from 'react'
-import api from '../../../../setup/api';
+import api from '../../../setup/api';
 
 //contexto
-import { AuthContext } from '../../../../context/authContext';
+import { AuthContext } from '../../../context/authContext';
 
 //componentes
-import { KTSVG, toAbsoluteUrl } from '../../../../_metronic/helpers'
+import { KTSVG, toAbsoluteUrl } from '../../../_metronic/helpers'
 
-import ModalDeleteUser from '../../components/ModalDeleteUser';
-import ModalEditUser from '../../components/ModalEditUser';
-import ModalAddUser from '../../components/ModalAddUser'
+import ModalDeleteUser from '../components/ModalDeleteUser';
+import ModalEditUser from '../components/ModalEditUser';
+import ModalAddUser from '../components/ModalAddUser'
 
-import Pagination from '../../components/Pagination'
+import Pagination from '../components/Pagination'
 import { AlertDoc } from '../components/AlertDoc';
 
 //styles
-import '../../../../_metronic/assets/stylesCss/style.css'
+import '../../../_metronic/assets/stylesCss/style.css'
 
 
-import ButtonInfo from '../../components/Button';
+import ButtonInfoEditDeletAdd from '../components/ButtonInfoEditDeletAdd';
 
 
 type Props = {
@@ -409,17 +409,17 @@ const Usuarios: React.FC<Props> = ({ className }) => {
                       <td>{/* inicio - buttons Edit/ delete/ resetar */}
                         <div className='d-flex justify-content-end flex-shrink-0 ms-5'>
 
-                          <ButtonInfo
+                          <ButtonInfoEditDeletAdd
                             icon={<KTSVG path='/media/icons/duotune/general/gen019.svg' className='svg-icon-3' />}
                             title="Resetar usuário"
                             onClick={() => handleMoldalResetPassword(users.id)}
                           />
-                          <ButtonInfo
+                          <ButtonInfoEditDeletAdd
                             icon={<KTSVG path='/media/icons/duotune/art/art005.svg' className='svg-icon-3' />}
                             title="Editar usuário"
                             onClick={() => handleMoldalEdit(users.id)}
                           />
-                          <ButtonInfo
+                          <ButtonInfoEditDeletAdd
                             icon={<KTSVG path='/media/icons/duotune/general/gen027.svg' className='svg-icon-3' />}
                             title='Deletar usuário'
                             onClick={() => handleMoldalDelete(users.id)}

@@ -43,8 +43,23 @@ const ModalDeleteUser = ({ idUser }: IProps) => {
               <h4 >Você deseja exluir esse usuário do sistema ?</h4>
             </div>
             <div className="card-body  text-center">
-              <button onClick={() => handleDeleteUser(idUser)} type="button" className="btn btn-primary fw-bold btn-danger m-1 "> Sim, Deletar! </button>
-              <button onClick={() => setModalDelete(false)} type="button" className="btn btn-light m-1 ">Não, Cancelar </button>
+
+              <button
+                className="btn btn-primary fw-bold btn-danger m-1 "
+                type="button"
+                onClick={() => handleDeleteUser(idUser)}
+              >
+                Sim, Deletar!
+              </button>
+
+              <button
+                className="btn btn-light m-1 "
+                type="button"
+                onClick={() => setModalDelete(false)}
+              >
+                Não, Cancelar
+              </button>
+
             </div>
 
           </div>
