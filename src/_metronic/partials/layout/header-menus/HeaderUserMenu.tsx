@@ -7,7 +7,6 @@ import { AuthContext } from '../../../../context/authContext';
 const HeaderUserMenu: FC = () => {
   const { userPerfil, setAutorization } = useContext(AuthContext)
 
-
   const history = useHistory();
 
   const logout = async () => {

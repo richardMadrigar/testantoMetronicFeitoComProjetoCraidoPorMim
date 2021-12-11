@@ -24,11 +24,21 @@ const Documentos = () => {
           </table>
         </div>
 
-        < DropzoneComp />
 
-        < DropzoneComp />
 
-        < DropzoneComp />
+
+            < DropzoneComp />
+
+            < DropzoneComp />
+
+            < DropzoneComp />
+
+            < DropzoneComp />
+
+            < DropzoneComp />
+
+
+
 
       </div>
     </>
