@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { BsEyeSlashFill } from 'react-icons/bs';
 import api from '../../../setup/api'
 
 import { ErrorMessage, Field, Form, Formik } from 'formik'
@@ -91,6 +92,17 @@ export function Register() {
   const [loading, setLoading] = useState(false)
 
   const { setAutorization, setUserPerfil } = useContext(AuthContext)
+
+  const [changePassword, setChangePassword] = useState("password")
+
+  const handlePassword = () => {
+    if (changePassword === "password") {
+      setChangePassword("text")
+    }
+    if (changePassword === "text") {
+      setChangePassword("password")
+    }
+  }
 
 
   const handleRegister = async (data: {}) => {
@@ -376,8 +388,6 @@ export function Register() {
 
 
             {/* begin::Form group Nome da Agência / Banco / Conta */}
-
-
             <div className='row fv-row mt-5'>
 
               <div className='col-xl-4 mb-5'>  {/* begin::Form group Banco */}
@@ -470,15 +480,13 @@ export function Register() {
 
 
 
-
-
             {/* begin::Form group Senha */}
             <div className='mt-5 fv-row' data-kt-password-meter='true'>
               <div className='mb-1'>
                 <label className='form-label fw-bolder text-dark fs-6'>Senha</label>
-                <div className='position-relative mb-3'>
+                <div className='position-relative mb-3 d-flex'>
                   <Field
-                    type='password'
+                    type={changePassword}
                     placeholder='Senha'
                     autocomplete="new-password"
                     name='senha'
@@ -487,10 +495,19 @@ export function Register() {
                       { 'is-valid': touched.senha && !errors.senha, }
                     )}
                   />
+                  <div>
+                    <button
+                      onClick={handlePassword}
+                      type='button'
+                      className='border rounded-end h-100 bg-light-dark p-2'
+                    >
+                      <BsEyeSlashFill />
+                    </button>
+                  </div>
+                </div>
                   <div className="text-danger">
                     <ErrorMessage name="senha" />
                   </div>
-                </div>
               </div>
             </div>
             {/* end::Form group */}
@@ -511,9 +528,6 @@ export function Register() {
                 <ErrorMessage name="confsenha" />
               </div>
             </div>    {/* end::Form group */}
-
-
-
 
 
             {/* begin::Form group */}

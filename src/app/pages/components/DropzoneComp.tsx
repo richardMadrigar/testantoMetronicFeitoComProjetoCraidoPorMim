@@ -49,7 +49,7 @@ const DropzoneComp = () => {
 
 
       <Dropzone
-        accept="image/*"
+        accept=""
         onDrop={(files) => handleInserImg(files)}
       >
 

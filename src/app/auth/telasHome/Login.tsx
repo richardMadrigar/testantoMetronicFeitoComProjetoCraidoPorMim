@@ -2,6 +2,9 @@ import React, { useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
 import clsx from 'clsx'
 
+import { BsEyeSlashFill } from 'react-icons/bs';
+
+
 
 import { Field, Form, Formik, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
@@ -25,6 +28,17 @@ const Login = () => {
   const { handleLogin } = useContext(AuthContext)
 
   const [loading, setLoading] = useState(false)
+
+  const [changePassword, setChangePassword] = useState("password")
+
+  const handlePassword = () => {
+    if (changePassword === "password") {
+      setChangePassword("text")
+    }
+    if (changePassword === "text") {
+      setChangePassword("password")
+    }
+  }
 
   return (
 
@@ -82,12 +96,12 @@ const Login = () => {
                 <ErrorMessage name="cpf" />
               </div>
 
-            </div>
-            {/* end::input CPF */}
+            </div>{/* end::input CPF */}
 
 
-            {/* begin::input SENHA */}
-            <div className='fv-row mb-10'>
+
+
+            <div className='fv-row mb-10'>{/* inicio - SENHA */}
 
               <div className='d-flex justify-content-between mt-n5'>
                 <div className='d-flex flex-stack mb-2'>
@@ -101,21 +115,33 @@ const Login = () => {
                 </div>
               </div>
 
-              <Field
-                type="password"
-                name="senha"
-                placeholder="Senha"
-                className={clsx('form-control form-control-lg form-control-solid w-100 light-dark',
-                  { 'is-invalid': touched.senha && errors.senha, },
-                  { 'is-valid': touched.senha && !errors.senha, }
-                )}
-              />
+
+              <div className='d-flex'>
+                <Field
+                  type={changePassword}
+                  name="senha"
+                  placeholder="Senha"
+                  className={clsx('rounded-0 form-control form-control-lg  form-control-solid w-100 light-dark',
+                    { 'is-invalid': touched.senha && errors.senha, },
+                    { 'is-valid': touched.senha && !errors.senha, }
+                  )}
+                />
+                <div>
+                  <button
+                    onClick={handlePassword}
+                    type='button'
+                    className='border rounded-end h-100 bg-light-dark p-2'
+                  >
+                    <BsEyeSlashFill />
+                  </button>
+                </div>
+              </div>
               <div className="text-danger">
                 <ErrorMessage name="senha" />
               </div>
 
-            </div>
-            {/* end::input senha */}
+            </div>{/* inicio - senha */}
+
 
 
 

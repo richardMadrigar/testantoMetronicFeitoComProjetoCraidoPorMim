@@ -1,6 +1,4 @@
 import React from 'react'
-// import { toAbsoluteUrl } from '../../../../_metronic/helpers';
-
 
 interface IPropsTr {
   users: string | null
@@ -28,7 +26,6 @@ const Tr = ({ users }: IPropsTr) => {
           </span>
         </td>
       )}
-
     </>
   )
 }
@@ -38,14 +35,14 @@ const TrId = ({ users }: IPropsTr) => {
       {users ? (
         <td>
           <span
-              className="badge p-3 badge-light text-hover-primary text-center">
+            className="badge p-3 badge-light text-hover-primary text-center">
             {users ? users : "Pendente"}
           </span>
         </td>
       ) : (
         <td>
           <span
-           className="badge p-3 badge-light text-hover-primary text-center">
+            className="badge p-3 badge-light text-hover-primary text-center">
             {users ? users : "Pendente"}
           </span>
         </td>
@@ -78,12 +75,14 @@ const TrEmail = ({ users }: IPropsTr) => {
 }
 
 function TdUserCPF({ users, cpf }: IPropsTrUserCpf) {
+  const file_name = 'http://localhost:3001/files/2e8bd1a6175df8a1451d448cf1bb6d63-richard quadrado.jpg'
+
+
   return (
     <td>
       <div className='d-flex align-items-center'>
         <div className='symbol symbol-45px me-5'>
-          {/* <img src={toAbsoluteUrl('/media/avatars/150-3.jpg')} alt='Imagem do Usuário' /> */}
-          <img src='http://localhost:3001/files/teste.jpg' alt='Imagem do Usuário' />
+          <img src={file_name} alt='Imagem do Usuário' />
         </div>
 
         <div className='text-dark fw-bolder text-hover-primary fs-6'>

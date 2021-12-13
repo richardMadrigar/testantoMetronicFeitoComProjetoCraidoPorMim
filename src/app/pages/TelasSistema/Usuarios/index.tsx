@@ -231,7 +231,7 @@ const Usuarios: React.FC<Props> = ({ className }) => {
 
         <div className='card-body py-3'>
 
-          <div className='table-responsive'>  {/* Inicio-Table */}
+          <div className='table-responsive'>{/* Inicio-Table */}
             <table className='table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4 table-hover'>
 
               <thead>
@@ -264,7 +264,6 @@ const Usuarios: React.FC<Props> = ({ className }) => {
                   return (
 
                     <tr key={users.id}>
-
                       <TrId users={users.id} />
 
                       <TdUserCPF
@@ -327,11 +326,10 @@ const Usuarios: React.FC<Props> = ({ className }) => {
 
                         </div>
                       </td>{/* fim - buttons Edit/ delete/ resetar */}
-
                     </tr>
                   )
                 })}
-              </tbody>   {/* fim do usuario */}
+              </tbody>{/* fim do usuario */}
 
             </table>
           </div>{/* Fim-Table */}
