@@ -107,7 +107,6 @@ const ModalEditUser = ({ idUser, dataEdit, modalEdit }: IProps) => {
 
 
   const handleMoldalEdit = async (data: {}) => {
-    // console.log(data);
     console.log("id da FN Editar usuario ", idUser);
 
     await api.put(`/users/${idUser}`, data)

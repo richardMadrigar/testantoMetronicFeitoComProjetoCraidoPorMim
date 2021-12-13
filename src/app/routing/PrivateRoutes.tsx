@@ -3,9 +3,9 @@ import React, { Suspense } from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
 import { FallbackView } from '../../_metronic/partials'
 
-import ExtratoRecebimentos from '../pages/TelasSistema/ExtratoRecebimentos'
-import PainelDeControle from '../pages/TelasSistema/PainelDeControle'
-import Documentos from '../pages/TelasSistema/Documentos'
+import ExtratoRecebimentos from '../pages/TelasSistema/ExtratoRecebimento'
+import PainelDeControle from '../pages/TelasSistema/PainelDeControle/index'
+import Documentos from '../pages/TelasSistema/Documentos/index'
 import Usuarios from '../pages/TelasSistema/Usuarios'
 
 

@@ -3,20 +3,15 @@ import { AuthContext } from '../../../context/authContext';
 import api from '../../../setup/api';
 
 
-
 interface IProps {
   modalDelete: boolean
   idUser: string
 }
 
 
-
-
-
 const ModalDeleteUser = ({ idUser }: IProps) => {
 
   const { setAtt, att, setModalDelete, modalDelete } = useContext(AuthContext)
-
 
   const handleDeleteUser = async (idDoUsuario: string) => {
     await api.delete(`/users/${idDoUsuario}`)

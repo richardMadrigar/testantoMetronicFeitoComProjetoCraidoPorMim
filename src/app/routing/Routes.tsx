@@ -4,9 +4,9 @@ import { AuthContext } from '../../context/authContext'
 
 import { MasterLayout } from '../../_metronic/layout/MasterLayout'
 import { MasterInit } from '../../_metronic/layout/MasterInit'
-import { AuthPage } from '../modules/auth'
+import { AuthPage } from '../auth'
 
-import { ErrorsPage } from '../modules/errors/ErrorsPage'
+import { ErrorsPage } from '../pages/TelaErrors/ErrorsPage'
 
 import { PrivateRoutes } from './PrivateRoutes'
 

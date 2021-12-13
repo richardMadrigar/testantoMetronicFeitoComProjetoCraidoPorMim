@@ -3,7 +3,7 @@ import { BrowserRouter } from 'react-router-dom'
 
 import { LayoutProvider, LayoutSplashScreen } from '../_metronic/layout/core'
 
-import AuthInit from './modules/auth/redux/AuthInit'
+import AuthInit from './auth/redux/AuthInit'
 import { Routes } from './routing/Routes'
 
 type Props = {

@@ -18,6 +18,7 @@ interface IProps {
 //total foi trocado por qtdUsers
 
 const Pagination = ({ itensPerPage, qtdUsers, currentPage, setCurrentPage }: IProps) => {
+  
   const current = currentPage ? (currentPage / itensPerPage) + 1 : 1;
 
   const pages = Math.ceil(qtdUsers / itensPerPage); // qtd pages
@@ -47,12 +48,11 @@ const Pagination = ({ itensPerPage, qtdUsers, currentPage, setCurrentPage }: IPr
       {Array.from({ length: Math.min(MAX_ITEMS, pages) })
         .map((_, index) => index + first)
         .map((page) => (
-
           <button
             key={page} value={page}
             onClick={() => onPageChange(page)}
             type="button"
-            className=" btn btn-icon m-1 btn-bg-light btn-active-color-primary btn-sm " >
+            className="btn btn-icon m-1 btn-bg-light btn-active-color-primary btn-sm" >
             {page}
           </button>
         ))}

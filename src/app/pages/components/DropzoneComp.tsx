@@ -6,7 +6,6 @@ import Dropzone from 'react-dropzone'
 import { Box } from '@mui/system';
 import clsx from 'clsx';
 
-
 const handleInserImg = async (files: any) => {
 
   // if (files.length > 0) {
