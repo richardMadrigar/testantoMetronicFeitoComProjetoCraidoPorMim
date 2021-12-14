@@ -1,4 +1,6 @@
 export type IUsers = {
+  img_perfil: string
+
   id: string 
   name: string 
   email: string       

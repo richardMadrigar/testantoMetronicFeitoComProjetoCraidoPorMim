@@ -18,7 +18,7 @@ import Pagination from '../../components/Pagination'
 
 
 import ButtonInfoEditDeletAdd from '../../components/ButtonInfoEditDeletAdd';
-import { Tr, TdUserCPF, TrEmail, TrId } from './Td';
+import { Tr, TdUserImageCPF, TrEmail, TrId } from './Td';
 
 //styles
 import '../../../../_metronic/assets/stylesCss/style.css'
@@ -32,9 +32,7 @@ type Props = {
 }
 
 
-//offset pra identificar em qual pagina está
 const Usuarios: React.FC<Props> = () => {
-  
 
   const { att, setModalDelete, modalDelete, setModalEdit, modalEdit } = useContext(SettingsProvider)
 
@@ -86,6 +84,7 @@ const Usuarios: React.FC<Props> = () => {
     numero: '',
     pix: '',
     ccm: '',
+    img_perfil: '',
   }])
 
 
@@ -103,6 +102,7 @@ const Usuarios: React.FC<Props> = () => {
       await api.get('/users')
         .then((response) => {
           setUsers(response.data)
+          console.log(response.data);
         })
         .catch(error => alert('Erro ao requisitar o servidor para pegar usuários! ' + error))
     }
@@ -267,9 +267,11 @@ const Usuarios: React.FC<Props> = () => {
                     <tr key={users.id}>
                       <TrId users={users.id} />
 
-                      <TdUserCPF
+                      <TdUserImageCPF
                         users={users.name}
                         cpf={users.cpf}
+                        file_name={users.img_perfil}
+                        
                       />
 
                       <Tr users={users.rg} />
