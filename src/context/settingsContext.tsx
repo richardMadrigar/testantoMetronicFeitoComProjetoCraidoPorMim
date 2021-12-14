@@ -10,7 +10,6 @@ type AuthContextTypee = {
 
   setAtt: React.Dispatch<React.SetStateAction<boolean>>
   att: boolean
-
 };
 
 type AuthContextProviderProps = {

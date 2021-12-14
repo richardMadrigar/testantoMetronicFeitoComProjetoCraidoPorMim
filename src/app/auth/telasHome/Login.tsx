@@ -5,7 +5,6 @@ import clsx from 'clsx'
 import { BsEyeSlashFill } from 'react-icons/bs';
 
 
-
 import { Field, Form, Formik, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 
@@ -115,13 +114,14 @@ const Login = () => {
                 </div>
               </div>
 
+                
 
               <div className='d-flex'>
                 <Field
                   type={changePassword}
                   name="senha"
                   placeholder="Senha"
-                  className={clsx('rounded-0 form-control form-control-lg  form-control-solid w-100 light-dark',
+                  className={clsx('rounded-0  form-control form-control-lg  form-control-solid w-100 light-dark',
                     { 'is-invalid': touched.senha && errors.senha, },
                     { 'is-valid': touched.senha && !errors.senha, }
                   )}

@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
+import Button from '@mui/material/Button';
 
 import api from '../../../../setup/api';
 
@@ -222,10 +223,18 @@ const Usuarios: React.FC<Props> = () => {
           </h3>
 
           <div className='card-toolbar' >
-            <button className='btn btn-sm btn-light-dark' onClick={() => setModal(true)} title='Adicionar novo usuário'>
+            <Button
+              sx={{ transition: '.5s' }}
+              variant="outlined"
+              onClick={() => setModal(true)}
+              className='btn btn-sm btn-light-dark'
+              title='Adicionar novo usuário'
+            >
               <KTSVG path='media/icons/duotune/arrows/arr075.svg' className='svg-icon-3' />
               Novo usuário
-            </button>
+            </Button>
+
+
           </div>
 
         </div>{/* end::Header */}
@@ -271,7 +280,7 @@ const Usuarios: React.FC<Props> = () => {
                         users={users.name}
                         cpf={users.cpf}
                         file_name={users.img_perfil}
-                        
+
                       />
 
                       <Tr users={users.rg} />

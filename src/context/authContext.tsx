@@ -40,7 +40,7 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
 
   const [userPerfil, setUserPerfil] = useState() //dados do usuario logado
 
-  const [newImage, setNewImage] = useState(false) //dados do usuario logado
+  const [newImage, setNewImage] = useState(false)
 
   const [token, setToken] = useState<TokenState>(() => {
     const token = localStorage.getItem("token")
@@ -87,32 +87,32 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
   }, [token, newImage]);
 
 
-  // useEffect(() => {
-  //   const testTokenValid = async () => {
-  //     const token = localStorage.getItem('token')
-  //     api.defaults.headers.authorization = `Bearer ${token}`
+  useEffect(() => {
+    const testTokenValid = async () => {
+      const token = localStorage.getItem('token')
+      api.defaults.headers.authorization = `Bearer ${token}`
 
-  //     if (!token) {
-  //       setAutorization(false)
-  //       return console.log('voce não tem um token')
-  //     }
+      if (!token) {
+        setAutorization(false)
+        return console.log('voce não tem um token')
+      }
 
-  //     try {
-  //       const resultToken = verify(token, SECRET)
-  //       // console.log(resultToken);
+      try {
+        const resultToken = verify(token, SECRET)
+        // console.log(resultToken);
 
-  //       if (!resultToken) {
-  //         console.log('Token invalido')
-  //         return setAutorization(false)
-  //       }
+        if (!resultToken) {
+          console.log('Token invalido')
+          return setAutorization(false)
+        }
 
-  //       return setAutorization(true)
-  //     } catch (error) {
-  //       console.log('Token invalido ')
-  //     }
-  //   }
-  //   testTokenValid()
-  // }, [token, newImage]);
+        return setAutorization(true)
+      } catch (error) {
+        console.log('Token invalido ')
+      }
+    }
+    testTokenValid()
+  }, [token, newImage]);
 
 
   const handleLogin = async (data: {}) => {
@@ -147,4 +147,4 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
       {props.children}
     </AuthContext.Provider>
   );
-}
+}\
