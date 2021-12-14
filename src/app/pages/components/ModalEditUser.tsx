@@ -1,10 +1,11 @@
 import React, { useContext, useState } from "react";
-import api from "../../../setup/api";
+import clsx from "clsx";
 
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup'
-import clsx from "clsx";
-import { AuthContext } from "../../../context/authContext";
+
+import { SettingsProvider } from "../../../context/settingsContext";
+import api from "../../../setup/api";
 
 
 
@@ -99,8 +100,7 @@ interface IProps {
 }
 
 const ModalEditUser = ({ idUser, dataEdit, modalEdit }: IProps) => {
-  const { att, setAtt, setModalEdit } = useContext(AuthContext)
-
+  const { att, setAtt, setModalEdit } = useContext(SettingsProvider)
 
   const [modalOkUserEdit, setModalOkUserEdit] = useState(false)
 

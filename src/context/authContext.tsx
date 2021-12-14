@@ -2,21 +2,18 @@ import React, { createContext, ReactNode, useEffect, useState } from "react";
 import { IUsers } from "../types/TypeModels";
 import api, { SECRET } from "../setup/api";
 
-import {verify} from 'jsonwebtoken'
+import { verify } from 'jsonwebtoken'
 
 
 type AuthContextType = {
+  handleLogin: (data: {}) => Promise<void>
+  
   setAutorization: React.Dispatch<React.SetStateAction<boolean>>
   autorization: boolean
-  setModalDelete: React.Dispatch<React.SetStateAction<boolean>>
-  modalDelete: boolean
-  setModalEdit: React.Dispatch<React.SetStateAction<boolean>>
-  modalEdit: boolean
-  setAtt: React.Dispatch<React.SetStateAction<boolean>>
-  att: boolean
+
   setUserPerfil: any
   userPerfil: IUsers | undefined;
-  handleLogin: (data: {}) => Promise<void>
+
   token: TokenState;
   loading: boolean
 };
@@ -33,15 +30,11 @@ interface TokenState {
 export const AuthContext = createContext({} as AuthContextType);
 
 
-// component Provider
+
 export function AuthContextProvider(props: AuthContextProviderProps) {
+
   const [autorization, setAutorization] = useState(false)
   const [loading, setLoading] = useState(false)
-
-  const [modalDelete, setModalDelete] = useState(false) //modal deletar
-  const [modalEdit, setModalEdit] = useState(false) //modal editar usuario
-                      
-  const [att, setAtt] = useState(false) //itens por pagina
 
   const [userPerfil, setUserPerfil] = useState() //dados do usuario logado
 
@@ -57,11 +50,12 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
 
 
 
+
   useEffect(() => {
     const resetUser = async () => {
       const token = localStorage.getItem('token')
       // console.log(token);
-      
+
       if (!token) {
         setAutorization(false)
         return console.log('Você não tem um token')
@@ -118,11 +112,10 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
 
 
 
-
   const handleLogin = async (data: {}) => {
     console.log(data)
     await api.post('/login', data)
-    
+
       .then(response => {
         const { token } = response.data;
 
@@ -147,7 +140,7 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
 
 
   return (
-    <AuthContext.Provider value={{modalEdit, setModalEdit, modalDelete, setModalDelete, att, setAtt, loading, token, userPerfil, setUserPerfil, autorization, setAutorization, handleLogin }}>
+    <AuthContext.Provider value={{ loading, token, userPerfil, setUserPerfil, autorization, setAutorization, handleLogin }}>
       {props.children}
     </AuthContext.Provider>
   );

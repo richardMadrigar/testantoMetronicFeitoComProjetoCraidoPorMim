@@ -3,9 +3,11 @@ import React, { useContext, useEffect, useState } from 'react'
 import api from '../../../../setup/api';
 
 //contexto
-import { AuthContext } from '../../../../context/authContext';
+import { SettingsProvider } from '../../../../context/settingsContext';
 
 //componentes
+import { AlertDoc } from '../../components/AlertDoc';
+
 import { KTSVG } from '../../../../_metronic/helpers'
 
 import ModalDeleteUser from '../../components/ModalDeleteUser';
@@ -13,17 +15,15 @@ import ModalEditUser from '../../components/ModalEditUser';
 import ModalAddUser from '../../components/ModalAddUser'
 
 import Pagination from '../../components/Pagination'
-import { AlertDoc } from '../../components/AlertDoc';
 
-//styles
-import '../../../../_metronic/assets/stylesCss/style.css'
 
 import ButtonInfoEditDeletAdd from '../../components/ButtonInfoEditDeletAdd';
 import { Tr, TdUserCPF, TrEmail, TrId } from './Td';
 
+//styles
+import '../../../../_metronic/assets/stylesCss/style.css'
 
 type Props = {
-  className: string
   qtdUsers: number
   idUserDelete: number
   itensPerPage: number
@@ -33,9 +33,10 @@ type Props = {
 
 
 //offset pra identificar em qual pagina está
-const Usuarios: React.FC<Props> = ({ className }) => {
+const Usuarios: React.FC<Props> = () => {
+  
 
-  const { att, setModalDelete, modalDelete, setModalEdit, modalEdit } = useContext(AuthContext)
+  const { att, setModalDelete, modalDelete, setModalEdit, modalEdit } = useContext(SettingsProvider)
 
   const [modal, setModal] = useState(false)
 
@@ -166,7 +167,7 @@ const Usuarios: React.FC<Props> = ({ className }) => {
         setModal={setModal}
       />
 
-      <div className={`card ${className}`}>
+      <div className='card'>
 
         {modalWithNewPassword || modalReset ? <div className="drawer-overlay" /> : null}
 
