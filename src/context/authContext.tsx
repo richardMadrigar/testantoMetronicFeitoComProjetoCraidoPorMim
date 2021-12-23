@@ -35,7 +35,7 @@ export const AuthContext = createContext({} as AuthContextType);
 
 export function AuthContextProvider(props: AuthContextProviderProps) {
 
-  const [autorization, setAutorization] = useState(true)
+  const [autorization, setAutorization] = useState(false)
   const [loading, setLoading] = useState(false)
 
   const [userPerfil, setUserPerfil] = useState() //dados do usuario logado
