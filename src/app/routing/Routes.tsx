@@ -21,7 +21,7 @@ const Routes: FC = () => {
   return (
     <>
       <Switch>
-        {autorization ? ( //se false
+        {!autorization ? ( //se false
           /*Render auth page when user at `/auth` and not authorized.*/
           <Route>
             <AuthPage />
@@ -33,7 +33,7 @@ const Routes: FC = () => {
 
         <Route path='/error' component={ErrorsPage} />
 
-        {autorization ? (
+        {!autorization ? (
           <Redirect to='/auth/login' />
         ) : (
           <>
