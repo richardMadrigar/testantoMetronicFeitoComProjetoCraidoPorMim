@@ -147,4 +147,4 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
       {props.children}
     </AuthContext.Provider>
   );
-}\
+}
